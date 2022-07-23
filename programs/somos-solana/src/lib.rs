@@ -8,12 +8,17 @@ pub mod somos_datum {
 
     pub fn publish_assets(
         ctx: Context<PublishAssets>,
-        seed: [u8; 1],
+        seed: u8,
         key: [u8; 184],
         url: [u8; 78],
     ) -> Result<()> {
         let datum = &mut ctx.accounts.datum;
-        let increment = &mut ctx.accounts.increment;
+        let increment_pda = &mut ctx.accounts.increment;
+        // increment
+        let increment = increment_pda.increment + 1;
+        // assert that datum is produced in sequence
+        assert_eq!(increment, seed);
+        increment_pda.increment = increment;
         // mint
         datum.mint = ctx.accounts.mint.key();
         // assets
@@ -22,8 +27,6 @@ pub mod somos_datum {
         datum.authority = ctx.accounts.payer.key();
         datum.seed = seed;
         datum.bump = *ctx.bumps.get("datum").unwrap();
-        // increment
-        increment.increment = increment.increment + 1;
         Ok(())
     }
 }
@@ -32,10 +35,10 @@ pub mod somos_datum {
 // DATUM ///////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Accounts)]
-#[instruction(seed: [u8; 1])]
+#[instruction(seed: u8)]
 pub struct PublishAssets<'info> {
     #[account(init,
-    seeds = [mint.key().as_ref(), payer.key().as_ref(), & seed], bump,
+    seeds = [mint.key().as_ref(), payer.key().as_ref(), & [seed]], bump,
     payer = payer,
     space = Datum::SPACE
     )]
@@ -65,7 +68,7 @@ pub struct Datum {
     pub assets: EncryptedAssets,
     // pda
     pub authority: Pubkey,
-    pub seed: [u8; 1],
+    pub seed: u8,
     pub bump: u8,
 }
 
