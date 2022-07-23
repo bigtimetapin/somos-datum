@@ -1,14 +1,14 @@
 import {web3} from "@project-serum/anchor";
 import {ACCOUNT_SEED_01, ACCOUNT_SEED_02, programID} from "./config";
-import {getPP, textEncoder} from "./util.js";
+import {getPP} from "./util.js";
 import {getPhantom} from "../phantom";
 import {getLedger, sendLedgers} from "./state";
 import {init} from "./init";
 import {primary} from "./purchase/primary";
-import {sign} from "./sign";
-import {download} from "./download";
 import {remove, submit} from "./escrow";
 import {secondary} from "./purchase/secondary";
+import {upload} from "./upload";
+import {decrypt} from "../lit/decrypt";
 
 
 // TODO; move this file to root
@@ -19,12 +19,12 @@ let release02PubKey, __ = null;
 app.ports.connectSender.subscribe(async function (user) {
     // get program public key 01
     [release01PubKey, _] = await web3.PublicKey.findProgramAddress(
-        [textEncoder.encode(ACCOUNT_SEED_01)],
+        [ACCOUNT_SEED_01],
         programID
     );
     // get program public key 02
     [release02PubKey, __] = await web3.PublicKey.findProgramAddress(
-        [textEncoder.encode(ACCOUNT_SEED_02)],
+        [ACCOUNT_SEED_02],
         programID
     );
     // get phantom
@@ -61,6 +61,26 @@ app.ports.initProgramSender.subscribe(async function (userJson) {
     }
 });
 
+// upload assets
+app.ports.uploadAssetsSender.subscribe(async function (userJson) {
+    // get provider & program
+    const pp = getPP(phantom);
+    // decode user
+    const user = JSON.parse(userJson);
+    const more = JSON.parse(user.more);
+    // invoke upload assets: release 01
+    if (more.release === 1) {
+        await upload(pp.program, pp.provider, release01PubKey);
+        // invoke upload assets: release 02
+    } else if (more.release === 2) {
+        await upload(pp.program, pp.provider, release02PubKey);
+        // unsupported release
+    } else {
+        const msg = "could not upload assets with release: " + more.release.toString();
+        app.ports.genericErrorListener.send(msg);
+    }
+});
+
 // primary purchase
 app.ports.purchasePrimarySender.subscribe(async function (userJson) {
     // get provider & program
@@ -70,10 +90,10 @@ app.ports.purchasePrimarySender.subscribe(async function (userJson) {
     const more = JSON.parse(user.more);
     // invoke purchase request: release 01
     if (more.release === 1) {
-        await primary(pp.program, pp.provider, more.recipient, release01PubKey, userJson);
+        await primary(pp.program, pp.provider, more.recipient, release01PubKey, ACCOUNT_SEED_01, userJson);
         // invoke purchase request: release 02
     } else if (more.release === 2) {
-        await primary(pp.program, pp.provider, more.recipient, release02PubKey, userJson);
+        await primary(pp.program, pp.provider, more.recipient, release02PubKey, ACCOUNT_SEED_02, userJson);
         // unsupported release
     } else {
         const msg = "could not purchase primary with release: " + more.release.toString();
@@ -141,15 +161,19 @@ app.ports.purchaseSecondarySender.subscribe(async function (userJson) {
     }
 });
 
-// sign message
-app.ports.signMessageSender.subscribe(async function (user) {
-    // invoke sign message
-    await sign(phantom, user);
-});
-
-// open download url
-app.ports.openDownloadUrlSender.subscribe(async function (json) {
-    const obj = JSON.parse(json);
-    // download
-    download(obj.url);
+// download
+app.ports.downloadSender.subscribe(async function (userJson) {
+    // get provider & program
+    const pp = getPP(phantom);
+    // decode json
+    const user = JSON.parse(userJson);
+    // invoke decrypt
+    if (user.release === 1) {
+        await decrypt(pp.program, release01PubKey, userJson);
+    } else if (user.release === 2) {
+        await decrypt(pp.program, release02PubKey, userJson);
+    } else {
+        const msg = "could not invoke download of release: " + more.release.toString();
+        app.ports.genericErrorListener(msg);
+    }
 });

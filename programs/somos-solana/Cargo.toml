@@ -1,12 +1,12 @@
 [package]
-name = "somos-solana"
-version = "0.1.0"
+name = "somos-datum"
+version = "1.0.0"
 description = "Created with Anchor"
 edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "somos_solana"
+name = "somos_datum"
 
 [features]
 no-entrypoint = []
@@ -16,4 +16,5 @@ cpi = ["no-entrypoint"]
 default = []
 
 [dependencies]
-anchor-lang = "0.24.2"
+anchor-lang = { version = "0.24.2", features = ["init-if-needed"] }
+borsh = { version = "0.9.3", features = ["const-generics"] }
