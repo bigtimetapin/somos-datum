@@ -1,4 +1,4 @@
-module Model.Datum exposing (Datum, encode, parser)
+module Model.AlmostDatum exposing (AlmostDatum, encode, parser)
 
 import Json.Encode as Encode
 import Model.Mint exposing (Mint)
@@ -6,35 +6,29 @@ import Model.Wallet exposing (Wallet)
 import Url.Parser as UrlParser exposing ((</>))
 
 
-type alias Datum =
+type alias AlmostDatum =
     { mint : Mint
     , uploader : Wallet
-    , increment : Increment
     }
 
 
-type alias Increment =
-    Int
-
-
-encode : Datum -> String
+encode : AlmostDatum -> String
 encode datum =
     let
         encoder =
             Encode.object
                 [ ( "mint", Encode.string datum.mint )
                 , ( "uploader", Encode.string datum.uploader )
-                , ( "increment", Encode.int datum.increment )
                 ]
     in
     Encode.encode 0 encoder
 
 
-parser : UrlParser.Parser (Datum -> c) c
+parser : UrlParser.Parser (AlmostDatum -> c) c
 parser =
-    UrlParser.map Datum parser_
+    UrlParser.map AlmostDatum parser_
 
 
-parser_ : UrlParser.Parser (Mint -> Wallet -> Increment -> a) a
+parser_ : UrlParser.Parser (Mint -> Wallet -> a) a
 parser_ =
-    UrlParser.s "downloader" </> UrlParser.string </> UrlParser.string </> UrlParser.int
+    UrlParser.s "uploader" </> UrlParser.string </> UrlParser.string

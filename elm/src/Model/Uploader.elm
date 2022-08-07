@@ -1,9 +1,8 @@
 module Model.Uploader exposing (HasWalletUploader(..), Uploader(..), WaitingForWalletUploader(..))
 
-import Model.AlmostCatalog exposing (AlmostCatalog)
+import Model.AlmostDatum exposing (AlmostDatum)
 import Model.Catalog exposing (Catalog)
 import Model.Datum exposing (Datum)
-import Model.Mint exposing (Mint)
 import Model.Wallet exposing (Wallet)
 
 
@@ -19,14 +18,12 @@ type
     = LoggedIn Wallet
       -- uploading
     | TypingMint Wallet String
-    | HasMint Wallet Mint
-    | WaitingForUpload Wallet
-    | Uploaded Wallet Datum
-      -- viewing uploads
     | WaitingForCatalog Wallet
     | HasCatalog Catalog
+    | WaitingForUpload Wallet
+    | Uploaded Datum
 
 
 type WaitingForWalletUploader
-    = AlmostHasDatum Datum
-    | AlmostHasCatalog AlmostCatalog
+    = AlmostLoggedIn
+    | AlmostHasDatum AlmostDatum

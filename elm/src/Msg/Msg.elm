@@ -2,9 +2,9 @@ module Msg.Msg exposing (Msg(..), resetViewport)
 
 import Browser
 import Browser.Dom as Dom
-import Msg.Anchor exposing (FromAnchorMsg, ToAnchorMsg)
-import Msg.Generic exposing (FromJsMsg, ToJsMsg)
-import Msg.Phantom exposing (FromPhantomMsg, ToPhantomMsg)
+import Msg.Downloader as Downloader
+import Msg.Generic exposing (FromJsMsg)
+import Msg.Uploader as Uploader
 import Task
 import Url
 
@@ -15,14 +15,13 @@ type
     = NoOp
     | UrlChanged Url.Url
     | LinkClicked Browser.UrlRequest
-      -- phantom sub
-    | ToPhantom ToPhantomMsg
-    | FromPhantom FromPhantomMsg
-      -- anchor sub
-    | ToAnchor ToAnchorMsg
-    | FromAnchor FromAnchorMsg
+    -- uploader sub
+    | FromUploader Uploader.From
+    | ToUploader Uploader.To
+    -- downloader sub
+    | FromDownloader Downloader.From
+    | ToDownloader Downloader.To
       -- generic js sub
-    | ToJs ToJsMsg
     | FromJs FromJsMsg
 
 

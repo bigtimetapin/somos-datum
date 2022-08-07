@@ -1,36 +1,27 @@
-module Model.Catalog exposing (Catalog, decode, encode)
+module Model.Catalog exposing (Catalog, decode)
 
 import Json.Decode as Decode
-import Json.Encode as Encode
 import Model.Mint exposing (Mint)
 import Model.Wallet exposing (Wallet)
 
 
 type alias Catalog =
-    { uploader : Wallet
-    , uploads : List Mint
+    { mint: Mint
+    , uploader : Wallet
+    , increment : Int
     }
 
-
-encode : Mint -> Wallet -> Json
-encode mint uploader =
-    let
-        encoder =
-            Encode.object
-                [ ( "mint", Encode.string mint )
-                , ( "uploader", Encode.string uploader )
-                ]
-    in
-    Encode.encode 0 encoder
+type alias Increment = Int
 
 
 decode : Json -> Result String Catalog
 decode json =
     let
         decoder =
-            Decode.map2 Catalog
+            Decode.map3 Catalog
+                (Decode.field "mint" Decode.string)
                 (Decode.field "uploader" Decode.string)
-                (Decode.field "uploads" (Decode.list Decode.string))
+                (Decode.field "increment" Decode.int)
     in
     case Decode.decodeString decoder json of
         Ok catalog ->

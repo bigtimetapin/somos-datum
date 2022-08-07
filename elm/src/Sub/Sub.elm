@@ -1,49 +1,55 @@
 module Sub.Sub exposing (subs)
 
-import Msg.Anchor exposing (FromAnchorMsg(..))
 import Msg.Generic as GenericMsg
 import Msg.Msg exposing (Msg(..))
-import Msg.Phantom exposing (FromPhantomMsg(..))
-import Sub.Anchor exposing (..)
-import Sub.Generic exposing (..)
-import Sub.Phantom exposing (..)
-
+import Msg.Uploader as Uploader
+import Msg.Downloader as Downloader
+import Sub.Generic exposing (genericError)
+import Sub.Uploader as UploaderSub
+import Sub.Downloader as DownloaderSub
 
 subs : Sub Msg
 subs =
     Sub.batch
-        [ -- phantom connect
-          connectFailureListener
-            (\error ->
-                FromPhantom (ErrorOnConnection error)
+        [
+        -- uploader sub
+        UploaderSub.connectAsUploaderSuccess
+            (\json ->
+                (ToUploader <| Uploader.ConnectSuccess json)
             )
 
-        -- anchor get current state
-        , getCurrentStateListener
-            (\jsonString ->
-                FromAnchor (GetCurrentState jsonString)
+        , UploaderSub.connectAndGetDatumAsUploaderSuccess
+            (\json ->
+                (ToUploader <| Uploader.ConnectAndGetDatumSuccess json)
             )
 
-        -- anchor get current state attempt
-        , getCurrentStateSuccessListener
-            (\jsonString ->
-                FromAnchor (SuccessOnStateLookup jsonString)
+        , UploaderSub.uploadSuccess
+            (\json ->
+                (ToUploader <| Uploader.UploadSuccess json)
             )
-
-        -- generic download success
-        , downloadSuccessListener
-            (\jsonString ->
-                FromJs <| GenericMsg.DownloadSuccess jsonString
+        -- downloader sub
+        , DownloaderSub.connectAsDownloaderSuccess
+            (\json ->
+                (ToDownloader <| Downloader.ConnectSuccess json)
             )
-
-        -- generic get catalog success
-        , getCatalogSuccessListener
-            (\jsonString ->
-                FromJs <| GenericMsg.GetCatalogSuccess jsonString
+        , DownloaderSub.connectAndGetCatalogAsDownloaderSuccess
+            (\json ->
+                (ToDownloader <| Downloader.ConnectAndGetCatalogSuccess json)
             )
-
+        , DownloaderSub.connectAndGetDatumAsDownloaderSuccess
+            (\json ->
+                (ToDownloader <| Downloader.ConnectAndGetDatumSuccess json)
+            )
+        , DownloaderSub.getCatalogAsDownloaderSuccess
+            (\json ->
+                (ToDownloader <| Downloader.GetCatalogSuccess json)
+            )
+        , DownloaderSub.downloadSuccess
+            (\json ->
+                (ToDownloader <| Downloader.DownloadSuccess json)
+            )
         -- generic error
-        , genericErrorListener
+        , genericError
             (\error ->
                 FromJs <| GenericMsg.Error error
             )
