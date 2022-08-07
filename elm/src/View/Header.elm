@@ -3,14 +3,11 @@ module View.Header exposing (view)
 import Html exposing (Html)
 import Html.Attributes exposing (class, src, style, width)
 import Html.Events exposing (onClick)
-import Model.Admin as Admin
-import Model.Buyer as Buyer exposing (Buyer(..))
+import Model.Downloader as Downloader
 import Model.Model exposing (Model)
-import Model.Role as User
-import Model.Seller as Seller
 import Model.State as State exposing (State(..))
+import Model.Uploader as Uploader
 import Msg.Msg exposing (Msg(..))
-import Msg.Phantom exposing (ToPhantomMsg(..))
 
 
 view : Model -> Html Msg
@@ -19,82 +16,25 @@ view model =
         tab_ : Args -> Html Msg
         tab_ =
             tab model
-
-        maybePublicKey : Maybe String
-        maybePublicKey =
-            case model.state of
-                Buy buyer ->
-                    Buyer.getWallet buyer
-
-                Sell seller ->
-                    Seller.getWallet seller
-
-                About ->
-                    Nothing
-
-                Admin admin ->
-                    Admin.getWallet admin
-
-                Error _ ->
-                    Nothing
-
-        buy : Html Msg
-        buy =
-            let
-                title =
-                    "BUY"
-            in
-            case maybePublicKey of
-                Just publicKey ->
-                    tab_
-                        { state = Buy (Buyer.WaitingForStateLookup publicKey)
-                        , title = title
-                        , msg = ToPhantom (Connect User.Buyer)
-                        }
-
-                Nothing ->
-                    tab_
-                        { state = Buy Buyer.WaitingForWallet
-                        , title = title
-                        , msg = NoOp
-                        }
-
-        sell : Html Msg
-        sell =
-            let
-                title =
-                    "SELL"
-            in
-            case maybePublicKey of
-                Just publicKey ->
-                    tab_
-                        { state = Sell (Seller.WaitingForStateLookup publicKey)
-                        , title = title
-                        , msg = ToPhantom (Connect User.Seller)
-                        }
-
-                Nothing ->
-                    tab_
-                        { state = Sell Seller.WaitingForWallet
-                        , title = title
-                        , msg = NoOp
-                        }
     in
     Html.nav
         [ class "is-navbar"
         ]
         [ tab_
-            { state = About
-            , title = "ABOUT"
+            { state = Download Downloader.Top
+            , title = "Download"
             , msg = NoOp
             }
-        , buy
-        , sell
+        , tab_
+            { state = Upload Uploader.Top
+            , title = "Upload"
+            , msg = NoOp
+            }
         , Html.div
             [ style "float" "right"
             ]
             [ Html.a
-                [ State.href About
+                [ State.href <| Download Downloader.Top
                 ]
                 [ Html.img
                     [ src "images/logo/02_somos.png"
@@ -138,22 +78,6 @@ isActive model state =
             "is-active-header-tab"
     in
     case state of
-        Buy _ ->
-            case model.state of
-                Buy _ ->
-                    class_
-
-                _ ->
-                    ""
-
-        Sell _ ->
-            case model.state of
-                Sell _ ->
-                    class_
-
-                _ ->
-                    ""
-
         _ ->
             case model.state == state of
                 True ->

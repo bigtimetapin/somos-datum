@@ -1,0 +1,142 @@
+{
+  "version": "1.0.0",
+  "name": "somos_datum",
+  "instructions": [
+    {
+      "name": "publishAssets",
+      "accounts": [
+        {
+          "name": "datum",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "increment",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seed",
+          "type": "u8"
+        },
+        {
+          "name": "key",
+          "type": {
+            "array": [
+              "u8",
+              184
+            ]
+          }
+        },
+        {
+          "name": "url",
+          "type": {
+            "array": [
+              "u8",
+              78
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Datum",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "type": "publicKey"
+          },
+          {
+            "name": "assets",
+            "type": {
+              "defined": "EncryptedAssets"
+            }
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "seed",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Increment",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "increment",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "EncryptedAssets",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "key",
+            "type": {
+              "array": [
+                "u8",
+                184
+              ]
+            }
+          },
+          {
+            "name": "url",
+            "type": {
+              "array": [
+                "u8",
+                78
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "ImmutableAssets",
+      "msg": "decentralized assets should be immutable."
+    }
+  ],
+  "metadata": {
+    "address": "2tvgaNY3tuBP552wsLWUsYRVUjSNFPQac1FQPxfaDZgc"
+  }
+}

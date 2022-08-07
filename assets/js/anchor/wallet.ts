@@ -17,6 +17,10 @@ export class PhantomWallet implements Wallet {
         });
     }
 
+    async signMessage(message) {
+        return (await this.phantom.windowSolana.signMessage(message, "utf8")).signature;
+    }
+
     readonly payer: Keypair;
 
     get publicKey(): PublicKey {

@@ -2,29 +2,28 @@ module Model.State exposing (State(..), href, parse)
 
 import Html
 import Html.Attributes
-import Model.Admin as Admin exposing (Admin)
-import Model.Buyer as Buyer exposing (Buyer)
-import Model.Seller as Seller exposing (Seller)
+import Model.AlmostCatalog as AlmostCatalog
+import Model.Datum as Datum
+import Model.Downloader as Downloader exposing (Downloader)
+import Model.Uploader as Uploader exposing (Uploader)
 import Url
-import Url.Parser as UrlParser
+import Url.Parser as UrlParser exposing ((</>))
 
 
 type State
-    = Buy Buyer
-    | Sell Seller
-    | About
-    | Admin Admin
+    = Upload Uploader
+    | Download Downloader
     | Error String
 
 
 urlParser : UrlParser.Parser (State -> c) c
 urlParser =
     UrlParser.oneOf
-        [ UrlParser.map (Buy Buyer.WaitingForWallet) UrlParser.top
-        , UrlParser.map (Buy Buyer.WaitingForWallet) (UrlParser.s "buy")
-        , UrlParser.map (Sell Seller.WaitingForWallet) (UrlParser.s "sell")
-        , UrlParser.map (Admin Admin.WaitingForWallet) (UrlParser.s "admin")
-        , UrlParser.map About (UrlParser.s "about")
+        [ UrlParser.map (Download Downloader.Top) UrlParser.top
+        , UrlParser.map (Download Downloader.Top) (UrlParser.s "download")
+        , UrlParser.map (Upload Uploader.Top) (UrlParser.s "upload")
+        , UrlParser.map (\d -> Upload (Uploader.WaitingForWallet (Uploader.AlmostHasDatum d))) Datum.parser
+        , UrlParser.map (\c -> Upload (Uploader.WaitingForWallet (Uploader.AlmostHasCatalog c))) AlmostCatalog.parser
         ]
 
 
@@ -48,17 +47,24 @@ parse url =
 path : State -> String
 path state =
     case state of
-        Buy _ ->
-            "#/buy"
+        Upload uploader ->
+            case uploader of
+                Uploader.Top ->
+                    "#/upload"
 
-        Sell _ ->
-            "#/sell"
+                Uploader.HasWallet _ ->
+                    path (Upload Uploader.Top)
 
-        About ->
-            "#/about"
+                Uploader.WaitingForWallet waitingForWalletUploader ->
+                    case waitingForWalletUploader of
+                        Uploader.AlmostHasDatum datum ->
+                            String.concat [ "#/", datum.mint, datum.uploader, String.fromInt datum.increment ]
 
-        Admin _ ->
-            "#/admin"
+                        Uploader.AlmostHasCatalog almostCatalog ->
+                            String.concat [ "#/", almostCatalog.mint, almostCatalog.uploader ]
+
+        Download _ ->
+            "#/download"
 
         Error _ ->
             "#/invalid"

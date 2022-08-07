@@ -8,7 +8,7 @@ type alias Wallet =
     String
 
 
-slice : Wallet -> Wallet
+slice : Wallet -> String
 slice publicKey =
     String.join
         "..."

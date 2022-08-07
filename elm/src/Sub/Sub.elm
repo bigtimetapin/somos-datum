@@ -1,9 +1,11 @@
 module Sub.Sub exposing (subs)
 
 import Msg.Anchor exposing (FromAnchorMsg(..))
+import Msg.Generic as GenericMsg
 import Msg.Msg exposing (Msg(..))
 import Msg.Phantom exposing (FromPhantomMsg(..))
 import Sub.Anchor exposing (..)
+import Sub.Generic exposing (..)
 import Sub.Phantom exposing (..)
 
 
@@ -15,58 +17,34 @@ subs =
             (\error ->
                 FromPhantom (ErrorOnConnection error)
             )
-        , getCurrentStateListener
-            (\pubKey ->
-                FromPhantom (GetCurrentState pubKey)
-            )
-
-        -- phantom sign message
-        , signMessageSuccessListener
-            (\jsonString ->
-                FromPhantom (SuccessOnSignMessage jsonString)
-            )
-        , signMessageFailureListener
-            (\error ->
-                FromPhantom (FailureOnSignMessage error)
-            )
 
         -- anchor get current state
+        , getCurrentStateListener
+            (\jsonString ->
+                FromAnchor (GetCurrentState jsonString)
+            )
+
+        -- anchor get current state attempt
         , getCurrentStateSuccessListener
             (\jsonString ->
                 FromAnchor (SuccessOnStateLookup jsonString)
             )
-        , getCurrentStateFailureListener
-            (\error ->
-                FromAnchor (FailureOnStateLookup error)
+
+        -- generic download success
+        , downloadSuccessListener
+            (\jsonString ->
+                FromJs <| GenericMsg.DownloadSuccess jsonString
             )
 
-        -- anchor init program
-        , initProgramFailureListener
-            (\error ->
-                FromAnchor (FailureOnInitProgram error)
-            )
-
-        -- anchor purchase primary
-        , purchasePrimaryFailureListener
-            (\error ->
-                FromAnchor (FailureOnPurchasePrimary error)
-            )
-
-        -- anchor submit to escrow
-        , submitToEscrowFailureListener
-            (\error ->
-                FromAnchor (FailureOnSubmitToEscrow error)
-            )
-
-        -- anchor purchase secondary
-        , purchaseSecondaryFailureListener
-            (\error ->
-                FromAnchor (FailureOnPurchaseSecondary error)
+        -- generic get catalog success
+        , getCatalogSuccessListener
+            (\jsonString ->
+                FromJs <| GenericMsg.GetCatalogSuccess jsonString
             )
 
         -- generic error
         , genericErrorListener
             (\error ->
-                FromJsError error
+                FromJs <| GenericMsg.Error error
             )
         ]

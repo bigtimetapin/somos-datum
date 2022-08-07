@@ -18,7 +18,8 @@ export default {
             }
         ),
         resolve({
-            browser: true
+            browser: true,
+            preferBuiltins: false
         }),
         typescript(
             {target: "es2019"}
