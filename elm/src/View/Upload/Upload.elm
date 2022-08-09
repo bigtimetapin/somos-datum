@@ -94,10 +94,13 @@ body uploader =
                                         [ Html.button
                                             [ class "is-button-1"
                                             , style "width" "100%"
-                                            , onClick <| FromUploader
-                                                <| UploaderMsg.SelectMint { mint = string, uploader = wallet }
-                                            , State.href <| Upload <| Uploader.WaitingForWallet
-                                                <| Uploader.AlmostHasCatalog { mint = string, uploader = wallet }
+                                            , onClick <|
+                                                FromUploader <|
+                                                    UploaderMsg.SelectMint { mint = string, uploader = wallet }
+                                            , State.href <|
+                                                Upload <|
+                                                    Uploader.WaitingForWallet <|
+                                                        Uploader.AlmostHasCatalog { mint = string, uploader = wallet }
                                             ]
                                             [ Html.text <|
                                                 String.join " " <|
@@ -154,6 +157,7 @@ body uploader =
                                     [ Html.text "Successful Upload"
                                     ]
                                 , View.Generic.Datum.view datum
+
                                 -- TODO; href to download
                                 ]
 
@@ -164,7 +168,6 @@ body uploader =
                                 [ class "is-loading"
                                 ]
                                 []
-
 
                         Uploader.AlmostHasCatalog almostCatalog ->
                             Html.div
@@ -177,16 +180,16 @@ body uploader =
                                     ]
                                 , Html.div
                                     []
-                                    [ Html.text <| String.join " " <|
-                                        [ "& then proceed to uploading to"
-                                        , "mint:"
-                                        , almostCatalog.mint
-                                        , "as uploader:"
-                                        , almostCatalog.uploader
-                                        ]
+                                    [ Html.text <|
+                                        String.join " " <|
+                                            [ "& then proceed to uploading to"
+                                            , "mint:"
+                                            , almostCatalog.mint
+                                            , "as uploader:"
+                                            , almostCatalog.uploader
+                                            ]
                                     ]
                                 ]
-
     in
     Html.div
         [ class "container"

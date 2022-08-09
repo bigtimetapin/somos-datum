@@ -1,7 +1,7 @@
-module Model.Datum exposing (Datum, WithWallet, encode, parser, decode, decodeWithWallet, fromCatalog)
+module Model.Datum exposing (Datum, WithWallet, decode, decodeWithWallet, encode, fromCatalog, parser)
 
-import Json.Encode as Encode
 import Json.Decode as Decode
+import Json.Encode as Encode
 import Model.Catalog exposing (Catalog)
 import Model.Mint exposing (Mint)
 import Model.Wallet exposing (Wallet)
@@ -55,6 +55,7 @@ decode json =
         Err error ->
             Err (Decode.errorToString error)
 
+
 decodeWithWallet : Json -> Result String WithWallet
 decodeWithWallet json =
     let
@@ -67,7 +68,6 @@ decodeWithWallet json =
         Ok withWallet ->
             Ok withWallet
 
-
         Err error ->
             Err (Decode.errorToString error)
 
@@ -79,6 +79,7 @@ decoder_ =
         (Decode.field "uploader" Decode.string)
         (Decode.field "increment" Decode.int)
 
+
 parser : UrlParser.Parser (Datum -> c) c
 parser =
     UrlParser.map Datum parser_
@@ -88,4 +89,6 @@ parser_ : UrlParser.Parser (Mint -> Wallet -> Increment -> a) a
 parser_ =
     UrlParser.s "download" </> UrlParser.string </> UrlParser.string </> UrlParser.int
 
-type alias Json = String
+
+type alias Json =
+    String

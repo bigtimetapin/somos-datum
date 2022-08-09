@@ -6,17 +6,20 @@ import Model.Wallet exposing (Wallet)
 
 
 type alias Catalog =
-    { mint: Mint
+    { mint : Mint
     , uploader : Wallet
     , increment : Int
     }
+
 
 type alias WithWallet =
     { wallet : Wallet
     , catalog : Catalog
     }
 
-type alias Increment = Int
+
+type alias Increment =
+    Int
 
 
 decode : Json -> Result String Catalog
@@ -27,6 +30,7 @@ decode json =
 
         Err error ->
             Err (Decode.errorToString error)
+
 
 decodeWithWallet : Json -> Result String WithWallet
 decodeWithWallet json =

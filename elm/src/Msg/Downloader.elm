@@ -5,30 +5,40 @@ import Model.Datum exposing (Datum)
 import Model.Mint exposing (Mint)
 import Model.Wallet exposing (Wallet)
 
-type From
+
+type
+    From
     -- connect
     = Connect
     | ConnectAndGetCatalog AlmostCatalog
     | ConnectAndGetDatum Datum
-    -- select
+      -- select
     | TypingMint Wallet String
     | SelectMint Wallet Mint
     | TypingUploaderAddress Wallet Mint String
     | SelectUploaderAddress Wallet Mint UploaderAddress -- href
     | SelectIncrement Wallet Datum -- href
-    -- download
+      -- download
     | Download Wallet Datum
 
-type To
+
+type
+    To
     -- connect
     = ConnectSuccess Wallet
     | ConnectAndGetCatalogSuccess Json
     | ConnectAndGetDatumSuccess Json
-    -- download
+      -- download
     | DownloadSuccess Json
 
-type alias UploaderAddress = String
 
-type alias Increment = Int
+type alias UploaderAddress =
+    String
 
-type alias Json = String
+
+type alias Increment =
+    Int
+
+
+type alias Json =
+    String

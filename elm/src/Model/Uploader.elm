@@ -19,7 +19,7 @@ type
       -- selecting upload
     | TypingMint Wallet String
     | WaitingForCatalog Wallet
-    -- uploading
+      -- uploading
     | HasCatalog Catalog
     | WaitingForUpload Wallet
     | Uploaded Datum

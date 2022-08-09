@@ -11,6 +11,7 @@ type alias AlmostCatalog =
     , uploader : Wallet
     }
 
+
 encode : AlmostCatalog -> String
 encode almostCatalog =
     Encode.encode 0 <| encoder_ almostCatalog

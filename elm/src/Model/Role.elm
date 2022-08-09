@@ -3,7 +3,11 @@ module Model.Role exposing (Role(..), decode, encode, encode0)
 import Json.Decode as Decode
 import Json.Encode as Encode
 
+
+
 -- TODO; delete?
+
+
 type Role
     = Uploader
     | Downloader

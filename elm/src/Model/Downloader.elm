@@ -12,24 +12,29 @@ type Downloader
     | HasWallet HasWalletDownloader
     | WaitingForWallet WaitingForWalletDownloader
 
-type HasWalletDownloader
+
+type
+    HasWalletDownloader
     -- logged in
     = LoggedIn Wallet
-    -- selecting download
+      -- selecting download
     | TypingMint Wallet String
     | HasMint Wallet Mint
     | TypingUploaderAddress Wallet Mint String
     | WaitingForCatalog Wallet
     | HasCatalog Wallet Catalog
     | WaitingForDatum Wallet
-    -- downloading
+      -- downloading
     | HasDatum Wallet Datum
     | WaitingForDownload Wallet
     | Downloaded Wallet Datum
+
 
 type WaitingForWalletDownloader
     = AlmostLoggedIn
     | AlmostHasCatalog AlmostCatalog
     | AlmostHasDatum Datum
 
-type alias UploaderAddress = String
+
+type alias UploaderAddress =
+    String

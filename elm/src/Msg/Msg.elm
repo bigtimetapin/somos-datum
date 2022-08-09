@@ -15,10 +15,10 @@ type
     = NoOp
     | UrlChanged Url.Url
     | LinkClicked Browser.UrlRequest
-    -- uploader sub
+      -- uploader sub
     | FromUploader Uploader.From
     | ToUploader Uploader.To
-    -- downloader sub
+      -- downloader sub
     | FromDownloader Downloader.From
     | ToDownloader Downloader.To
       -- generic js sub

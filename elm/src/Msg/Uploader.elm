@@ -4,21 +4,27 @@ import Model.AlmostCatalog exposing (AlmostCatalog)
 import Model.Datum exposing (Datum)
 import Model.Wallet exposing (Wallet)
 
-type From
+
+type
+    From
     -- connect
     = Connect
     | ConnectAndGetCatalog AlmostCatalog
-    -- select
+      -- select
     | TypingMint Wallet String
     | SelectMint AlmostCatalog -- href
-    -- upload
+      -- upload
     | Upload Datum
 
-type To
+
+type
+    To
     -- connect
     = ConnectSuccess Wallet
     | ConnectAndGetCatalogSuccess Json
-    -- Upload
+      -- Upload
     | UploadSuccess Json
 
-type alias Json = String
+
+type alias Json =
+    String

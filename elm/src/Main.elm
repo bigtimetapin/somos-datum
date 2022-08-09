@@ -9,10 +9,10 @@ import Model.AlmostCatalog as AlmostCatalog
 import Model.AlmostDatum as AlmostDatum
 import Model.Catalog as Catalog
 import Model.Datum as Datum
+import Model.Downloader as Downloader
 import Model.Model as Model exposing (Model)
 import Model.State as State exposing (State(..))
 import Model.Uploader as Uploader
-import Model.Downloader as Downloader
 import Msg.Downloader as DownloaderMsg
 import Msg.Generic as GenericMsg
 import Msg.Msg exposing (Msg(..), resetViewport)
@@ -73,7 +73,6 @@ update msg model =
                     , UploaderCmd.connectAsUploader ()
                     )
 
-
                 UploaderMsg.ConnectAndGetCatalog almostCatalog ->
                     ( { model | state = Upload <| Uploader.WaitingForWallet Uploader.AlmostLoggedIn }
                     , UploaderCmd.connectAndGetCatalogAsUploader <| AlmostCatalog.encode almostCatalog
@@ -85,21 +84,20 @@ update msg model =
                     , Cmd.none
                     )
 
-
                 UploaderMsg.SelectMint almostCatalog ->
-                    ( { model | state = Upload <| Uploader.HasWallet
-                        <| Uploader.WaitingForCatalog almostCatalog.uploader
-                        }
+                    ( { model
+                        | state =
+                            Upload <|
+                                Uploader.HasWallet <|
+                                    Uploader.WaitingForCatalog almostCatalog.uploader
+                      }
                     , UploaderCmd.getCatalogAsUploader <| AlmostCatalog.encode almostCatalog
                     )
-
 
                 UploaderMsg.Upload datum ->
                     ( { model | state = Upload <| Uploader.HasWallet <| Uploader.WaitingForUpload datum.uploader }
                     , UploaderCmd.upload <| Datum.encode datum
                     )
-
-
 
         ToUploader to ->
             case to of
@@ -112,7 +110,7 @@ update msg model =
                     case Catalog.decode json of
                         Ok catalog ->
                             -- TODO; js throw exception when uploader wallet != parsed wallet
-                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog}
+                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog }
                             , Cmd.none
                             )
 
@@ -120,7 +118,6 @@ update msg model =
                             ( { model | state = Error error }
                             , Cmd.none
                             )
-
 
                 UploaderMsg.UploadSuccess json ->
                     case Datum.decode json of
@@ -134,7 +131,6 @@ update msg model =
                             , Cmd.none
                             )
 
-
         FromDownloader from ->
             case from of
                 -- Waiting for wallet
@@ -142,7 +138,6 @@ update msg model =
                     ( { model | state = Download <| Downloader.WaitingForWallet <| Downloader.AlmostLoggedIn }
                     , DownloaderCmd.connectAsDownloader ()
                     )
-
 
                 DownloaderMsg.ConnectAndGetCatalog almostCatalog ->
                     ( { model | state = Download <| Downloader.WaitingForWallet <| Downloader.AlmostLoggedIn }
@@ -165,14 +160,13 @@ update msg model =
                     , Cmd.none
                     )
 
-
                 DownloaderMsg.TypingUploaderAddress wallet mint string ->
-                    ( { model | state =
-                        Download <| Downloader.HasWallet <| Downloader.TypingUploaderAddress wallet mint string
-                        }
+                    ( { model
+                        | state =
+                            Download <| Downloader.HasWallet <| Downloader.TypingUploaderAddress wallet mint string
+                      }
                     , Cmd.none
                     )
-
 
                 DownloaderMsg.SelectUploaderAddress wallet mint uploaderAddress ->
                     ( { model | state = Download <| Downloader.HasWallet <| Downloader.WaitingForCatalog wallet }
@@ -185,15 +179,10 @@ update msg model =
                     , DownloaderCmd.getDatumAsDownloader <| Datum.encode datum
                     )
 
-
                 DownloaderMsg.Download wallet datum ->
                     ( { model | state = Download <| Downloader.HasWallet <| Downloader.WaitingForDownload wallet }
                     , DownloaderCmd.download <| Datum.encode datum
                     )
-
-
-
-
 
         ToDownloader to ->
             case to of
@@ -202,13 +191,15 @@ update msg model =
                     , Cmd.none
                     )
 
-
                 DownloaderMsg.ConnectAndGetCatalogSuccess json ->
                     case Catalog.decodeWithWallet json of
                         Ok withWallet ->
-                            ( { model | state = Download <| Downloader.HasWallet
-                                <| Downloader.HasCatalog withWallet.wallet withWallet.catalog
-                                }
+                            ( { model
+                                | state =
+                                    Download <|
+                                        Downloader.HasWallet <|
+                                            Downloader.HasCatalog withWallet.wallet withWallet.catalog
+                              }
                             , Cmd.none
                             )
 
@@ -216,15 +207,16 @@ update msg model =
                             ( { model | state = Error error }
                             , Cmd.none
                             )
-
-
 
                 DownloaderMsg.ConnectAndGetDatumSuccess json ->
                     case Datum.decodeWithWallet json of
                         Ok withWallet ->
-                            ( { model | state = Download <| Downloader.HasWallet
-                                <| Downloader.HasDatum withWallet.wallet withWallet.datum
-                                }
+                            ( { model
+                                | state =
+                                    Download <|
+                                        Downloader.HasWallet <|
+                                            Downloader.HasDatum withWallet.wallet withWallet.datum
+                              }
                             , Cmd.none
                             )
 
@@ -232,14 +224,16 @@ update msg model =
                             ( { model | state = Error error }
                             , Cmd.none
                             )
-
 
                 DownloaderMsg.DownloadSuccess json ->
                     case Datum.decodeWithWallet json of
                         Ok withWallet ->
-                            ( { model | state = Download <| Downloader.HasWallet
-                                <| Downloader.Downloaded withWallet.wallet withWallet.datum
-                                }
+                            ( { model
+                                | state =
+                                    Download <|
+                                        Downloader.HasWallet <|
+                                            Downloader.Downloaded withWallet.wallet withWallet.datum
+                              }
                             , Cmd.none
                             )
 
@@ -247,8 +241,6 @@ update msg model =
                             ( { model | state = Error error }
                             , Cmd.none
                             )
-
-
 
         FromJs fromJsMsg ->
             case fromJsMsg of
@@ -256,7 +248,6 @@ update msg model =
                     ( { model | state = Error string }
                     , Cmd.none
                     )
-
 
 
 
