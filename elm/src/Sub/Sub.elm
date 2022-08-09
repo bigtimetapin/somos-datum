@@ -18,9 +18,9 @@ subs =
                 (ToUploader <| Uploader.ConnectSuccess json)
             )
 
-        , UploaderSub.connectAndGetDatumAsUploaderSuccess
+        , UploaderSub.connectAndGetCatalogAsUploaderSuccess
             (\json ->
-                (ToUploader <| Uploader.ConnectAndGetDatumSuccess json)
+                (ToUploader <| Uploader.ConnectAndGetCatalogSuccess json)
             )
 
         , UploaderSub.uploadSuccess
@@ -39,10 +39,6 @@ subs =
         , DownloaderSub.connectAndGetDatumAsDownloaderSuccess
             (\json ->
                 (ToDownloader <| Downloader.ConnectAndGetDatumSuccess json)
-            )
-        , DownloaderSub.getCatalogAsDownloaderSuccess
-            (\json ->
-                (ToDownloader <| Downloader.GetCatalogSuccess json)
             )
         , DownloaderSub.downloadSuccess
             (\json ->

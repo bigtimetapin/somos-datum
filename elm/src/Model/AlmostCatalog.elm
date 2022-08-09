@@ -11,24 +11,24 @@ type alias AlmostCatalog =
     , uploader : Wallet
     }
 
-
 encode : AlmostCatalog -> String
 encode almostCatalog =
-    let
-        encoder =
-            Encode.object
-                [ ( "mint", Encode.string almostCatalog.mint )
-                , ( "uploader", Encode.string almostCatalog.uploader )
-                ]
-    in
-    Encode.encode 0 encoder
+    Encode.encode 0 <| encoder_ almostCatalog
 
 
-parser : UrlParser.Parser (AlmostCatalog -> c) c
-parser =
-    UrlParser.map AlmostCatalog parser_
+encoder_ : AlmostCatalog -> Encode.Value
+encoder_ almostCatalog =
+    Encode.object
+        [ ( "mint", Encode.string almostCatalog.mint )
+        , ( "uploader", Encode.string almostCatalog.uploader )
+        ]
 
 
-parser_ : UrlParser.Parser (Mint -> Wallet -> a) a
-parser_ =
-    UrlParser.s "downloader" </> UrlParser.string </> UrlParser.string
+parser : String -> UrlParser.Parser (AlmostCatalog -> c) c
+parser sub =
+    UrlParser.map AlmostCatalog <| parser_ sub
+
+
+parser_ : String -> UrlParser.Parser (Mint -> Wallet -> a) a
+parser_ sub =
+    UrlParser.s sub </> UrlParser.string </> UrlParser.string

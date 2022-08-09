@@ -31,4 +31,4 @@ parser =
 
 parser_ : UrlParser.Parser (Mint -> Wallet -> a) a
 parser_ =
-    UrlParser.s "uploader" </> UrlParser.string </> UrlParser.string
+    UrlParser.s "downloader" </> UrlParser.string </> UrlParser.string

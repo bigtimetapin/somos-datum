@@ -14,21 +14,16 @@ type From
     | TypingMint Wallet String
     | SelectMint Wallet Mint
     | TypingUploaderAddress Wallet Mint String
-    | SelectUploaderAddress Wallet Mint UploaderAddress
-    | TypingIncrement Wallet Mint UploaderAddress String
-    | SelectIncrement Wallet Mint UploaderAddress Increment
-    -- get
-    | GetCatalog AlmostCatalog
+    | SelectUploaderAddress Wallet Mint UploaderAddress -- href
+    | SelectIncrement Wallet Datum -- href
     -- download
     | Download Wallet Datum
 
 type To
     -- connect
-    = ConnectSuccess Json
+    = ConnectSuccess Wallet
     | ConnectAndGetCatalogSuccess Json
     | ConnectAndGetDatumSuccess Json
-    -- get
-    | GetCatalogSuccess Json
     -- download
     | DownloadSuccess Json
 

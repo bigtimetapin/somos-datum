@@ -22,8 +22,15 @@ urlParser =
         [ UrlParser.map (Download Downloader.Top) UrlParser.top
         , UrlParser.map (Download Downloader.Top) (UrlParser.s "download")
         , UrlParser.map (Upload Uploader.Top) (UrlParser.s "upload")
-        , UrlParser.map (\d -> Upload (Uploader.WaitingForWallet (Uploader.AlmostHasDatum d))) Datum.parser
-        , UrlParser.map (\c -> Upload (Uploader.WaitingForWallet (Uploader.AlmostHasCatalog c))) AlmostCatalog.parser
+        , UrlParser.map
+            (\c -> Upload (Uploader.WaitingForWallet (Uploader.AlmostHasCatalog c)))
+            (AlmostCatalog.parser "download")
+        , UrlParser.map
+            (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalog c)))
+            (AlmostCatalog.parser "upload")
+        , UrlParser.map
+            (\d -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasDatum d)))
+            Datum.parser
         ]
 
 
@@ -52,22 +59,53 @@ path state =
                 Uploader.Top ->
                     "#/upload"
 
+                Uploader.WaitingForWallet waitingForWalletUploader ->
+                    case waitingForWalletUploader of
+                        Uploader.AlmostLoggedIn ->
+                            path (Upload Uploader.Top)
+
+                        Uploader.AlmostHasCatalog almostCatalog ->
+                            String.concat
+                                [ path (Upload Uploader.Top), "/", almostCatalog.mint, almostCatalog.uploader ]
+
                 Uploader.HasWallet _ ->
                     path (Upload Uploader.Top)
 
-                Uploader.WaitingForWallet waitingForWalletUploader ->
-                    case waitingForWalletUploader of
-                        Uploader.AlmostHasDatum datum ->
-                            String.concat [ "#/", datum.mint, datum.uploader, String.fromInt datum.increment ]
 
-                        Uploader.AlmostHasCatalog almostCatalog ->
-                            String.concat [ "#/", almostCatalog.mint, almostCatalog.uploader ]
+        Download downloader ->
+            case downloader of
+                Downloader.Top ->
+                    "#/download"
 
-        Download _ ->
-            "#/download"
+
+                Downloader.WaitingForWallet waitingForWalletDownloader ->
+                    case waitingForWalletDownloader of
+                        Downloader.AlmostLoggedIn ->
+                            path (Download Downloader.Top)
+
+
+                        Downloader.AlmostHasCatalog almostCatalog ->
+                            String.concat
+                                [ path (Download Downloader.Top), "#/", almostCatalog.mint, almostCatalog.uploader ]
+
+
+                        Downloader.AlmostHasDatum datum ->
+                            String.concat
+                                [ path (Download Downloader.Top), "#/"
+                                , datum.mint, datum.uploader, String.fromInt datum.increment
+                                ]
+
+
+                Downloader.HasWallet _ ->
+                    path (Upload Uploader.Top)
+
+
+
 
         Error _ ->
             "#/invalid"
+
+
 
 
 href : State -> Html.Attribute msg

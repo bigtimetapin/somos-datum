@@ -5,7 +5,7 @@ port module Sub.Uploader exposing (..)
 
 port connectAsUploader : () -> Cmd msg
 
-port connectAndGetDatumAsUploader : Json -> Cmd msg
+port connectAndGetCatalogAsUploader : Json -> Cmd msg
 
 port getCatalogAsUploader : Json -> Cmd msg
 
@@ -17,7 +17,9 @@ port upload : Json -> Cmd msg
 
 port connectAsUploaderSuccess : (Json -> msg) -> Sub msg
 
-port connectAndGetDatumAsUploaderSuccess : (Json -> msg) -> Sub msg
+port connectAndGetCatalogAsUploaderSuccess : (Json -> msg) -> Sub msg
+
+port getCatalogAsUploaderSuccess : (Json -> msg) -> Sub msg
 
 port uploadSuccess : (Json -> msg) -> Sub msg
 

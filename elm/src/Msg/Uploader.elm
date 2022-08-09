@@ -7,17 +7,17 @@ import Model.Wallet exposing (Wallet)
 type From
     -- connect
     = Connect
-    | ConnectAndGetDatum AlmostDatum
+    | ConnectAndGetCatalog AlmostCatalog
     -- select
     | TypingMint Wallet String
-    | SelectMint AlmostCatalog
+    | SelectMint AlmostCatalog -- href
     -- upload
     | Upload AlmostDatum
 
 type To
     -- connect
     = ConnectSuccess Wallet
-    | ConnectAndGetDatumSuccess Json
+    | ConnectAndGetCatalogSuccess Json
     -- Upload
     | UploadSuccess Json
 
