@@ -94,9 +94,9 @@ update msg model =
                     )
 
 
-                UploaderMsg.Upload almostDatum ->
-                    ( { model | state = Upload <| Uploader.HasWallet <| Uploader.WaitingForUpload almostDatum.uploader }
-                    , UploaderCmd.upload <| AlmostDatum.encode almostDatum
+                UploaderMsg.Upload datum ->
+                    ( { model | state = Upload <| Uploader.HasWallet <| Uploader.WaitingForUpload datum.uploader }
+                    , UploaderCmd.upload <| Datum.encode datum
                     )
 
 

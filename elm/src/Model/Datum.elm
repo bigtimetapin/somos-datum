@@ -1,7 +1,8 @@
-module Model.Datum exposing (Datum, WithWallet, encode, parser, decode, decodeWithWallet)
+module Model.Datum exposing (Datum, WithWallet, encode, parser, decode, decodeWithWallet, fromCatalog)
 
 import Json.Encode as Encode
 import Json.Decode as Decode
+import Model.Catalog exposing (Catalog)
 import Model.Mint exposing (Mint)
 import Model.Wallet exposing (Wallet)
 import Url.Parser as UrlParser exposing ((</>))
@@ -22,6 +23,14 @@ type alias WithWallet =
 
 type alias Increment =
     Int
+
+
+fromCatalog : Catalog -> Datum
+fromCatalog catalog =
+    { mint = catalog.mint
+    , uploader = catalog.uploader
+    , increment = catalog.increment + 1
+    }
 
 
 encode : Datum -> String

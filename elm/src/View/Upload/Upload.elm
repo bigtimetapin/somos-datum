@@ -1,14 +1,13 @@
 module View.Upload.Upload exposing (body)
 
 import Html exposing (Html)
-import Html.Attributes exposing (accept, class, id, multiple, placeholder, style, type_)
+import Html.Attributes exposing (class, id, multiple, placeholder, style, type_)
 import Html.Events exposing (onClick, onInput)
-import Model.Role as Role
-import Model.Uploader exposing (Uploader(..))
-import Msg.Anchor as ToAnchorMsg
-import Msg.Generic as Generic
+import Model.Datum as Datum
+import Model.State as State exposing (State(..))
+import Model.Uploader as Uploader exposing (Uploader(..))
 import Msg.Msg exposing (Msg(..))
-import Msg.Phantom as ToPhantomMsg
+import Msg.Uploader as UploaderMsg
 import View.Generic.Catalog
 import View.Generic.Datum
 import View.Generic.Wallet
@@ -25,7 +24,7 @@ body uploader =
                         ]
                         [ Html.button
                             [ class "is-button-1"
-                            , onClick <| ToPhantom <| ToPhantomMsg.Connect <| Role.encode0 Role.Uploader
+                            , onClick <| FromUploader UploaderMsg.Connect
                             ]
                             [ Html.text "Connect"
                             ]
@@ -33,7 +32,7 @@ body uploader =
 
                 HasWallet hasWalletUploader ->
                     case hasWalletUploader of
-                        Model.Uploader.LoggedIn wallet ->
+                        Uploader.LoggedIn wallet ->
                             Html.div
                                 [ class "has-border-2"
                                 ]
@@ -48,7 +47,7 @@ body uploader =
                                             [ class "input"
                                             , type_ "text"
                                             , placeholder "Mint Address"
-                                            , onInput <| \s -> ToJs <| Generic.TypingMint wallet s
+                                            , onInput <| \s -> FromUploader <| UploaderMsg.TypingMint wallet s
                                             ]
                                             []
                                         , Html.span
@@ -63,7 +62,7 @@ body uploader =
                                     ]
                                 ]
 
-                        Model.Uploader.TypingMint wallet string ->
+                        Uploader.TypingMint wallet string ->
                             Html.div
                                 [ class "has-border-2"
                                 ]
@@ -78,7 +77,7 @@ body uploader =
                                             [ class "input"
                                             , type_ "text"
                                             , placeholder "Mint Address"
-                                            , onInput <| \s -> ToJs <| Generic.TypingMint wallet s
+                                            , onInput <| \s -> FromUploader <| UploaderMsg.TypingMint wallet s
                                             ]
                                             []
                                         , Html.span
@@ -95,7 +94,10 @@ body uploader =
                                         [ Html.button
                                             [ class "is-button-1"
                                             , style "width" "100%"
-                                            , onClick <| ToJs <| Generic.SelectMint wallet string
+                                            , onClick <| FromUploader
+                                                <| UploaderMsg.SelectMint { mint = string, uploader = wallet }
+                                            , State.href <| Upload <| Uploader.WaitingForWallet
+                                                <| Uploader.AlmostHasCatalog { mint = string, uploader = wallet }
                                             ]
                                             [ Html.text <|
                                                 String.join " " <|
@@ -105,78 +107,86 @@ body uploader =
                                     ]
                                 ]
 
-                        Model.Uploader.HasMint wallet mint ->
+                        Uploader.WaitingForCatalog wallet ->
+                            Html.div
+                                [ class "is-loading"
+                                ]
+                                [ View.Generic.Wallet.view wallet
+                                ]
+
+                        Uploader.HasCatalog catalog ->
                             Html.div
                                 [ class "has-border-2"
                                 ]
-                                [ View.Generic.Wallet.view wallet
+                                [ View.Generic.Wallet.view catalog.uploader
                                 , Html.form
                                     []
                                     [ Html.input
                                         [ id "gg-sd-zip"
                                         , type_ "file"
                                         , multiple True
-                                        , accept <|
-                                            String.join
-                                                ", "
-                                                [ ".mp3", ".wav", ".png", ".jpeg", "jpg" ]
                                         ]
                                         []
                                     ]
                                 , Html.button
                                     [ class "is-button-1"
-                                    , onClick (ToAnchor <| ToAnchorMsg.UploadAssets wallet mint)
+                                    , onClick <| FromUploader <| UploaderMsg.Upload <| Datum.fromCatalog catalog
                                     ]
                                     [ Html.text "Upload"
                                     ]
+                                , View.Generic.Catalog.view catalog
                                 ]
 
-                        Model.Uploader.WaitingForUpload wallet ->
+                        Uploader.WaitingForUpload wallet ->
                             Html.div
                                 [ class "is-loading"
                                 ]
                                 [ View.Generic.Wallet.view wallet
                                 ]
 
-                        Model.Uploader.Uploaded wallet datum ->
+                        Uploader.Uploaded datum ->
                             Html.div
                                 [ class "has-border-2"
                                 ]
-                                [ View.Generic.Wallet.view wallet
+                                [ View.Generic.Wallet.view datum.uploader
                                 , Html.h2
                                     []
                                     [ Html.text "Successful Upload"
                                     ]
                                 , View.Generic.Datum.view datum
-                                , Html.div
-                                    [ class "is-button-1"
-                                    ]
-                                    [ Html.a
-                                        []
-                                        []
-                                    ]
-                                ]
-
-                        Model.Uploader.WaitingForCatalog wallet ->
-                            Html.div
-                                [ class "is-loading"
-                                ]
-                                [ View.Generic.Wallet.view wallet
-                                ]
-
-                        Model.Uploader.HasCatalog catalog ->
-                            Html.div
-                                [ class "has-border-2"
-                                ]
-                                [ View.Generic.Wallet.view catalog.uploader
-                                , View.Generic.Catalog.view catalog
+                                -- TODO; href to download
                                 ]
 
                 WaitingForWallet waitingForWalletUploader ->
-                    Html.div
-                        []
-                        [ Html.text "todo;"
-                        ]
+                    case waitingForWalletUploader of
+                        Uploader.AlmostLoggedIn ->
+                            Html.div
+                                [ class "is-loading"
+                                ]
+                                []
+
+
+                        Uploader.AlmostHasCatalog almostCatalog ->
+                            Html.div
+                                []
+                                [ Html.button
+                                    [ class "is-button-1"
+                                    , onClick <| FromUploader <| UploaderMsg.ConnectAndGetCatalog almostCatalog
+                                    ]
+                                    [ Html.text "Connect"
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.text <| String.join " " <|
+                                        [ "& then proceed to uploading to"
+                                        , "mint:"
+                                        , almostCatalog.mint
+                                        , "as uploader:"
+                                        , almostCatalog.uploader
+                                        ]
+                                    ]
+                                ]
+
     in
     Html.div
         [ class "container"

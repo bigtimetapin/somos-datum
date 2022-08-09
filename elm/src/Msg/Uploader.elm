@@ -1,7 +1,7 @@
 module Msg.Uploader exposing (From(..), To(..))
 
 import Model.AlmostCatalog exposing (AlmostCatalog)
-import Model.AlmostDatum exposing (AlmostDatum)
+import Model.Datum exposing (Datum)
 import Model.Wallet exposing (Wallet)
 
 type From
@@ -12,7 +12,7 @@ type From
     | TypingMint Wallet String
     | SelectMint AlmostCatalog -- href
     -- upload
-    | Upload AlmostDatum
+    | Upload Datum
 
 type To
     -- connect

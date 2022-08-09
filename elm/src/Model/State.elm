@@ -24,10 +24,10 @@ urlParser =
         , UrlParser.map (Upload Uploader.Top) (UrlParser.s "upload")
         , UrlParser.map
             (\c -> Upload (Uploader.WaitingForWallet (Uploader.AlmostHasCatalog c)))
-            (AlmostCatalog.parser "download")
+            (AlmostCatalog.parser "upload")
         , UrlParser.map
             (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalog c)))
-            (AlmostCatalog.parser "upload")
+            (AlmostCatalog.parser "download")
         , UrlParser.map
             (\d -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasDatum d)))
             Datum.parser

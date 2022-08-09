@@ -7,6 +7,7 @@ import Msg.Msg exposing (Msg)
 import View.Generic.Mint
 
 
+-- TODO; map thru increment with href
 view : Catalog -> Html Msg
 view catalog =
     Html.div
@@ -24,6 +25,6 @@ view catalog =
             []
             (List.map
                 View.Generic.Mint.view
-                catalog.uploads
+                [catalog.mint]
             )
         ]
