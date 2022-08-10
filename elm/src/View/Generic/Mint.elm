@@ -14,7 +14,7 @@ view mint =
         [ Html.text <|
             String.join
                 " "
-                [ "uploader address:"
+                [ "mint address:"
                 , mint
                 ]
         ]

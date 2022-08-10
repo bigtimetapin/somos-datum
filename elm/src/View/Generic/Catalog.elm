@@ -13,6 +13,15 @@ import View.Generic.Mint
 
 view : Catalog -> Html Msg
 view catalog =
+    let
+        uploads : List Int
+        uploads =
+            case catalog.increment of
+                0 ->
+                    []
+                increment ->
+                    List.range 1 increment
+    in
     Html.div
         [ class "has-border-2"
         ]
@@ -24,10 +33,13 @@ view catalog =
                     , catalog.uploader
                     ]
             ]
+        , View.Generic.Mint.view catalog.mint
         , Html.div
             []
-            (List.map
-                View.Generic.Mint.view
-                [ catalog.mint ]
-            )
+            [ Html.text <|
+                String.join " "
+                    [ "total uploads:"
+                    , String.fromInt catalog.increment
+                    ]
+            ]
         ]

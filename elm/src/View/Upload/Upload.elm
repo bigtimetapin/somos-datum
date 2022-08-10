@@ -174,7 +174,7 @@ body uploader =
                                         []
                                     ]
                                 , Html.button
-                                    [ class "is-button-1"
+                                    [ class "is-button-1 mb-2"
                                     , onClick <| FromUploader <| UploaderMsg.Upload <| Datum.fromCatalog catalog
                                     ]
                                     [ Html.text "Upload"

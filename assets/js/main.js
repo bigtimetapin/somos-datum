@@ -2,6 +2,7 @@ import {getPhantom} from "./phantom";
 import {getPP} from "./anchor/util";
 import {catalogAsUploader} from "./anchor/state/catalog";
 import {init} from "./anchor/init"
+import {upload} from "./anchor/upload";
 
 // init phantom
 let phantom = null;
@@ -66,13 +67,11 @@ app.ports.initializeCatalog.subscribe(async function (json) {
 });
 
 // upload assets
-app.ports.uploadAssetsSender.subscribe(async function (userJson) {
+app.ports.upload.subscribe(async function (json) {
     // get provider & program
     const pp = getPP(phantom);
-    // decode user
-    const user = JSON.parse(userJson);
-    const more = JSON.parse(user.more);
     // invoke upload assets
+    await upload(pp.program, pp.provider, json);
 });
 
 // download
