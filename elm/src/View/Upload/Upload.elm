@@ -54,7 +54,7 @@ body uploader =
                                             [ class "icon is-left"
                                             ]
                                             [ Html.i
-                                                [ class "fa-solid fa-coins"
+                                                [ class "fas fa-coins"
                                                 ]
                                                 []
                                             ]
@@ -63,6 +63,36 @@ body uploader =
                                 ]
 
                         Uploader.TypingMint wallet string ->
+                            let
+                                select =
+                                    case string of
+                                        "" ->
+                                            Html.div
+                                                []
+                                                []
+
+                                        _ ->
+                                            Html.div
+                                                []
+                                                [ Html.a
+                                                    [ onClick <|
+                                                        FromUploader <|
+                                                            UploaderMsg.SelectMint { mint = string, uploader = wallet }
+                                                    , State.href <|
+                                                        Upload <|
+                                                            Uploader.WaitingForWallet <|
+                                                                Uploader.AlmostHasCatalog { mint = string, uploader = wallet }
+                                                    ]
+                                                    [ Html.div
+                                                        [ class "is-button-1"
+                                                        ]
+                                                        [ Html.text <|
+                                                            String.join " " <|
+                                                                [ "Proceed with mint:", string ]
+                                                        ]
+                                                    ]
+                                                ]
+                            in
                             Html.div
                                 [ class "has-border-2"
                                 ]
@@ -84,37 +114,49 @@ body uploader =
                                             [ class "icon is-left"
                                             ]
                                             [ Html.i
-                                                [ class "fa-solid fa-coins"
+                                                [ class "fas fa-coins"
                                                 ]
                                                 []
                                             ]
                                         ]
-                                    , Html.div
-                                        []
-                                        [ Html.button
-                                            [ class "is-button-1"
-                                            , style "width" "100%"
-                                            , onClick <|
-                                                FromUploader <|
-                                                    UploaderMsg.SelectMint { mint = string, uploader = wallet }
-                                            , State.href <|
-                                                Upload <|
-                                                    Uploader.WaitingForWallet <|
-                                                        Uploader.AlmostHasCatalog { mint = string, uploader = wallet }
+                                    , select
+                                    ]
+                                ]
+
+                        Uploader.HasUninitializedCatalog almostCatalog ->
+                            Html.div
+                                [ class "has-border-2"
+                                ]
+                                [ View.Generic.Wallet.view almostCatalog.uploader
+                                , Html.div
+                                    []
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "This is your first time uploading to mint:"
+                                            , almostCatalog.mint
                                             ]
-                                            [ Html.text <|
-                                                String.join " " <|
-                                                    [ "Select:", string ]
-                                            ]
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.button
+                                        [ class "is-button-1"
+                                        , style "width" "100%"
+                                        , onClick <| FromUploader <| UploaderMsg.InitializeCatalog almostCatalog
+                                        ]
+                                        [ Html.text "Initialize Catalog"
                                         ]
                                     ]
                                 ]
 
                         Uploader.WaitingForCatalog wallet ->
                             Html.div
-                                [ class "is-loading"
+                                [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , Html.div
+                                    [ class "my-2 is-loading"
+                                    ]
+                                    []
                                 ]
 
                         Uploader.HasCatalog catalog ->
@@ -142,9 +184,13 @@ body uploader =
 
                         Uploader.WaitingForUpload wallet ->
                             Html.div
-                                [ class "is-loading"
+                                [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , Html.div
+                                    [ class "my-2 is-loading"
+                                    ]
+                                    []
                                 ]
 
                         Uploader.Uploaded datum ->
@@ -165,9 +211,13 @@ body uploader =
                     case waitingForWalletUploader of
                         Uploader.AlmostLoggedIn ->
                             Html.div
-                                [ class "is-loading"
+                                [ class "has-border-2"
                                 ]
-                                []
+                                [ Html.div
+                                    [ class "my-2 is-loading"
+                                    ]
+                                    []
+                                ]
 
                         Uploader.AlmostHasCatalog almostCatalog ->
                             Html.div

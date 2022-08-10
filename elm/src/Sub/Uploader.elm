@@ -12,6 +12,9 @@ port connectAndGetCatalogAsUploader : Json -> Cmd msg
 port getCatalogAsUploader : Json -> Cmd msg
 
 
+port initializeCatalog : Json -> Cmd msg
+
+
 port upload : Json -> Cmd msg
 
 
@@ -25,7 +28,10 @@ port connectAsUploaderSuccess : (Json -> msg) -> Sub msg
 port connectAndGetCatalogAsUploaderSuccess : (Json -> msg) -> Sub msg
 
 
-port getCatalogAsUploaderSuccess : (Json -> msg) -> Sub msg
+port foundCatalogAsUninitialized : (Json -> msg) -> Sub msg
+
+
+port initializeCatalogSuccess : (Json -> msg) -> Sub msg
 
 
 port uploadSuccess : (Json -> msg) -> Sub msg

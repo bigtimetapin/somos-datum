@@ -66,7 +66,7 @@ path state =
 
                         Uploader.AlmostHasCatalog almostCatalog ->
                             String.concat
-                                [ path (Upload Uploader.Top), "/", almostCatalog.mint, almostCatalog.uploader ]
+                                [ path (Upload Uploader.Top), "/", almostCatalog.mint, "/", almostCatalog.uploader ]
 
                 Uploader.HasWallet _ ->
                     path (Upload Uploader.Top)
@@ -83,14 +83,21 @@ path state =
 
                         Downloader.AlmostHasCatalog almostCatalog ->
                             String.concat
-                                [ path (Download Downloader.Top), "#/", almostCatalog.mint, almostCatalog.uploader ]
+                                [ path (Download Downloader.Top)
+                                , "#/"
+                                , almostCatalog.mint
+                                , "/"
+                                , almostCatalog.uploader
+                                ]
 
                         Downloader.AlmostHasDatum datum ->
                             String.concat
                                 [ path (Download Downloader.Top)
                                 , "#/"
                                 , datum.mint
+                                , "/"
                                 , datum.uploader
+                                , "/"
                                 , String.fromInt datum.increment
                                 ]
 

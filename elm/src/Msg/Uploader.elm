@@ -13,6 +13,8 @@ type
       -- select
     | TypingMint Wallet String
     | SelectMint AlmostCatalog -- href
+      -- init
+    | InitializeCatalog AlmostCatalog
       -- upload
     | Upload Datum
 
@@ -22,7 +24,10 @@ type
     -- connect
     = ConnectSuccess Wallet
     | ConnectAndGetCatalogSuccess Json
-      -- Upload
+      -- init
+    | FoundCatalogAsUninitialized Json
+    | InitializeCatalogSuccess Json
+      -- upload
     | UploadSuccess Json
 
 

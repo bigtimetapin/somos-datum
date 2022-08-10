@@ -94,6 +94,13 @@ update msg model =
                     , UploaderCmd.getCatalogAsUploader <| AlmostCatalog.encode almostCatalog
                     )
 
+                UploaderMsg.InitializeCatalog almostCatalog ->
+                    ( { model
+                        | state = Upload <| Uploader.HasWallet <| Uploader.WaitingForCatalog almostCatalog.uploader
+                      }
+                    , UploaderCmd.initializeCatalog <| AlmostCatalog.encode almostCatalog
+                    )
+
                 UploaderMsg.Upload datum ->
                     ( { model | state = Upload <| Uploader.HasWallet <| Uploader.WaitingForUpload datum.uploader }
                     , UploaderCmd.upload <| Datum.encode datum
@@ -109,7 +116,33 @@ update msg model =
                 UploaderMsg.ConnectAndGetCatalogSuccess json ->
                     case Catalog.decode json of
                         Ok catalog ->
-                            -- TODO; js throw exception when uploader wallet != parsed wallet
+                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog }
+                            , Cmd.none
+                            )
+
+                        Err error ->
+                            ( { model | state = Error error }
+                            , Cmd.none
+                            )
+
+                UploaderMsg.FoundCatalogAsUninitialized json ->
+                    case AlmostCatalog.decode json of
+                        Ok almostCatalog ->
+                            ( { model
+                                | state =
+                                    Upload <| Uploader.HasWallet <| Uploader.HasUninitializedCatalog almostCatalog
+                              }
+                            , Cmd.none
+                            )
+
+                        Err error ->
+                            ( { model | state = Error error }
+                            , Cmd.none
+                            )
+
+                UploaderMsg.InitializeCatalogSuccess json ->
+                    case Catalog.decode json of
+                        Ok catalog ->
                             ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog }
                             , Cmd.none
                             )

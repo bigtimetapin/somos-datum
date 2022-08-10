@@ -12,6 +12,9 @@ assets/package-lock.json
 index.html
 !assets/index.html
 
+# js build artifacts
+assets/js/bundle.js
+
 # elm build artifacts
 elm-stuff/
 dist/

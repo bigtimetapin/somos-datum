@@ -1,23 +1,52 @@
-import {getPhantom} from "phantom";
-import {getPP} from "anchor/util.js";
-import {upload} from "anchor/upload";
-import {decrypt} from "lit/decrypt";
+import {getPhantom} from "./phantom";
+import {getPP} from "./anchor/util";
+import {catalogAsUploader} from "./anchor/state/catalog";
 
-// get phantom
+// init phantom
 let phantom = null;
-app.ports.connectSender.subscribe(async function (user) {
+
+// connect as uploader
+app.ports.connectAsUploader.subscribe(async function () {
     // get phantom
-    phantom = await getPhantom(user);
+    phantom = await getPhantom();
+    const publicKey = phantom.connection.publicKey.toString();
+    // send to elm
+    app.ports.connectAsUploaderSuccess.send(
+        publicKey
+    );
 });
 
-// get current state as soon as user logs in
-app.ports.getCurrentStateSender.subscribe(async function (json) {
-    // get provider & program
-    const pp = getPP(phantom);
-    // parse user
+// connect as uploader and get catalog
+app.ports.connectAndGetCatalogAsUploader.subscribe(async function (json) {
+    // get phantom
+    phantom = await getPhantom();
+    // get catalog
+    try {
+        // invoke get catalog as uploader
+        await catalogAsUploader(phantom, json);
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
+});
 
-    // invoke state request & send response to elm
+// get catalog as uploader
+app.ports.getCatalogAsUploader.subscribe(async function (json) {
+    // get catalog
+    try {
+        // invoke get catalog as uploader
+        await catalogAsUploader(phantom, json);
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
+});
 
+// initialize catalog
+app.ports.initializeCatalog.subscribe(async function (json) {
+    ///
 });
 
 // upload assets

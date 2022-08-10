@@ -5,7 +5,7 @@ import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json';
 
 export default {
-    input: 'anchor/main.js',
+    input: 'main.js',
     output: {
         file: 'bundle.js',
         format: 'es'

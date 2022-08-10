@@ -25,6 +25,14 @@ subs =
             (\json ->
                 ToUploader <| Uploader.UploadSuccess json
             )
+        , UploaderSub.foundCatalogAsUninitialized
+            (\json ->
+                ToUploader <| Uploader.FoundCatalogAsUninitialized json
+            )
+        , UploaderSub.initializeCatalogSuccess
+            (\json ->
+                ToUploader <| Uploader.InitializeCatalogSuccess json
+            )
 
         -- downloader sub
         , DownloaderSub.connectAsDownloaderSuccess

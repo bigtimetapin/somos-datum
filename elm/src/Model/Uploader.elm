@@ -19,6 +19,8 @@ type
       -- selecting upload
     | TypingMint Wallet String
     | WaitingForCatalog Wallet
+      -- initializing catalog
+    | HasUninitializedCatalog AlmostCatalog
       -- uploading
     | HasCatalog Catalog
     | WaitingForUpload Wallet
