@@ -1,5 +1,8 @@
 import {web3} from "@project-serum/anchor";
 import {getPP} from "../util";
+import {connection} from "../util";
+import {preflightCommitment} from "../config";
+import {getMint} from "@solana/spl-token";
 
 export async function catalog(program, mint, uploader) {
     // derive pda
@@ -22,15 +25,22 @@ export async function catalogAsUploader(phantom, json) {
     const pp = getPP(phantom);
     // parse uploader
     const parsed = JSON.parse(json);
-    // TODO; validate uploader as existing account info
+    // validate uploader
     const uploader = new web3.PublicKey(parsed.uploader);
-    // TODO; validate mint as existing spl-mint
-    const mint = new web3.PublicKey(parsed.mint);
-    // assert requested uploader is current user
     if (publicKey !== uploader.toString()) {
         const msg = "current wallet does not match requested uploader address";
         console.log(msg);
         app.ports.genericError.send(msg);
+        return null
+    }
+    // validate mint
+    const mint = new web3.PublicKey(parsed.mint);
+    try {
+        await getMint(connection, mint, preflightCommitment);
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+        return null
     }
     // get catalog
     try {

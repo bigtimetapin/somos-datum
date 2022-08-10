@@ -3,6 +3,32 @@
   "name": "somos_datum",
   "instructions": [
     {
+      "name": "initializeIncrement",
+      "accounts": [
+        {
+          "name": "increment",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "publishAssets",
       "accounts": [
         {
