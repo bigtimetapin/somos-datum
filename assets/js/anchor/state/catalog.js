@@ -1,5 +1,4 @@
 import {web3} from "@project-serum/anchor";
-import {getPP} from "../util";
 import {connection} from "../util";
 import {preflightCommitment} from "../config";
 import {getMint} from "@solana/spl-token";
@@ -18,11 +17,9 @@ export async function catalog(program, mint, uploader) {
     return await program.account.increment.fetch(pda)
 }
 
-export async function catalogAsUploader(phantom, json) {
+export async function catalogAsUploader(provider, program, json) {
     // get user wallet
-    const publicKey = phantom.connection.publicKey.toString();
-    // get provider & program
-    const pp = getPP(phantom);
+    const publicKey = provider.wallet.publicKey.toString();
     // parse uploader
     const parsed = JSON.parse(json);
     // validate uploader
@@ -45,7 +42,7 @@ export async function catalogAsUploader(phantom, json) {
     // get catalog
     try {
         // invoke get catalog
-        const catalog_ = await catalog(pp.program, mint, uploader);
+        const catalog_ = await catalog(program, mint, uploader);
         // send to elm
         app.ports.connectAndGetCatalogAsUploaderSuccess.send(
             JSON.stringify(catalog_)

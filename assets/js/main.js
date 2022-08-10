@@ -1,6 +1,7 @@
 import {getPhantom} from "./phantom";
 import {getPP} from "./anchor/util";
 import {catalogAsUploader} from "./anchor/state/catalog";
+import {init} from "./anchor/init"
 
 // init phantom
 let phantom = null;
@@ -22,8 +23,10 @@ app.ports.connectAndGetCatalogAsUploader.subscribe(async function (json) {
     phantom = await getPhantom();
     // get catalog
     try {
+        // get provider & program
+        const pp = getPP(phantom);
         // invoke get catalog as uploader
-        await catalogAsUploader(phantom, json);
+        await catalogAsUploader(pp.provider, pp.program, json);
         // or report error to elm
     } catch (error) {
         console.log(error);
@@ -35,8 +38,10 @@ app.ports.connectAndGetCatalogAsUploader.subscribe(async function (json) {
 app.ports.getCatalogAsUploader.subscribe(async function (json) {
     // get catalog
     try {
+        // get provider & program
+        const pp = getPP(phantom);
         // invoke get catalog as uploader
-        await catalogAsUploader(phantom, json);
+        await catalogAsUploader(pp.provider, pp.program, json);
         // or report error to elm
     } catch (error) {
         console.log(error);
@@ -46,7 +51,18 @@ app.ports.getCatalogAsUploader.subscribe(async function (json) {
 
 // initialize catalog
 app.ports.initializeCatalog.subscribe(async function (json) {
-    ///
+    try {
+        // get provider & program
+        const pp = getPP(phantom);
+        // invoke init
+        const catalog = await init(pp.provider, pp.program, json);
+        // send catalog to elm
+        app.ports.initializeCatalogSuccess.send(JSON.stringify(catalog));
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
 });
 
 // upload assets
