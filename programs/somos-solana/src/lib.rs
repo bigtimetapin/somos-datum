@@ -6,6 +6,12 @@ declare_id!("2tvgaNY3tuBP552wsLWUsYRVUjSNFPQac1FQPxfaDZgc");
 pub mod somos_datum {
     use super::*;
 
+    pub fn initialize_increment(
+        _ctx: Context<InitializeIncrement>,
+    ) -> Result<()> {
+        Ok(())
+    }
+
     pub fn publish_assets(
         ctx: Context<PublishAssets>,
         seed: u8,
@@ -35,6 +41,25 @@ pub mod somos_datum {
 // DATUM ///////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #[derive(Accounts)]
+pub struct InitializeIncrement<'info> {
+    #[account(init,
+    seeds = [mint.key().as_ref(), payer.key().as_ref()], bump,
+    payer = payer,
+    space = Increment::SPACE
+    )]
+    pub increment: Account<'info, Increment>,
+    #[account()]
+    /// CHECK: excluding check for spl-mint type
+    /// provides run-time benefits in avoiding additional
+    /// deserialization & binary dependencies
+    pub mint: UncheckedAccount<'info>,
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    // system program
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
 #[instruction(seed: u8)]
 pub struct PublishAssets<'info> {
     #[account(init,
@@ -43,11 +68,7 @@ pub struct PublishAssets<'info> {
     space = Datum::SPACE
     )]
     pub datum: Account<'info, Datum>,
-    #[account(init_if_needed,
-    seeds = [mint.key().as_ref(), payer.key().as_ref()], bump,
-    payer = payer,
-    space = Increment::SPACE
-    )]
+    #[account(mut, seeds = [mint.key().as_ref(), payer.key().as_ref()], bump)]
     pub increment: Account<'info, Increment>,
     #[account()]
     /// CHECK: excluding check for spl-mint type

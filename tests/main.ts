@@ -38,14 +38,22 @@ describe("somos-datum", () => {
         );
         // invoke rpc
         await program.methods
+            .initializeIncrement()
+            .accounts({
+                increment: pdaIncrement,
+                mint: mint.key.publicKey,
+                payer: provider.wallet.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId
+            }).rpc();
+        // invoke rpc
+        await program.methods
             .publishAssets(1, key, url)
             .accounts({
                 datum: pdaOne,
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
                 payer: provider.wallet.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId,
-
+                systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
         // fetch accounts
         let actualIncrement = await program.account.increment.fetch(
