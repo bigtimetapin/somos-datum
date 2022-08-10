@@ -25,10 +25,6 @@ export async function init(provider, program, json) {
         program.programId
     );
     // invoke rpc
-    console.log(pda)
-    console.log(mint)
-    console.log(provider.wallet.publicKey)
-    console.log(web3.SystemProgram.programId)
     await program.methods
         .initializeIncrement()
         .accounts({

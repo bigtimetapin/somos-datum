@@ -3,7 +3,7 @@ import {connection} from "../util";
 import {preflightCommitment} from "../config";
 import {getMint} from "@solana/spl-token";
 
-export async function catalog(program, mint, uploader) {
+export async function getIncrement(program, mint, uploader) {
     // derive pda
     let pda, _;
     [pda, _] = await web3.PublicKey.findProgramAddress(
@@ -41,11 +41,17 @@ export async function catalogAsUploader(provider, program, json) {
     }
     // get catalog
     try {
-        // invoke get catalog
-        const catalog_ = await catalog(program, mint, uploader);
+        // invoke get increment
+        const increment = await getIncrement(program, mint, uploader);
+        // build catalog
+        const catalog = {
+            mint: mint,
+            uploader: uploader,
+            increment: increment.increment
+        }
         // send to elm
         app.ports.connectAndGetCatalogAsUploaderSuccess.send(
-            JSON.stringify(catalog_)
+            JSON.stringify(catalog)
         );
         // or catch
     } catch (error) {
