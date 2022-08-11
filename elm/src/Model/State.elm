@@ -84,7 +84,7 @@ path state =
                         Downloader.AlmostHasCatalog almostCatalog ->
                             String.concat
                                 [ path (Download Downloader.Top)
-                                , "#/"
+                                , "/"
                                 , almostCatalog.mint
                                 , "/"
                                 , almostCatalog.uploader
@@ -93,7 +93,7 @@ path state =
                         Downloader.AlmostHasDatum datum ->
                             String.concat
                                 [ path (Download Downloader.Top)
-                                , "#/"
+                                , "/"
                                 , datum.mint
                                 , "/"
                                 , datum.uploader

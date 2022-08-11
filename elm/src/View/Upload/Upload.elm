@@ -179,7 +179,7 @@ body uploader =
                                     ]
                                     [ Html.text "Upload"
                                     ]
-                                , View.Generic.Catalog.view catalog
+                                , View.Generic.Catalog.view catalog.uploader catalog
                                 ]
 
                         Uploader.WaitingForUpload wallet ->
@@ -202,9 +202,7 @@ body uploader =
                                     []
                                     [ Html.text "Successful Upload"
                                     ]
-                                , View.Generic.Datum.view datum
-
-                                -- TODO; href to download
+                                , View.Generic.Datum.view datum.uploader datum
                                 ]
 
                 WaitingForWallet waitingForWalletUploader ->

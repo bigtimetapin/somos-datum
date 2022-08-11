@@ -6,7 +6,6 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html)
 import Model.AlmostCatalog as AlmostCatalog
-import Model.AlmostDatum as AlmostDatum
 import Model.Catalog as Catalog
 import Model.Datum as Datum
 import Model.Downloader as Downloader
@@ -299,8 +298,8 @@ view model =
                 Upload uploader ->
                     hero <| View.Upload.Upload.body uploader
 
-                Download _ ->
-                    hero <| View.Download.Download.body
+                Download downloader ->
+                    hero <| View.Download.Download.body downloader
 
                 Error error ->
                     hero (View.Error.Error.body error)

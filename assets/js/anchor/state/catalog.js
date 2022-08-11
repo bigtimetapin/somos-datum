@@ -66,3 +66,45 @@ export async function catalogAsUploader(provider, program, json) {
         }
     }
 }
+
+export async function catalogAsDownloader(provider, program, json) {
+    // get user wallet
+    const publicKey = provider.wallet.publicKey.toString();
+    // parse uploader
+    const parsed = JSON.parse(json);
+    // validate uploader
+    const uploader = new web3.PublicKey(parsed.uploader);
+    try {
+        await connection.getAccountInfo(uploader, preflightCommitment);
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+        return null
+    }
+    // validate mint
+    const mint = new web3.PublicKey(parsed.mint);
+    try {
+        await getMint(connection, mint, preflightCommitment);
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+        return null
+    }
+    // invoke get increment
+    const increment = await getIncrement(program, mint, uploader);
+    // build catalog
+    const catalog = {
+        mint: mint,
+        uploader: uploader,
+        increment: increment.increment
+    }
+    // build with wallet
+    const withWallet = {
+        wallet: publicKey,
+        catalog: catalog
+    }
+    // send to elm
+    app.ports.connectAndGetCatalogAsDownloaderSuccess.send(
+        JSON.stringify(withWallet)
+    );
+}

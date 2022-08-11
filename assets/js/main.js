@@ -1,6 +1,6 @@
 import {getPhantom} from "./phantom";
 import {getPP} from "./anchor/util";
-import {catalogAsUploader} from "./anchor/state/catalog";
+import {catalogAsDownloader, catalogAsUploader} from "./anchor/state/catalog";
 import {init} from "./anchor/init"
 import {upload} from "./anchor/upload";
 
@@ -14,6 +14,17 @@ app.ports.connectAsUploader.subscribe(async function () {
     const publicKey = phantom.connection.publicKey.toString();
     // send to elm
     app.ports.connectAsUploaderSuccess.send(
+        publicKey
+    );
+});
+
+// connect as downloader
+app.ports.connectAsDownloader.subscribe(async function () {
+    // get phantom
+    phantom = await getPhantom();
+    const publicKey = phantom.connection.publicKey.toString();
+    // send to elm
+    app.ports.connectAsDownloaderSuccess.send(
         publicKey
     );
 });
@@ -35,6 +46,23 @@ app.ports.connectAndGetCatalogAsUploader.subscribe(async function (json) {
     }
 });
 
+// connect as downloader and get catalog
+app.ports.connectAndGetCatalogAsDownloader.subscribe(async function (json) {
+    // get phantom
+    phantom = await getPhantom();
+    // get catalog
+    try {
+        // get provider & program
+        const pp = getPP(phantom);
+        // invoke get catalog as downloader
+        await catalogAsDownloader(pp.provider, pp.program, json);
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
+});
+
 // get catalog as uploader
 app.ports.getCatalogAsUploader.subscribe(async function (json) {
     // get catalog
@@ -43,6 +71,43 @@ app.ports.getCatalogAsUploader.subscribe(async function (json) {
         const pp = getPP(phantom);
         // invoke get catalog as uploader
         await catalogAsUploader(pp.provider, pp.program, json);
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
+});
+
+// get catalog as downloader
+app.ports.getCatalogAsDownloader.subscribe(async function (json) {
+    // get catalog
+    try {
+        // get provider & program
+        const pp = getPP(phantom);
+        // invoke get catalog as downloader
+        await catalogAsDownloader(pp.provider, pp.program, json);
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
+});
+
+// get datum as downloader
+app.ports.getDatumAsDownloader.subscribe(async function (json) {
+    // get catalog
+    try {
+        // get provider & program
+        const pp = getPP(phantom);
+        const wallet = pp.provider.wallet.publicKey.toString();
+        const datum = JSON.parse(json);
+        const withWallet = {
+            wallet: wallet,
+            datum: datum
+        }
+        app.ports.connectAndGetDatumAsDownloaderSuccess.send(
+            JSON.stringify(withWallet)
+        );
         // or report error to elm
     } catch (error) {
         console.log(error);

@@ -49,6 +49,10 @@ export async function upload(program, provider, json) {
         );
         // invoke rpc
         const encodedPrefix = textEncoder.encode(prefix);
+        console.log(encrypted.encryptedSymmetricKey)
+        console.log(Buffer.from(encrypted.encryptedSymmetricKey).length)
+        console.log(encodedPrefix)
+        console.log(Buffer.from(encodedPrefix).length)
         await program.methods
             .publishAssets(parsed.increment, Buffer.from(encrypted.encryptedSymmetricKey), Buffer.from(encodedPrefix))
             .accounts({

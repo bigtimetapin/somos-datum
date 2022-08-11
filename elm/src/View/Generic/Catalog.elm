@@ -3,22 +3,22 @@ module View.Generic.Catalog exposing (view)
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Model.Catalog exposing (Catalog)
-import Msg.Msg exposing (Msg)
+import Model.Datum exposing (Datum)
+import Model.Wallet exposing (Wallet)
+import Msg.Msg exposing (Msg(..))
+import View.Generic.Datum
 import View.Generic.Mint
 
 
-
--- TODO; map thru increment with href
-
-
-view : Catalog -> Html Msg
-view catalog =
+view : Wallet -> Catalog -> Html Msg
+view wallet catalog =
     let
         uploads : List Int
         uploads =
             case catalog.increment of
                 0 ->
                     []
+
                 increment ->
                     List.range 1 increment
     in
@@ -42,4 +42,25 @@ view catalog =
                     , String.fromInt catalog.increment
                     ]
             ]
+        , Html.div
+            [ class "columns"
+            ]
+          <|
+            List.map
+                (\i ->
+                    Html.div
+                        [ class "column"
+                        ]
+                        [ View.Generic.Datum.href wallet (toDatum i catalog)
+                        ]
+                )
+                uploads
         ]
+
+
+toDatum : Int -> Catalog -> Datum
+toDatum increment catalog =
+    { mint = catalog.mint
+    , uploader = catalog.uploader
+    , increment = increment
+    }
