@@ -9,7 +9,7 @@ import Msg.Msg exposing (Msg)
 view : Wallet -> Html Msg
 view wallet =
     Html.div
-        [ class "has-border-2 has-font-2 px-2 py-2 mt-1 mr-1"
+        [ class "has-border-2 has-font-2 px-2 py-2"
         , style "float" "right"
         ]
         [ Html.text (Wallet.slice wallet)

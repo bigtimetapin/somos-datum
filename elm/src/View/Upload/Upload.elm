@@ -81,7 +81,8 @@ body uploader =
                                                     , State.href <|
                                                         Upload <|
                                                             Uploader.WaitingForWallet <|
-                                                                Uploader.AlmostHasCatalog { mint = string, uploader = wallet }
+                                                                Uploader.AlmostHasCatalog
+                                                                    { mint = string, uploader = wallet }
                                                     ]
                                                     [ Html.div
                                                         [ class "is-button-1"
