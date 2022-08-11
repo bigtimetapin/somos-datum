@@ -4,6 +4,7 @@ import {catalogAsDownloader, catalogAsUploader} from "./anchor/state/catalog";
 import {init} from "./anchor/init"
 import {upload} from "./anchor/upload";
 import {getDatum} from "./anchor/state/datum";
+import {download} from "./anchor/download";
 
 // init phantom
 let phantom = null;
@@ -150,11 +151,10 @@ app.ports.upload.subscribe(async function (json) {
     await upload(pp.program, pp.provider, json);
 });
 
-// download
-app.ports.downloadSender.subscribe(async function (userJson) {
+// download assets
+app.ports.download.subscribe(async function (json) {
     // get provider & program
     const pp = getPP(phantom);
-    // decode json
-    const user = JSON.parse(userJson);
-    // invoke decrypt
+    // invoke download assets
+    await download(pp.provider, pp.program, json)
 });

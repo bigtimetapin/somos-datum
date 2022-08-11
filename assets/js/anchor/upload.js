@@ -27,7 +27,6 @@ export async function upload(program, provider, json) {
         const fileName = "encrypted.zip"
         const file = new File([encrypted.encryptedZip], fileName)
         const url = await shdw(provider.wallet, file);
-        const prefix = url.replace(fileName, "");
         // derive pda increment
         let pdaIncrement, _;
         [pdaIncrement, _] = await web3.PublicKey.findProgramAddress(
@@ -47,12 +46,10 @@ export async function upload(program, provider, json) {
             ],
             program.programId
         );
-        // invoke rpc
+        // build upload url
+        const prefix = url.replace(fileName, "");
         const encodedPrefix = textEncoder.encode(prefix);
-        console.log(encrypted.encryptedSymmetricKey)
-        console.log(Buffer.from(encrypted.encryptedSymmetricKey).length)
-        console.log(encodedPrefix)
-        console.log(Buffer.from(encodedPrefix).length)
+        // invoke rpc
         await program.methods
             .publishAssets(parsed.increment, Buffer.from(encrypted.encryptedSymmetricKey), Buffer.from(encodedPrefix))
             .accounts({

@@ -263,23 +263,42 @@ body downloader =
                                 [ View.Generic.Wallet.view wallet
                                 , Html.div
                                     []
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "download:"
-                                            , String.fromInt datum.increment
-                                            ]
+                                    [ Html.button
+                                        [ class "is-button-1"
+                                        , onClick <| FromDownloader <| DownloaderMsg.Download wallet datum
+                                        ]
+                                        [ Html.text <|
+                                            String.join " "
+                                                [ "download:"
+                                                , String.fromInt datum.increment
+                                                ]
+                                        ]
                                     ]
                                 ]
 
                         Downloader.WaitingForDownload wallet ->
                             Html.div
-                                []
-                                []
+                                [ class "has-border-2"
+                                ]
+                                [ View.Generic.Wallet.view wallet
+                                , Html.div
+                                    [ class "my-2 is-loading"
+                                    ]
+                                    []
+                                ]
 
-                        Downloader.Downloaded wallet datum ->
+                        Downloader.Downloaded wallet _ ->
                             Html.div
-                                []
-                                []
+                                [ class "has-border-2"
+                                ]
+                                [ View.Generic.Wallet.view wallet
+                                , Html.div
+                                    []
+                                    [ Html.text
+                                        """Download Successful 😎
+                                        """
+                                    ]
+                                ]
 
                 Downloader.WaitingForWallet waitingForWalletDownloader ->
                     case waitingForWalletDownloader of
