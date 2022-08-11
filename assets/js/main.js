@@ -3,6 +3,7 @@ import {getPP} from "./anchor/util";
 import {catalogAsDownloader, catalogAsUploader} from "./anchor/state/catalog";
 import {init} from "./anchor/init"
 import {upload} from "./anchor/upload";
+import {getDatum} from "./anchor/state/datum";
 
 // init phantom
 let phantom = null;
@@ -63,6 +64,23 @@ app.ports.connectAndGetCatalogAsDownloader.subscribe(async function (json) {
     }
 });
 
+// connect as downloader and get datum
+app.ports.connectAndGetDatumAsDownloader.subscribe(async function (json) {
+    // get phantom
+    phantom = await getPhantom();
+    // get catalog
+    try {
+        // get provider & program
+        const pp = getPP(phantom);
+        // invoke get datum
+        await getDatum(pp.provider, pp.program, json)
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
+});
+
 // get catalog as uploader
 app.ports.getCatalogAsUploader.subscribe(async function (json) {
     // get catalog
@@ -99,15 +117,8 @@ app.ports.getDatumAsDownloader.subscribe(async function (json) {
     try {
         // get provider & program
         const pp = getPP(phantom);
-        const wallet = pp.provider.wallet.publicKey.toString();
-        const datum = JSON.parse(json);
-        const withWallet = {
-            wallet: wallet,
-            datum: datum
-        }
-        app.ports.connectAndGetDatumAsDownloaderSuccess.send(
-            JSON.stringify(withWallet)
-        );
+        // invoke get datum
+        await getDatum(pp.provider, pp.program, json)
         // or report error to elm
     } catch (error) {
         console.log(error);

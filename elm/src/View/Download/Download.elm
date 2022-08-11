@@ -282,9 +282,79 @@ body downloader =
                                 []
 
                 Downloader.WaitingForWallet waitingForWalletDownloader ->
-                    Html.div
-                        []
-                        []
+                    case waitingForWalletDownloader of
+                        Downloader.AlmostLoggedIn ->
+                            Html.div
+                                [ class "has-border-2"
+                                ]
+                                [ Html.div
+                                    [ class "my-2 is-loading"
+                                    ]
+                                    []
+                                ]
+
+                        Downloader.AlmostHasCatalog almostCatalog ->
+                            Html.div
+                                []
+                                [ Html.button
+                                    [ class "is-button-1"
+                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetCatalog almostCatalog
+                                    ]
+                                    [ Html.text "Connect"
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.text <|
+                                        String.join " " <|
+                                            [ "& then proceed to downloading with"
+                                            , "mint:"
+                                            , almostCatalog.mint
+                                            , "from uploader:"
+                                            , almostCatalog.uploader
+                                            ]
+                                    ]
+                                ]
+
+                        Downloader.AlmostHasDatum datum ->
+                            Html.div
+                                []
+                                [ Html.button
+                                    [ class "is-button-1"
+                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetDatum datum
+                                    ]
+                                    [ Html.text "Connect"
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.text
+                                        """& then proceed with downloading with
+                                        """
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "mint:"
+                                            , datum.mint
+                                            ]
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "uploader:"
+                                            , datum.uploader
+                                            ]
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "downloadable asset id:"
+                                            , String.fromInt datum.increment
+                                            ]
+                                    ]
+                                ]
     in
     Html.div
         [ class "container"
