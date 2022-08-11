@@ -28,13 +28,35 @@ export async function upload(program, provider, json) {
         const file = new File([encrypted.encryptedZip], fileName)
         const url = await shdw(provider.wallet, file);
         const prefix = url.replace(fileName, "");
+        // derive pda increment
+        let pdaIncrement, _;
+        [pdaIncrement, _] = await web3.PublicKey.findProgramAddress(
+            [
+                mint.toBuffer(),
+                provider.wallet.publicKey.toBuffer(),
+            ],
+            program.programId
+        );
+        // derive pda datum
+        let pdaDatum;
+        [pdaDatum, _] = await web3.PublicKey.findProgramAddress(
+            [
+                mint.toBuffer(),
+                provider.wallet.publicKey.toBuffer(),
+                Buffer.from([parsed.increment])
+            ],
+            program.programId
+        );
         // invoke rpc
         const encodedPrefix = textEncoder.encode(prefix);
         await program.methods
             .publishAssets(parsed.increment, Buffer.from(encrypted.encryptedSymmetricKey), Buffer.from(encodedPrefix))
             .accounts({
-                ledger: ledger,
-                boss: provider.wallet.publicKey,
+                datum: pdaDatum,
+                increment: pdaIncrement,
+                mint: mint,
+                payer: provider.wallet.publicKey,
+                systemProgram: web3.SystemProgram.programId
             })
             .rpc();
         // report to elm
@@ -43,6 +65,6 @@ export async function upload(program, provider, json) {
         // or catch error
     } catch (error) {
         console.log(error)
-        app.ports.genericErrorListener.send(error.toString());
+        app.ports.genericError.send(error.toString());
     }
 }
