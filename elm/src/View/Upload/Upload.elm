@@ -22,7 +22,8 @@ body uploader =
                     Html.div
                         [ class "has-border-2"
                         ]
-                        [ Html.button
+                        [ header
+                        , Html.button
                             [ class "is-button-1"
                             , onClick <| FromUploader UploaderMsg.Connect
                             ]
@@ -37,6 +38,7 @@ body uploader =
                                 [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     [ class "field"
                                     ]
@@ -98,6 +100,7 @@ body uploader =
                                 [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     [ class "field"
                                     ]
@@ -129,6 +132,7 @@ body uploader =
                                 [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view almostCatalog.uploader
+                                , header
                                 , Html.div
                                     []
                                     [ Html.text <|
@@ -154,6 +158,7 @@ body uploader =
                                 [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     [ class "my-2 is-loading"
                                     ]
@@ -165,6 +170,7 @@ body uploader =
                                 [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view catalog.uploader
+                                , header
                                 , Html.form
                                     []
                                     [ Html.input
@@ -187,146 +193,180 @@ body uploader =
                             case uploading of
                                 Uploader.WaitingForEncryption wallet ->
                                     Html.div
-                                        [ class "has-border-2"
+                                        [ class "pl-2 has-border-2"
                                         ]
                                         [ View.Generic.Wallet.view wallet
+                                        , header
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Encrypting Files ✅
+                                                """Encrypting Files
                                                 """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Creating Shdw Storage Account ☑️
+                                                """Creating Shdw Storage Account
                                                 """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Marking Shdw Storagte Account as Immutable ☑️
+                                                """Marking Shdw Storage Account as Immutable
                                                 """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
                                             ]
                                         , Html.div
-                                            [ class "mb-6"
-                                            ]
-                                            [ Html.text
-                                                """Uploading Encrypted Zip File ☑️
-                                                """
-                                            ]
-                                        , Html.div
-                                            [ class "my-2 is-loading"
-                                            ]
                                             []
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File
+                                                """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
+                                            ]
                                         ]
 
                                 Uploader.WaitingForCreateAccount wallet ->
                                     Html.div
-                                        [ class "has-border-2"
+                                        [ class "pl-2 has-border-2"
                                         ]
                                         [ View.Generic.Wallet.view wallet
+                                        , header
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Files Encrypted 🏁
+                                                """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Creating Shdw Storage Account ✅
+                                                """Creating Shdw Storage Account
                                                 """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Marking Shdw Storagte Account as Immutable ☑️
+                                                """Marking Shdw Storagte Account as Immutable
                                                 """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
                                             ]
                                         , Html.div
-                                            [ class "mb-6"
-                                            ]
-                                            [ Html.text
-                                                """Uploading Encrypted Zip File ☑️
-                                                """
-                                            ]
-                                        , Html.div
-                                            [ class "my-2 is-loading"
-                                            ]
                                             []
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File
+                                                """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
+                                            ]
                                         ]
 
                                 Uploader.WaitingForMakeImmutable wallet ->
                                     Html.div
-                                        [ class "has-border-2"
+                                        [ class "pl-2 has-border-2"
                                         ]
                                         [ View.Generic.Wallet.view wallet
+                                        , header
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Encrypting Files 🏁
+                                                """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Shdw Storage Account Created 🏁
+                                                """Shdw Storage Account Created ☑️
                                                 """
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Marking Shdw Storagte Account as Immutable ✅
+                                                """Marking Shdw Storagte Account as Immutable
                                                 """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
                                             ]
                                         , Html.div
-                                            [ class "mb-6"
-                                            ]
-                                            [ Html.text
-                                                """Uploading Encrypted Zip File ☑️
-                                                """
-                                            ]
-                                        , Html.div
-                                            [ class "my-2 is-loading"
-                                            ]
                                             []
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File
+                                                """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
+                                            ]
                                         ]
 
                                 Uploader.WaitingForFileUpload wallet ->
                                     Html.div
-                                        [ class "has-border-2"
+                                        [ class "pl-2 has-border-2"
                                         ]
                                         [ View.Generic.Wallet.view wallet
+                                        , header
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Encrypting Files 🏁
+                                                """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Shdw Storage Account Created 🏁
+                                                """Shdw Storage Account Created ☑️
                                                 """
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Shw Storage Account Marked as Immutable 🏁
+                                                """Shw Storage Account Marked as Immutable ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            [ class "mb-6"
-                                            ]
-                                            [ Html.text
-                                                """Uploading Encrypted Zip File ✅
-                                                """
-                                            ]
-                                        , Html.div
-                                            [ class "my-2 is-loading"
-                                            ]
                                             []
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File
+                                                """
+                                            , Html.div
+                                                [ class "mr-1 is-loading-tiny"
+                                                , style "float" "left"
+                                                ]
+                                                []
+                                            ]
                                         ]
 
                         Uploader.Uploaded datum ->
@@ -334,6 +374,7 @@ body uploader =
                                 [ class "has-border-2"
                                 ]
                                 [ View.Generic.Wallet.view datum.uploader
+                                , header
                                 , Html.h2
                                     []
                                     [ Html.text "Successful Upload"
@@ -347,7 +388,8 @@ body uploader =
                             Html.div
                                 [ class "has-border-2"
                                 ]
-                                [ Html.div
+                                [ header
+                                , Html.div
                                     [ class "my-2 is-loading"
                                     ]
                                     []
@@ -355,28 +397,45 @@ body uploader =
 
                         Uploader.AlmostHasCatalog almostCatalog ->
                             Html.div
-                                []
+                                [ class "has-border-2 pl-2 pb-6 "
+                                ]
                                 [ Html.button
+                                    [ class "is-button-1 mr-2 mt-2"
+                                    , onClick <| FromUploader <| UploaderMsg.ConnectAndGetCatalog almostCatalog
+                                    , style "float" "right"
+                                    ]
+                                    [ Html.text "Connect"
+                                    ]
+                                , header
+                                , Html.button
                                     [ class "is-button-1"
                                     , onClick <| FromUploader <| UploaderMsg.ConnectAndGetCatalog almostCatalog
                                     ]
                                     [ Html.text "Connect"
                                     ]
-                                , Html.div
-                                    []
-                                    [ Html.text <|
-                                        String.join " " <|
-                                            [ "& then proceed to uploading to"
-                                            , "mint:"
-                                            , almostCatalog.mint
-                                            , "as uploader:"
-                                            , almostCatalog.uploader
-                                            ]
-                                    ]
+                                , Html.text <|
+                                    String.join " " <|
+                                        [ ""
+                                        , "& then proceed to uploading to"
+                                        , "mint:"
+                                        , almostCatalog.mint
+                                        ]
                                 ]
     in
     Html.div
         [ class "container"
         ]
         [ html
+        ]
+
+
+header : Html Msg
+header =
+    Html.div
+        [ class "mt-2 mb-3"
+        ]
+        [ Html.h2
+            []
+            [ Html.text "Upload Console"
+            ]
         ]

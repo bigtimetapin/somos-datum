@@ -9,3 +9,15 @@
   width: 200px;
   margin: auto;
 }
+
+.is-loading-tiny {
+  animation: spinAround 1000ms infinite linear;
+  border: 2px solid #dbdbdb;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  content: "";
+  height: 25px;
+  width: 25px;
+  margin: auto;
+}
