@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BUCKET=s3://store.somos.world
+BUCKET=s3://datum.somos.world
 
 echo "Building Sass Assets"
 cd assets/sass && (npm run build)
