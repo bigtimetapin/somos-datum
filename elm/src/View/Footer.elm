@@ -14,7 +14,7 @@ view =
             [ class "level-item"
             ]
             [ Html.a
-                [ href "https://www.instagram.com/somos.ep/"
+                [ href "https://www.instagram.com/somos.world/"
                 , target "_blank"
                 ]
                 [ Html.span
@@ -31,7 +31,7 @@ view =
             [ class "level-item"
             ]
             [ Html.a
-                [ href "https://github.com/bigtimetapin/somos-solana"
+                [ href "https://github.com/bigtimetapin/somos-datum"
                 , target "_blank"
                 ]
                 [ Html.span
