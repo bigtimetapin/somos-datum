@@ -7,7 +7,9 @@ import Model.Downloader as Downloader
 import Model.Model exposing (Model)
 import Model.State as State exposing (State(..))
 import Model.Uploader as Uploader
+import Msg.Downloader as DownloaderMsg
 import Msg.Msg exposing (Msg(..))
+import Msg.Uploader as UploaderMsg
 
 
 view : Model -> Html Msg
@@ -23,12 +25,12 @@ view model =
         [ tab_
             { state = Download Downloader.Top
             , title = "Download"
-            , msg = NoOp
+            , msg = FromDownloader DownloaderMsg.Connect
             }
         , tab_
             { state = Upload Uploader.Top
             , title = "Upload"
-            , msg = NoOp
+            , msg = FromUploader UploaderMsg.Connect
             }
         , Html.div
             [ style "float" "right"
@@ -78,10 +80,21 @@ isActive model state =
             "is-active-header-tab"
     in
     case state of
-        _ ->
-            case model.state == state of
-                True ->
+        Upload _ ->
+            case model.state of
+                Upload _ ->
                     class_
 
-                False ->
+                _ ->
                     ""
+
+        Download _ ->
+            case model.state of
+                Download _ ->
+                    class_
+
+                _ ->
+                    ""
+
+        Error _ ->
+            ""
