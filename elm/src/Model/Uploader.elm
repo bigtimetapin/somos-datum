@@ -1,4 +1,4 @@
-module Model.Uploader exposing (HasWalletUploader(..), Uploader(..), WaitingForWalletUploader(..))
+module Model.Uploader exposing (HasWalletUploader(..), Uploader(..), Uploading(..), WaitingForWalletUploader(..))
 
 import Model.AlmostCatalog exposing (AlmostCatalog)
 import Model.Catalog exposing (Catalog)
@@ -23,8 +23,15 @@ type
     | HasUninitializedCatalog AlmostCatalog
       -- uploading
     | HasCatalog Catalog
-    | WaitingForUpload Wallet
+    | WaitingForUpload Uploading
     | Uploaded Datum
+
+
+type Uploading
+    = WaitingForEncryption Wallet
+    | WaitingForCreateAccount Wallet
+    | WaitingForMakeImmutable Wallet
+    | WaitingForFileUpload Wallet
 
 
 type WaitingForWalletUploader

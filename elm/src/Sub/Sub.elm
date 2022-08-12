@@ -21,10 +21,6 @@ subs =
             (\json ->
                 ToUploader <| Uploader.ConnectAndGetCatalogSuccess json
             )
-        , UploaderSub.uploadSuccess
-            (\json ->
-                ToUploader <| Uploader.UploadSuccess json
-            )
         , UploaderSub.foundCatalogAsUninitialized
             (\json ->
                 ToUploader <| Uploader.FoundCatalogAsUninitialized json
@@ -32,6 +28,22 @@ subs =
         , UploaderSub.initializeCatalogSuccess
             (\json ->
                 ToUploader <| Uploader.InitializeCatalogSuccess json
+            )
+        , UploaderSub.creatingAccount
+            (\json ->
+                ToUploader <| Uploader.Uploading <| Uploader.CreatingAccount json
+            )
+        , UploaderSub.markingAccountAsImmutable
+            (\json ->
+                ToUploader <| Uploader.Uploading <| Uploader.MarkingAccountAsImmutable json
+            )
+        , UploaderSub.uploadingFile
+            (\json ->
+                ToUploader <| Uploader.Uploading <| Uploader.UploadingFile json
+            )
+        , UploaderSub.uploadSuccess
+            (\json ->
+                ToUploader <| Uploader.UploadSuccess json
             )
 
         -- downloader sub

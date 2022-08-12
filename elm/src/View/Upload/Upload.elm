@@ -183,16 +183,151 @@ body uploader =
                                 , View.Generic.Catalog.view catalog.uploader catalog
                                 ]
 
-                        Uploader.WaitingForUpload wallet ->
-                            Html.div
-                                [ class "has-border-2"
-                                ]
-                                [ View.Generic.Wallet.view wallet
-                                , Html.div
-                                    [ class "my-2 is-loading"
-                                    ]
-                                    []
-                                ]
+                        Uploader.WaitingForUpload uploading ->
+                            case uploading of
+                                Uploader.WaitingForEncryption wallet ->
+                                    Html.div
+                                        [ class "has-border-2"
+                                        ]
+                                        [ View.Generic.Wallet.view wallet
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Encrypting Files ✅
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Creating Shdw Storage Account ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Marking Shdw Storagte Account as Immutable ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "mb-6"
+                                            ]
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "my-2 is-loading"
+                                            ]
+                                            []
+                                        ]
+
+                                Uploader.WaitingForCreateAccount wallet ->
+                                    Html.div
+                                        [ class "has-border-2"
+                                        ]
+                                        [ View.Generic.Wallet.view wallet
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Files Encrypted 🏁
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Creating Shdw Storage Account ✅
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Marking Shdw Storagte Account as Immutable ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "mb-6"
+                                            ]
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "my-2 is-loading"
+                                            ]
+                                            []
+                                        ]
+
+                                Uploader.WaitingForMakeImmutable wallet ->
+                                    Html.div
+                                        [ class "has-border-2"
+                                        ]
+                                        [ View.Generic.Wallet.view wallet
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Encrypting Files 🏁
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Shdw Storage Account Created 🏁
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Marking Shdw Storagte Account as Immutable ✅
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "mb-6"
+                                            ]
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "my-2 is-loading"
+                                            ]
+                                            []
+                                        ]
+
+                                Uploader.WaitingForFileUpload wallet ->
+                                    Html.div
+                                        [ class "has-border-2"
+                                        ]
+                                        [ View.Generic.Wallet.view wallet
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Encrypting Files 🏁
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Shdw Storage Account Created 🏁
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Shw Storage Account Marked as Immutable 🏁
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "mb-6"
+                                            ]
+                                            [ Html.text
+                                                """Uploading Encrypted Zip File ✅
+                                                """
+                                            ]
+                                        , Html.div
+                                            [ class "my-2 is-loading"
+                                            ]
+                                            []
+                                        ]
 
                         Uploader.Uploaded datum ->
                             Html.div

@@ -101,7 +101,13 @@ update msg model =
                     )
 
                 UploaderMsg.Upload datum ->
-                    ( { model | state = Upload <| Uploader.HasWallet <| Uploader.WaitingForUpload datum.uploader }
+                    ( { model
+                        | state =
+                            Upload <|
+                                Uploader.HasWallet <|
+                                    Uploader.WaitingForUpload <|
+                                        Uploader.WaitingForEncryption datum.uploader
+                      }
                     , UploaderCmd.upload <| Datum.encode datum
                     )
 
@@ -148,6 +154,52 @@ update msg model =
 
                         Err error ->
                             ( { model | state = Error error }
+                            , Cmd.none
+                            )
+
+                UploaderMsg.Uploading uploadingCheckpoint ->
+                    case uploadingCheckpoint of
+                        UploaderMsg.EncryptingFiles wallet ->
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.WaitingForUpload <|
+                                                Uploader.WaitingForEncryption wallet
+                              }
+                            , Cmd.none
+                            )
+
+                        UploaderMsg.CreatingAccount wallet ->
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.WaitingForUpload <|
+                                                Uploader.WaitingForCreateAccount wallet
+                              }
+                            , Cmd.none
+                            )
+
+                        UploaderMsg.MarkingAccountAsImmutable wallet ->
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.WaitingForUpload <|
+                                                Uploader.WaitingForMakeImmutable wallet
+                              }
+                            , Cmd.none
+                            )
+
+                        UploaderMsg.UploadingFile wallet ->
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.WaitingForUpload <|
+                                                Uploader.WaitingForFileUpload wallet
+                              }
                             , Cmd.none
                             )
 

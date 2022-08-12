@@ -13,12 +13,15 @@ export async function shdw(wallet, file) {
     console.log("create storage account");
     const size = (((file.size / 1000000) + 1).toString()).split(".")[0] + "MB";
     console.log(size);
+    app.ports.creatingAccount.send(wallet.publicKey.toString());
     const createStorageResponse = await drive.createStorageAccount("somos-datum", size, version);
     const account = new web3.PublicKey(createStorageResponse.shdw_bucket);
     // mark account as immutable
     console.log("mark account as immutable");
+    app.ports.markingAccountAsImmutable.send(wallet.publicKey.toString());
     await drive.makeStorageImmutable(account, version);
     // upload file
     console.log("upload file");
+    app.ports.uploadingFile.send(wallet.publicKey.toString());
     return (await drive.uploadFile(account, file, version)).finalized_locations[0]
 }

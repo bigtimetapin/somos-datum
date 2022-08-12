@@ -1,4 +1,4 @@
-module Msg.Uploader exposing (From(..), To(..))
+module Msg.Uploader exposing (From(..), To(..), UploadingCheckpoint(..))
 
 import Model.AlmostCatalog exposing (AlmostCatalog)
 import Model.Datum exposing (Datum)
@@ -28,7 +28,15 @@ type
     | FoundCatalogAsUninitialized Json
     | InitializeCatalogSuccess Json
       -- upload
+    | Uploading UploadingCheckpoint
     | UploadSuccess Json
+
+
+type UploadingCheckpoint
+    = EncryptingFiles Wallet
+    | CreatingAccount Wallet
+    | MarkingAccountAsImmutable Wallet
+    | UploadingFile Wallet
 
 
 type alias Json =
