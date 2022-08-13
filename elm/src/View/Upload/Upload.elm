@@ -428,22 +428,13 @@ body uploader =
                     case waitingForWalletUploader of
                         Uploader.AlmostLoggedIn ->
                             Html.div
-                                [ class "has-border-2 px-2 pt-2 pb-6 pb-6 "
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
-                                [ Html.button
-                                    [ class "is-button-1 mr-2 mt-2"
-                                    , onClick <| FromUploader <| UploaderMsg.Connect
-                                    , style "float" "right"
+                                [ header
+                                , Html.div
+                                    [ class "my-2 is-loading"
                                     ]
-                                    [ Html.text "Connect"
-                                    ]
-                                , header
-                                , Html.button
-                                    [ class "is-button-1"
-                                    , onClick <| FromUploader <| UploaderMsg.Connect
-                                    ]
-                                    [ Html.text "Connect"
-                                    ]
+                                    []
                                 ]
 
                         Uploader.AlmostHasCatalog almostCatalog ->
