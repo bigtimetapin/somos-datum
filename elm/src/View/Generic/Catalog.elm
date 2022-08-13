@@ -7,7 +7,6 @@ import Model.Datum exposing (Datum)
 import Model.Wallet exposing (Wallet)
 import Msg.Msg exposing (Msg(..))
 import View.Generic.Datum
-import View.Generic.Mint
 
 
 view : Wallet -> Catalog -> Html Msg
@@ -26,16 +25,27 @@ view wallet catalog =
         [ class "has-border-2"
         ]
         [ Html.div
-            []
+            [ class "has-border-2 px-1 py-1 mb-2"
+            ]
             [ Html.text <|
                 String.join " "
                     [ "uploader address:"
                     , catalog.uploader
                     ]
             ]
-        , View.Generic.Mint.view catalog.mint
         , Html.div
-            []
+            [ class "has-border-2 px-1 py-1 mb-2"
+            ]
+            [ Html.text <|
+                String.join
+                    " "
+                    [ "mint address:"
+                    , catalog.mint
+                    ]
+            ]
+        , Html.div
+            [ class "has-border-2 px-1 py-1 mb-2"
+            ]
             [ Html.text <|
                 String.join " "
                     [ "total uploads:"

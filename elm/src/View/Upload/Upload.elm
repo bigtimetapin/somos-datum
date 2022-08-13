@@ -1,7 +1,7 @@
 module View.Upload.Upload exposing (body)
 
 import Html exposing (Html)
-import Html.Attributes exposing (class, id, multiple, placeholder, style, type_)
+import Html.Attributes exposing (class, href, id, multiple, placeholder, style, target, type_)
 import Html.Events exposing (onClick, onInput)
 import Model.Datum as Datum
 import Model.State as State exposing (State(..))
@@ -20,22 +20,62 @@ body uploader =
             case uploader of
                 Top ->
                     Html.div
-                        [ class "has-border-2"
+                        [ class "has-border-2 px-2 pt-2 pb-6 pb-6"
                         ]
-                        [ header
-                        , Html.button
+                        [ Html.button
                             [ class "is-button-1"
-                            , onClick <| FromUploader UploaderMsg.Connect
+                            , onClick <| FromUploader <| UploaderMsg.Connect
+                            , style "float" "right"
                             ]
                             [ Html.text "Connect"
                             ]
+                        , header
+                        , Html.button
+                            [ class "is-button-1"
+                            , onClick <| FromUploader <| UploaderMsg.Connect
+                            ]
+                            [ Html.text "Connect"
+                            ]
+                        , Html.text
+                            """ to upload
+                            """
+                        , Html.a
+                            [ class "has-sky-blue-text"
+                            , href "https://litprotocol.com/"
+                            , target "_blank"
+                            ]
+                            [ Html.text "token-gated"
+                            ]
+                        , Html.text
+                            """ &
+                            """
+                        , Html.a
+                            [ class "has-sky-blue-text"
+                            , href "https://shdw.genesysgo.com/shadow-infrastructure-overview/shadow-drive-overview"
+                            , target "_blank"
+                            ]
+                            [ Html.text "decentralized"
+                            ]
+                        , Html.text
+                            """ data for your
+                            """
+                        , Html.a
+                            [ class "has-sky-blue-text"
+                            , href "https://spl.solana.com/token"
+                            , target "_blank"
+                            ]
+                            [ Html.text "spl-token"
+                            ]
+                        , Html.text
+                            """ community. 😎
+                            """
                         ]
 
                 HasWallet hasWalletUploader ->
                     case hasWalletUploader of
                         Uploader.LoggedIn wallet ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
                                 , header
@@ -97,7 +137,7 @@ body uploader =
                                                 ]
                             in
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
                                 , header
@@ -129,7 +169,7 @@ body uploader =
 
                         Uploader.HasUninitializedCatalog almostCatalog ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view almostCatalog.uploader
                                 , header
@@ -155,7 +195,7 @@ body uploader =
 
                         Uploader.WaitingForCatalog wallet ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
                                 , header
@@ -167,7 +207,7 @@ body uploader =
 
                         Uploader.HasCatalog catalog ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view catalog.uploader
                                 , header
@@ -181,7 +221,8 @@ body uploader =
                                         []
                                     ]
                                 , Html.button
-                                    [ class "is-button-1 mb-2"
+                                    [ class "is-button-2 mb-2"
+                                    , style "width" "100%"
                                     , onClick <| FromUploader <| UploaderMsg.Upload <| Datum.fromCatalog catalog
                                     ]
                                     [ Html.text "Upload"
@@ -193,7 +234,7 @@ body uploader =
                             case uploading of
                                 Uploader.WaitingForEncryption wallet ->
                                     Html.div
-                                        [ class "pl-2 has-border-2"
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
                                         ]
                                         [ View.Generic.Wallet.view wallet
                                         , header
@@ -245,7 +286,7 @@ body uploader =
 
                                 Uploader.WaitingForCreateAccount wallet ->
                                     Html.div
-                                        [ class "pl-2 has-border-2"
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
                                         ]
                                         [ View.Generic.Wallet.view wallet
                                         , header
@@ -292,7 +333,7 @@ body uploader =
 
                                 Uploader.WaitingForMakeImmutable wallet ->
                                     Html.div
-                                        [ class "pl-2 has-border-2"
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
                                         ]
                                         [ View.Generic.Wallet.view wallet
                                         , header
@@ -334,7 +375,7 @@ body uploader =
 
                                 Uploader.WaitingForFileUpload wallet ->
                                     Html.div
-                                        [ class "pl-2 has-border-2"
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
                                         ]
                                         [ View.Generic.Wallet.view wallet
                                         , header
@@ -371,7 +412,7 @@ body uploader =
 
                         Uploader.Uploaded datum ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view datum.uploader
                                 , header
@@ -386,18 +427,27 @@ body uploader =
                     case waitingForWalletUploader of
                         Uploader.AlmostLoggedIn ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6 pb-6 "
                                 ]
-                                [ header
-                                , Html.div
-                                    [ class "my-2 is-loading"
+                                [ Html.button
+                                    [ class "is-button-1 mr-2 mt-2"
+                                    , onClick <| FromUploader <| UploaderMsg.Connect
+                                    , style "float" "right"
                                     ]
-                                    []
+                                    [ Html.text "Connect"
+                                    ]
+                                , header
+                                , Html.button
+                                    [ class "is-button-1"
+                                    , onClick <| FromUploader <| UploaderMsg.Connect
+                                    ]
+                                    [ Html.text "Connect"
+                                    ]
                                 ]
 
                         Uploader.AlmostHasCatalog almostCatalog ->
                             Html.div
-                                [ class "has-border-2 pl-2 pb-6 "
+                                [ class "has-border-2 px-2 pt-2 pb-6 pb-6 "
                                 ]
                                 [ Html.button
                                     [ class "is-button-1 mr-2 mt-2"
