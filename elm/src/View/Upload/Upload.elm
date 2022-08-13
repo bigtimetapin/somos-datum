@@ -310,7 +310,7 @@ body uploader =
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Marking Shdw Storagte Account as Immutable
+                                                """Marking Shdw Storage Account as Immutable
                                                 """
                                             , Html.div
                                                 [ class "mr-1 is-loading-tiny"
@@ -352,7 +352,7 @@ body uploader =
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Marking Shdw Storagte Account as Immutable
+                                                """Marking Shdw Storage Account as Immutable
                                                 """
                                             , Html.div
                                                 [ class "mr-1 is-loading-tiny"
@@ -394,7 +394,7 @@ body uploader =
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Shw Storage Account Marked as Immutable ☑️
+                                                """Shdw Storage Account Marked as Immutable ☑️
                                                 """
                                             ]
                                         , Html.div
@@ -418,7 +418,7 @@ body uploader =
                                 , header
                                 , Html.h2
                                     []
-                                    [ Html.text "Successful Upload"
+                                    [ Html.text "Successful Upload 🤩"
                                     ]
                                 , View.Generic.Datum.view datum.uploader datum
                                 ]

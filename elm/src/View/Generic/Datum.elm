@@ -17,7 +17,8 @@ view wallet datum =
         [ class "has-border-2"
         ]
         [ Html.div
-            []
+            [ class "has-border-2 px-1 py-1 mb-2"
+            ]
             [ Html.text <|
                 String.join
                     " "
@@ -26,7 +27,8 @@ view wallet datum =
                     ]
             ]
         , Html.div
-            []
+            [ class "has-border-2 px-1 py-1 mb-2"
+            ]
             [ Html.text <|
                 String.join
                     " "
