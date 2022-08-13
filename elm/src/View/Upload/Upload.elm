@@ -174,7 +174,8 @@ body uploader =
                                 [ View.Generic.Wallet.view almostCatalog.uploader
                                 , header
                                 , Html.div
-                                    []
+                                    [ class "pb-2"
+                                    ]
                                     [ Html.text <|
                                         String.join " "
                                             [ "This is your first time uploading to mint:"
