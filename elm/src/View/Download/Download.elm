@@ -1,7 +1,7 @@
 module View.Download.Download exposing (body)
 
 import Html exposing (Html)
-import Html.Attributes exposing (class, placeholder, style, type_)
+import Html.Attributes exposing (class, href, placeholder, style, target, type_)
 import Html.Events exposing (onClick, onInput)
 import Model.Downloader as Downloader exposing (Downloader)
 import Model.State as State exposing (State(..))
@@ -18,11 +18,19 @@ body downloader =
             case downloader of
                 Downloader.Top ->
                     Html.div
-                        [ class "has-border-2"
+                        [ class "has-border-2 px-2 pt-2 pb-6"
                         ]
                         [ Html.button
+                            [ class "is-button-1 mr-2 mt-2"
+                            , onClick <| FromDownloader <| DownloaderMsg.Connect
+                            , style "float" "right"
+                            ]
+                            [ Html.text "Connect"
+                            ]
+                        , header
+                        , Html.button
                             [ class "is-button-1"
-                            , onClick <| FromDownloader DownloaderMsg.Connect
+                            , onClick <| FromDownloader <| DownloaderMsg.Connect
                             ]
                             [ Html.text "Connect"
                             ]
@@ -32,14 +40,10 @@ body downloader =
                     case hasWalletDownloader of
                         Downloader.LoggedIn wallet ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
-                                , Html.h2
-                                    [ class "px-2 py-2"
-                                    ]
-                                    [ Html.text "Download Console"
-                                    ]
+                                , header
                                 , Html.div
                                     [ class "field"
                                     ]
@@ -91,9 +95,10 @@ body downloader =
                                                 ]
                             in
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     [ class "field"
                                     ]
@@ -122,11 +127,13 @@ body downloader =
 
                         Downloader.HasMint wallet mint ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
-                                    []
+                                    [ class "has-border-2 px-1 py-1 mb-2"
+                                    ]
                                     [ Html.text <|
                                         String.join " "
                                             [ "mint selected:"
@@ -194,9 +201,19 @@ body downloader =
                                                 ]
                             in
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 mb-2"
+                                    ]
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "mint selected:"
+                                            , mint
+                                            ]
+                                    ]
                                 , Html.div
                                     [ class "field"
                                     ]
@@ -228,9 +245,10 @@ body downloader =
 
                         Downloader.WaitingForCatalog wallet ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     [ class "my-2 is-loading"
                                     ]
@@ -239,17 +257,19 @@ body downloader =
 
                         Downloader.HasCatalog wallet catalog ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , View.Generic.Catalog.view wallet catalog
                                 ]
 
                         Downloader.WaitingForDatum wallet ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     [ class "my-2 is-loading"
                                     ]
@@ -258,13 +278,15 @@ body downloader =
 
                         Downloader.HasDatum wallet datum ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     []
                                     [ Html.button
                                         [ class "is-button-1"
+                                        , style "width" "100%"
                                         , onClick <| FromDownloader <| DownloaderMsg.Download wallet datum
                                         ]
                                         [ Html.text <|
@@ -278,9 +300,10 @@ body downloader =
 
                         Downloader.WaitingForDownload wallet ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     [ class "my-2 is-loading"
                                     ]
@@ -289,9 +312,10 @@ body downloader =
 
                         Downloader.Downloaded wallet _ ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
+                                , header
                                 , Html.div
                                     []
                                     [ Html.text
@@ -304,9 +328,10 @@ body downloader =
                     case waitingForWalletDownloader of
                         Downloader.AlmostLoggedIn ->
                             Html.div
-                                [ class "has-border-2"
+                                [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
-                                [ Html.div
+                                [ header
+                                , Html.div
                                     [ class "my-2 is-loading"
                                     ]
                                     []
@@ -314,8 +339,17 @@ body downloader =
 
                         Downloader.AlmostHasCatalog almostCatalog ->
                             Html.div
-                                []
+                                [ class "has-border-2 px-2 pt-2 pb-6"
+                                ]
                                 [ Html.button
+                                    [ class "is-button-1 mr-2 mt-2"
+                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetCatalog almostCatalog
+                                    , style "float" "right"
+                                    ]
+                                    [ Html.text "Connect"
+                                    ]
+                                , header
+                                , Html.button
                                     [ class "is-button-1"
                                     , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetCatalog almostCatalog
                                     ]
@@ -336,21 +370,38 @@ body downloader =
 
                         Downloader.AlmostHasDatum datum ->
                             Html.div
-                                []
+                                [ class "has-border-2 px-2 pt-2 pb-6"
+                                ]
                                 [ Html.button
+                                    [ class "is-button-1 mr-2 mt-2"
+                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetDatum datum
+                                    , style "float" "right"
+                                    ]
+                                    [ Html.text "Connect"
+                                    ]
+                                , header
+                                , Html.button
                                     [ class "is-button-1"
                                     , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetDatum datum
                                     ]
                                     [ Html.text "Connect"
                                     ]
-                                , Html.div
-                                    []
-                                    [ Html.text
-                                        """& then proceed with downloading with
-                                        """
+                                , Html.text
+                                    """ to download
+                                    """
+                                , Html.a
+                                    [ class "has-sky-blue-text"
+                                    , href "https://litprotocol.com/"
+                                    , target "_blank"
                                     ]
+                                    [ Html.text "token-gated"
+                                    ]
+                                , Html.text
+                                    """ data associated with ⬇️
+                                        """
                                 , Html.div
-                                    []
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
                                     [ Html.text <|
                                         String.join " "
                                             [ "mint:"
@@ -358,18 +409,20 @@ body downloader =
                                             ]
                                     ]
                                 , Html.div
-                                    []
+                                    [ class "has-border-2 px-1 py-1 mb-2"
+                                    ]
                                     [ Html.text <|
                                         String.join " "
-                                            [ "uploader:"
+                                            [ "uploaded by:"
                                             , datum.uploader
                                             ]
                                     ]
                                 , Html.div
-                                    []
+                                    [ class "has-border-2 px-1 py-1 mb-2"
+                                    ]
                                     [ Html.text <|
                                         String.join " "
-                                            [ "downloadable asset id:"
+                                            [ "with unique asset id:"
                                             , String.fromInt datum.increment
                                             ]
                                     ]
@@ -379,4 +432,16 @@ body downloader =
         [ class "container"
         ]
         [ html
+        ]
+
+
+header : Html Msg
+header =
+    Html.div
+        [ class "mt-2 mb-3"
+        ]
+        [ Html.h2
+            []
+            [ Html.text "Download Console"
+            ]
         ]
