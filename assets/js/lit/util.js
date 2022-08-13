@@ -5,6 +5,9 @@ export function solRpcConditions(mint) {
         {
             method: "balanceOfToken",
             params: [mint],
+            pdaParams: [],
+            pdaInterface: { offset: 0, fields: {} },
+            pdaKey: "",
             chain,
             returnValueTest: {
                 key: "$.amount",
