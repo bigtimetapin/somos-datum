@@ -34,6 +34,29 @@ body downloader =
                             ]
                             [ Html.text "Connect"
                             ]
+                        , Html.text
+                            """ to download
+                            """
+                        , Html.a
+                            [ class "has-sky-blue-text"
+                            , href "https://litprotocol.com/"
+                            , target "_blank"
+                            ]
+                            [ Html.text "token-gated"
+                            ]
+                        , Html.text
+                            """ data from your
+                            """
+                        , Html.a
+                            [ class "has-sky-blue-text"
+                            , href "https://spl.solana.com/token"
+                            , target "_blank"
+                            ]
+                            [ Html.text "spl-token"
+                            ]
+                        , Html.text
+                            """ community. 😎
+                            """
                         ]
 
                 Downloader.HasWallet hasWalletDownloader ->

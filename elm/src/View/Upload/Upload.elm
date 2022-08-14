@@ -445,13 +445,28 @@ body uploader =
                                     ]
                                     [ Html.text "Connect"
                                     ]
-                                , Html.text <|
-                                    String.join " " <|
-                                        [ ""
-                                        , "& then proceed to uploading to"
-                                        , "mint:"
-                                        , almostCatalog.mint
-                                        ]
+                                , Html.text
+                                    """ to upload
+                                    """
+                                , Html.a
+                                    [ class "has-sky-blue-text"
+                                    , href "https://litprotocol.com/"
+                                    , target "_blank"
+                                    ]
+                                    [ Html.text "token-gated"
+                                    ]
+                                , Html.text
+                                    """ data associated with ⬇️
+                                        """
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "mint:"
+                                            , almostCatalog.mint
+                                            ]
+                                    ]
                                 ]
     in
     Html.div
