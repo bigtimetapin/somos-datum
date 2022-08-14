@@ -355,14 +355,34 @@ body downloader =
                                     ]
                                     [ Html.text "Connect"
                                     ]
+                                , Html.text
+                                    """ to download
+                                    """
+                                , Html.a
+                                    [ class "has-sky-blue-text"
+                                    , href "https://litprotocol.com/"
+                                    , target "_blank"
+                                    ]
+                                    [ Html.text "token-gated"
+                                    ]
+                                , Html.text
+                                    """ data associated with ⬇️
+                                        """
                                 , Html.div
-                                    []
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
                                     [ Html.text <|
-                                        String.join " " <|
-                                            [ "& then proceed to downloading with"
-                                            , "mint:"
+                                        String.join " "
+                                            [ "mint:"
                                             , almostCatalog.mint
-                                            , "from uploader:"
+                                            ]
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 mb-2"
+                                    ]
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "uploaded by:"
                                             , almostCatalog.uploader
                                             ]
                                     ]
