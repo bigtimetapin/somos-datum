@@ -461,11 +461,18 @@ body uploader =
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 my-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "mint:"
-                                            , almostCatalog.mint
-                                            ]
+                                    [ Html.text "mint: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , almostCatalog.mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text almostCatalog.mint
+                                        ]
                                     ]
                                 ]
     in

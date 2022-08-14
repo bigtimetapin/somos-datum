@@ -308,16 +308,56 @@ body downloader =
                                 , Html.div
                                     []
                                     [ Html.button
-                                        [ class "is-button-1"
+                                        [ class "is-button-2"
                                         , style "width" "100%"
                                         , onClick <| FromDownloader <| DownloaderMsg.Download wallet datum
                                         ]
                                         [ Html.text <|
                                             String.join " "
-                                                [ "download:"
-                                                , String.fromInt datum.increment
+                                                [ "download"
                                                 ]
                                         ]
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 mb-2 mt-2"
+                                    ]
+                                    [ Html.text "mint: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , datum.mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.mint
+                                        ]
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 mb-2"
+                                    ]
+                                    [ Html.text "uploaded by: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/account/"
+                                                , datum.uploader
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.uploader
+                                        ]
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 mb-2"
+                                    ]
+                                    [ Html.text <|
+                                        String.join " "
+                                            [ "with unique asset id:"
+                                            , String.fromInt datum.increment
+                                            ]
                                     ]
                                 ]
 
@@ -392,22 +432,36 @@ body downloader =
                                     """ data associated with ⬇️
                                         """
                                 , Html.div
-                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    [ class "has-border-2 px-1 py-1 mb-2 mt-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "mint:"
-                                            , almostCatalog.mint
-                                            ]
+                                    [ Html.text "mint: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , almostCatalog.mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text almostCatalog.mint
+                                        ]
                                     ]
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "uploaded by:"
-                                            , almostCatalog.uploader
-                                            ]
+                                    [ Html.text "uploaded by: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/account/"
+                                                , almostCatalog.uploader
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text almostCatalog.uploader
+                                        ]
                                     ]
                                 ]
 
@@ -443,22 +497,36 @@ body downloader =
                                     """ data associated with ⬇️
                                         """
                                 , Html.div
-                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    [ class "has-border-2 px-1 py-1 mb-2 mt-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "mint:"
-                                            , datum.mint
-                                            ]
+                                    [ Html.text "mint: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , datum.mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.mint
+                                        ]
                                     ]
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "uploaded by:"
-                                            , datum.uploader
-                                            ]
+                                    [ Html.text "uploaded by: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/account/"
+                                                , datum.uploader
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.uploader
+                                        ]
                                     ]
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"

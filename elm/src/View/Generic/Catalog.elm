@@ -1,7 +1,7 @@
 module View.Generic.Catalog exposing (view)
 
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href, target)
 import Model.Catalog exposing (Catalog)
 import Model.Datum exposing (Datum)
 import Model.Wallet exposing (Wallet)
@@ -27,21 +27,34 @@ view wallet catalog =
         [ Html.div
             [ class "has-border-2 px-1 py-1 mb-2"
             ]
-            [ Html.text <|
-                String.join " "
-                    [ "uploader address:"
-                    , catalog.uploader
-                    ]
+            [ Html.text "mint: "
+            , Html.a
+                [ class "has-sky-blue-text"
+                , href <|
+                    String.concat
+                        [ "https://solscan.io/token/"
+                        , catalog.mint
+                        ]
+                , target "_blank"
+                ]
+                [ Html.text catalog.mint
+                ]
             ]
         , Html.div
             [ class "has-border-2 px-1 py-1 mb-2"
             ]
-            [ Html.text <|
-                String.join
-                    " "
-                    [ "mint address:"
-                    , catalog.mint
-                    ]
+            [ Html.text "uploader: "
+            , Html.a
+                [ class "has-sky-blue-text"
+                , href <|
+                    String.concat
+                        [ "https://solscan.io/account/"
+                        , catalog.uploader
+                        ]
+                , target "_blank"
+                ]
+                [ Html.text catalog.uploader
+                ]
             ]
         , Html.div
             [ class "has-border-2 px-1 py-1 mb-2"
