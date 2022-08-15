@@ -22,4 +22,4 @@ aws s3 cp assets/fonts/ $BUCKET/fonts/ --recursive --profile tap-in
 aws s3 cp assets/js/bundle.js $BUCKET/js/ --profile tap-in
 
 echo "Invalidating CloudFront Cache..."
-aws cloudfront create-invalidation --distribution-id E7ZLZHFUERPJK --paths "/*" --profile tap-in
+aws cloudfront create-invalidation --distribution-id E3LZQABNPVM9O1 --paths "/*" --profile tap-in
