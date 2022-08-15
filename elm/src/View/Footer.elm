@@ -14,14 +14,14 @@ view =
             [ class "level-item"
             ]
             [ Html.a
-                [ href "https://www.instagram.com/somos.world/"
+                [ href "https://twitter.com/bigtimetapin"
                 , target "_blank"
                 ]
                 [ Html.span
                     [ class "icon is-medium"
                     ]
                     [ Html.i
-                        [ class "fab fa-sm fa-instagram"
+                        [ class "fab fa-sm fa-twitter"
                         ]
                         []
                     ]
