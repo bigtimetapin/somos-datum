@@ -549,7 +549,7 @@ body downloader =
 header : Html Msg
 header =
     Html.div
-        [ class "mt-2 mb-3"
+        [ class "mt-2 mb-5"
         ]
         [ Html.h2
             []
