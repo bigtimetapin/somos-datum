@@ -4,21 +4,21 @@ secret.tfvars
 *.iml
 
 # css build
-assets/css/
-assets/node_modules/
-assets/package-lock.json
+web/css/
+web/node_modules/
+web/package-lock.json
 
 # dev build
 index.html
-!assets/index.html
+!web/index.html
 
 # js build artifacts
-assets/js/bundle.js
+web/js/bundle.js
 
 # elm build artifacts
 elm-stuff/
 dist/
-assets/elm.min.js
+web/elm.min.js
 
 # rust build artifacts
 target

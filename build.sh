@@ -2,7 +2,7 @@
 set -e
 
 js="dist/elm.js"
-min="assets/elm.min.js"
+min="web/elm.min.js"
 
 # build the elm app (using optimized flag)
 elm make --optimize --output=$js elm/src/Main.elm
