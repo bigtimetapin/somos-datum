@@ -157,11 +157,18 @@ body downloader =
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "mint selected:"
-                                            , mint
-                                            ]
+                                    [ Html.text "mint selected: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text mint
+                                        ]
                                     ]
                                 , Html.div
                                     [ class "field"
