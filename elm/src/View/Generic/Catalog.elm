@@ -66,13 +66,13 @@ view wallet catalog =
                     ]
             ]
         , Html.div
-            [ class "columns"
+            [ class "columns is-multiline"
             ]
           <|
             List.map
                 (\i ->
                     Html.div
-                        [ class "column"
+                        [ class "column is-2"
                         ]
                         [ View.Generic.Datum.href wallet (toDatum i catalog)
                         ]

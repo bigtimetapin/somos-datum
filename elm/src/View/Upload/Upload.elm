@@ -416,7 +416,8 @@ body uploader =
                                 [ View.Generic.Wallet.view datum.uploader
                                 , header
                                 , Html.h2
-                                    []
+                                    [ class "mb-2"
+                                    ]
                                     [ Html.text "Successful Upload 🤩"
                                     ]
                                 , View.Generic.Datum.view datum.uploader datum

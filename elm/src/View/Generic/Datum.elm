@@ -1,7 +1,7 @@
 module View.Generic.Datum exposing (href, view)
 
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, target)
 import Html.Events exposing (onClick)
 import Model.Datum exposing (Datum)
 import Model.Downloader as Downloader
@@ -14,31 +14,48 @@ import Msg.Msg exposing (Msg(..))
 view : Wallet -> Datum -> Html Msg
 view wallet datum =
     Html.div
-        [ class "has-border-2"
-        ]
+        []
         [ Html.div
-            [ class "has-border-2 px-1 py-1 mb-2"
+            [ class "has-border-2 px-1 py-1 my-2"
             ]
-            [ Html.text <|
-                String.join
-                    " "
-                    [ "mint address:"
-                    , datum.mint
-                    ]
-            ]
-        , Html.div
-            [ class "has-border-2 px-1 py-1 mb-2"
-            ]
-            [ Html.text <|
-                String.join
-                    " "
-                    [ "uploader address:"
-                    , datum.uploader
-                    ]
+            [ Html.text "mint: "
+            , Html.a
+                [ class "has-sky-blue-text"
+                , Html.Attributes.href <|
+                    String.concat
+                        [ "https://solscan.io/token/"
+                        , datum.mint
+                        ]
+                , target "_blank"
+                ]
+                [ Html.text datum.mint
+                ]
             ]
         , Html.div
-            []
-            [ href wallet datum
+            [ class "has-border-2 px-1 py-1 my-2"
+            ]
+            [ Html.text "uploader: "
+            , Html.a
+                [ class "has-sky-blue-text"
+                , Html.Attributes.href <|
+                    String.concat
+                        [ "https://solscan.io/account/"
+                        , datum.uploader
+                        ]
+                , target "_blank"
+                ]
+                [ Html.text datum.uploader
+                ]
+            ]
+        , Html.div
+            [ class "has-border-2 px-1 py-1 my-2"
+            ]
+            [ Html.div
+                [ class "mb-2"
+                ]
+                [ Html.text "follow link to view in download console ⬇️"
+                ]
+            , href wallet datum
             ]
         ]
 
