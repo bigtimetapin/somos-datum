@@ -352,7 +352,7 @@ body downloader =
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"
                                     ]
-                                    [ Html.text "uploaded by: "
+                                    [ Html.text "uploader: "
                                     , Html.a
                                         [ class "has-sky-blue-text"
                                         , href <|
@@ -465,7 +465,7 @@ body downloader =
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"
                                     ]
-                                    [ Html.text "uploaded by: "
+                                    [ Html.text "uploader: "
                                     , Html.a
                                         [ class "has-sky-blue-text"
                                         , href <|
@@ -530,7 +530,7 @@ body downloader =
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"
                                     ]
-                                    [ Html.text "uploaded by: "
+                                    [ Html.text "uploader: "
                                     , Html.a
                                         [ class "has-sky-blue-text"
                                         , href <|
