@@ -22,8 +22,7 @@ view wallet catalog =
                     List.range 1 increment
     in
     Html.div
-        [ class "has-border-2"
-        ]
+        []
         [ Html.div
             [ class "has-border-2 px-1 py-1 mb-2"
             ]

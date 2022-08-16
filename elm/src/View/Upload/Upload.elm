@@ -172,13 +172,31 @@ body uploader =
                                 [ View.Generic.Wallet.view almostCatalog.uploader
                                 , header
                                 , Html.div
-                                    [ class "pb-2"
+                                    [ class "has-border-2 px-2 pt-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "This is your first time uploading to mint:"
-                                            , almostCatalog.mint
+                                    [ Html.div
+                                        []
+                                        [ Html.text <|
+                                            String.join " "
+                                                [ "This is your first time uploading with ⬇️"
+                                                ]
+                                        ]
+                                    , Html.div
+                                        [ class "has-border-2 px-1 py-1 my-2"
+                                        ]
+                                        [ Html.text "mint: "
+                                        , Html.a
+                                            [ class "has-sky-blue-text"
+                                            , Html.Attributes.href <|
+                                                String.concat
+                                                    [ "https://solscan.io/token/"
+                                                    , almostCatalog.mint
+                                                    ]
+                                            , target "_blank"
                                             ]
+                                            [ Html.text almostCatalog.mint
+                                            ]
+                                        ]
                                     ]
                                 , Html.div
                                     []
