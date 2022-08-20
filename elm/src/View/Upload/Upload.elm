@@ -248,6 +248,14 @@ body uploader =
                                 ]
 
                         Uploader.WaitingForUpload uploading ->
+                            let
+                                waiting =
+                                    Html.div
+                                        [ class "mr-1 is-loading-tiny"
+                                        , style "float" "left"
+                                        ]
+                                        []
+                            in
                             case uploading of
                                 Uploader.WaitingForEncryption wallet ->
                                     Html.div
@@ -260,44 +268,42 @@ body uploader =
                                             [ Html.text
                                                 """Encrypting Files
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
                                                 """Creating Shdw Storage Account
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
                                                 """Marking Shdw Storage Account as Immutable
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Uploading Encrypted Zip File
+                                                """Uploading Encrypted Zip File to Shdw Drive
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Uploading MetaData to Shdw Drive
+                                                """
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Publishing URL on-chain
+                                                """
+                                            , waiting
                                             ]
                                         ]
 
@@ -318,33 +324,35 @@ body uploader =
                                             [ Html.text
                                                 """Creating Shdw Storage Account
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
                                                 """Marking Shdw Storage Account as Immutable
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Uploading Encrypted Zip File
+                                                """Uploading Encrypted Zip File to Shdw Drive
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Uploading MetaData to Shdw Drive
+                                                """
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Publishing URL on-chain
+                                                """
+                                            , waiting
                                             ]
                                         ]
 
@@ -371,22 +379,28 @@ body uploader =
                                             [ Html.text
                                                 """Marking Shdw Storage Account as Immutable
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
                                             ]
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Uploading Encrypted Zip File
+                                                """Uploading Encrypted Zip File to Shdw Drive
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Uploading MetaData to Shdw Drive
+                                                """
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Publishing URL on-chain
+                                                """
+                                            , waiting
                                             ]
                                         ]
 
@@ -417,13 +431,114 @@ body uploader =
                                         , Html.div
                                             []
                                             [ Html.text
-                                                """Uploading Encrypted Zip File
+                                                """Uploading Encrypted Zip File to Shdw Drive
                                                 """
-                                            , Html.div
-                                                [ class "mr-1 is-loading-tiny"
-                                                , style "float" "left"
-                                                ]
-                                                []
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Uploading MetaData to Shdw Drive
+                                                """
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Publishing URL on-chain
+                                                """
+                                            , waiting
+                                            ]
+                                        ]
+
+                                Uploader.WaitingForMetaDataUpload wallet ->
+                                    Html.div
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
+                                        ]
+                                        [ View.Generic.Wallet.view wallet
+                                        , header
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Files Encrypted ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Shdw Storage Account Created ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Shdw Storage Account Marked as Immutable ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Encrypted Zip File Uploaded to Shdw Drive ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Uploading MetaData to Shdw Drive
+                                                """
+                                            , waiting
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Publishing URL on-chain
+                                                """
+                                            , waiting
+                                            ]
+                                        ]
+
+                                Uploader.WaitingForUrlPublish wallet ->
+                                    Html.div
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
+                                        ]
+                                        [ View.Generic.Wallet.view wallet
+                                        , header
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Files Encrypted ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Shdw Storage Account Created ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Shdw Storage Account Marked as Immutable ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Encrypted Zip File Uploaded to Shdw Drive ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """MetaData Uploaded to Shdw Drive ☑️
+                                                """
+                                            ]
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """Publishing URL on-chain
+                                                """
+                                            , waiting
                                             ]
                                         ]
 

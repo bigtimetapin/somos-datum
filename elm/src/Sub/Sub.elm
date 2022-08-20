@@ -41,6 +41,14 @@ subs =
             (\json ->
                 ToUploader <| Uploader.Uploading <| Uploader.UploadingFile json
             )
+        , UploaderSub.uploadingMetaData
+            (\json ->
+                ToUploader <| Uploader.Uploading <| Uploader.UploadingMetaData json
+            )
+        , UploaderSub.publishingUrl
+            (\json ->
+                ToUploader <| Uploader.Uploading <| Uploader.PublishingUrl json
+            )
         , UploaderSub.uploadSuccess
             (\json ->
                 ToUploader <| Uploader.UploadSuccess json

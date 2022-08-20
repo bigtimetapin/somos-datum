@@ -10,5 +10,5 @@ if (network === "https://api.mainnet-beta.solana.com/") {
     chain = "solanaDevnet";
 } else {
     const msg = "could not configure lit chain with solana network: " + network
-    app.ports.genericErrorListener.send(msg);
+    app.ports.genericError.send(msg);
 }

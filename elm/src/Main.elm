@@ -9,6 +9,7 @@ import Model.AlmostCatalog as AlmostCatalog
 import Model.Catalog as Catalog
 import Model.Datum as Datum
 import Model.Downloader as Downloader
+import Model.Lit as Lit
 import Model.Model as Model exposing (Model)
 import Model.State as State exposing (State(..))
 import Model.Uploader as Uploader
@@ -108,7 +109,7 @@ update msg model =
                                     Uploader.WaitingForUpload <|
                                         Uploader.WaitingForEncryption datum.uploader
                       }
-                    , UploaderCmd.upload <| Datum.encode datum
+                    , UploaderCmd.upload <| Lit.encode datum
                     )
 
         ToUploader to ->
@@ -199,6 +200,28 @@ update msg model =
                                         Uploader.HasWallet <|
                                             Uploader.WaitingForUpload <|
                                                 Uploader.WaitingForFileUpload wallet
+                              }
+                            , Cmd.none
+                            )
+
+                        UploaderMsg.UploadingMetaData wallet ->
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.WaitingForUpload <|
+                                                Uploader.WaitingForMetaDataUpload wallet
+                              }
+                            , Cmd.none
+                            )
+
+                        UploaderMsg.PublishingUrl wallet ->
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.WaitingForUpload <|
+                                                Uploader.WaitingForUrlPublish wallet
                               }
                             , Cmd.none
                             )

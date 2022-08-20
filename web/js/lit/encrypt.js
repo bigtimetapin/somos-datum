@@ -3,7 +3,7 @@ import {chain} from "./config";
 import {solRpcConditions} from "./util";
 
 
-export async function encrypt(mint, files) {
+export async function encrypt(files, args) {
     // build client
     const client = new LitJsSdk.LitNodeClient()
     // await for connection
@@ -21,7 +21,7 @@ export async function encrypt(mint, files) {
     // push key to network
     console.log("pushing key to network")
     const encryptedSymmetricKey = await client.saveEncryptionKey({
-        solRpcConditions: solRpcConditions(mint),
+        solRpcConditions: solRpcConditions(args),
         chain: chain,
         authSig: authSig,
         symmetricKey: symmetricKey,

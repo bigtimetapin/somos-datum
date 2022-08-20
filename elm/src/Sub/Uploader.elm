@@ -43,6 +43,12 @@ port markingAccountAsImmutable : (Json -> msg) -> Sub msg
 port uploadingFile : (Json -> msg) -> Sub msg
 
 
+port uploadingMetaData : (Json -> msg) -> Sub msg
+
+
+port publishingUrl : (Json -> msg) -> Sub msg
+
+
 port uploadSuccess : (Json -> msg) -> Sub msg
 
 

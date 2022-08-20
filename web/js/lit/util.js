@@ -1,18 +1,18 @@
 import {chain} from "./config";
 
-export function solRpcConditions(mint) {
+export function solRpcConditions(args) {
     return [
         {
-            method: "balanceOfToken",
-            params: [mint],
+            method: args.method,
+            params: [args.mint],
             pdaParams: [],
-            pdaInterface: { offset: 0, fields: {} },
+            pdaInterface: {offset: 0, fields: {}},
             pdaKey: "",
             chain,
             returnValueTest: {
-                key: "$.amount",
-                comparator: ">",
-                value: "0",
+                key: args.returnValueTest.key, // "$.amount"
+                comparator: args.returnValueTest.comparator, // ">"
+                value: args.returnValueTest.value, // "0"
             },
         },
     ]

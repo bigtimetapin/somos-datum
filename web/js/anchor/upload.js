@@ -1,5 +1,5 @@
 import {encrypt} from "../lit/encrypt";
-import {shdw} from "../shdw";
+import {provision, uploadFile} from "../shdw";
 import {textEncoder} from "./util";
 import {web3} from "@project-serum/anchor";
 
@@ -18,16 +18,29 @@ export async function upload(program, provider, json) {
             return null
         }
         // build mint
-        const mint = new web3.PublicKey(parsed.mint);
+        const mint = new web3.PublicKey(parsed.lit.mint);
         // // select files
         const files = document.getElementById("gg-sd-zip").files;
         // invoke encryption
-        const encrypted = await encrypt(mint, files);
-        // upload blob to shdw drive
+        console.log(parsed.lit);
+        const encrypted = await encrypt(files, parsed.lit);
+        // provision shdw drive
         const fileName = "encrypted.zip"
         const file = new File([encrypted.encryptedZip], fileName)
-        const url = await shdw(provider.wallet, file);
+        const provisioned = await provision(provider.wallet, file);
+        // upload blob to shdw drive
+        app.ports.uploadingFile.send(provider.wallet.publicKey.toString());
+        const url = await uploadFile(provider.wallet, file, provisioned.drive, provisioned.account);
+        console.log(provisioned);
+        console.log(url);
+        // upload meta data to shdw drive
+        app.ports.uploadingMetaData.send(provider.wallet.publicKey.toString());
+        const metaData = buildMetaData(parsed.lit);
+        console.log(metaData);
+        const url2 = await uploadFile(provider.wallet, metaData, provisioned.drive, provisioned.account);
+        console.log(url2);
         // derive pda increment
+        app.ports.publishingUrl.send(provider.wallet.publicKey.toString());
         let pdaIncrement, _;
         [pdaIncrement, _] = await web3.PublicKey.findProgramAddress(
             [
@@ -49,6 +62,10 @@ export async function upload(program, provider, json) {
         // build upload url
         const prefix = url.replace(fileName, "");
         const encodedPrefix = textEncoder.encode(prefix);
+        console.log(prefix);
+        console.log(prefix.length);
+        console.log(encodedPrefix);
+        console.log(encodedPrefix.length);
         // invoke rpc
         await program.methods
             .publishAssets(parsed.increment, Buffer.from(encrypted.encryptedSymmetricKey), Buffer.from(encodedPrefix))
@@ -68,4 +85,17 @@ export async function upload(program, provider, json) {
         console.log(error)
         app.ports.genericError.send(error.toString());
     }
+}
+
+function buildMetaData(lit) {
+    // build meta data
+    const meta = {
+        "lit": lit
+    }
+    const json = JSON.stringify(meta);
+    const bytes = textEncoder.encode(json);
+    const blob = new Blob([bytes], {
+        type: "application/json;charset=utf-8"
+    });
+    return new File([blob], "meta.json");
 }

@@ -37,6 +37,8 @@ type UploadingCheckpoint
     | CreatingAccount Wallet
     | MarkingAccountAsImmutable Wallet
     | UploadingFile Wallet
+    | UploadingMetaData Wallet
+    | PublishingUrl Wallet
 
 
 type alias Json =

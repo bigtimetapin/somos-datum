@@ -32,6 +32,8 @@ type Uploading
     | WaitingForCreateAccount Wallet
     | WaitingForMakeImmutable Wallet
     | WaitingForFileUpload Wallet
+    | WaitingForMetaDataUpload Wallet
+    | WaitingForUrlPublish Wallet
 
 
 type WaitingForWalletUploader

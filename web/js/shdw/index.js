@@ -3,7 +3,7 @@ import {ShdwDrive} from "@shadow-drive/sdk";
 import {version} from "./config";
 import {network} from "../anchor/config";
 
-export async function shdw(wallet, file) {
+export async function provision(wallet, file) {
     // build drive client
     console.log("build shdw client with finalized commitment");
     // build connection with finalized commitment for initial account creation
@@ -11,7 +11,7 @@ export async function shdw(wallet, file) {
     const drive = await new ShdwDrive(connection, wallet).init();
     // create storage account
     console.log("create storage account");
-    const size = (((file.size / 1000000) + 1).toString()).split(".")[0] + "MB";
+    const size = (((file.size / 1000000) + 2).toString()).split(".")[0] + "MB";
     console.log(size);
     app.ports.creatingAccount.send(wallet.publicKey.toString());
     const createStorageResponse = await drive.createStorageAccount("somos-datum", size, version);
@@ -20,8 +20,11 @@ export async function shdw(wallet, file) {
     console.log("mark account as immutable");
     app.ports.markingAccountAsImmutable.send(wallet.publicKey.toString());
     await drive.makeStorageImmutable(account, version);
+    return {drive, account}
+}
+
+export async function uploadFile(wallet, file, drive, account) {
     // upload file
     console.log("upload file");
-    app.ports.uploadingFile.send(wallet.publicKey.toString());
     return (await drive.uploadFile(account, file, version)).finalized_locations[0]
 }
