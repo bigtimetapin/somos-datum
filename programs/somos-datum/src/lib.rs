@@ -15,7 +15,6 @@ pub mod somos_datum {
     pub fn publish_assets(
         ctx: Context<PublishAssets>,
         seed: u8,
-        key: [u8; 184],
         url: [u8; 78],
     ) -> Result<()> {
         let datum = &mut ctx.accounts.datum;
@@ -27,10 +26,11 @@ pub mod somos_datum {
         increment_pda.increment = increment;
         // mint
         datum.mint = ctx.accounts.mint.key();
-        // assets
-        datum.assets = EncryptedAssets { key, url };
-        // datum pda
+        // url
+        datum.url = url;
+        // authority
         datum.authority = ctx.accounts.payer.key();
+        // datum pda
         datum.seed = seed;
         datum.bump = *ctx.bumps.get("datum").unwrap();
         Ok(())
@@ -85,16 +85,17 @@ pub struct PublishAssets<'info> {
 pub struct Datum {
     // target mint
     pub mint: Pubkey,
-    // encrypted assets
-    pub assets: EncryptedAssets,
-    // pda
+    // upload url
+    pub url: [u8; 78],
+    // authority
     pub authority: Pubkey,
+    // pda
     pub seed: u8,
     pub bump: u8,
 }
 
 impl Datum {
-    const SPACE: usize = 8 + 32 + 184 + 78 + 32 + 1 + 1;
+    const SPACE: usize = 8 + 32 + 78 + 32 + 1 + 1;
 }
 
 #[account]
@@ -104,13 +105,6 @@ pub struct Increment {
 
 impl Increment {
     const SPACE: usize = 8 + 8;
-}
-
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy)]
-pub struct EncryptedAssets {
-    pub key: [u8; 184],
-    pub url: [u8; 78],
 }
 
 #[error_code]

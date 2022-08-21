@@ -60,7 +60,7 @@ export async function upload(program, provider, json) {
         const encodedPrefix = textEncoder.encode(prefix);
         // invoke rpc
         await program.methods
-            .publishAssets(parsed.increment, Buffer.from(encrypted.encryptedSymmetricKey), Buffer.from(encodedPrefix))
+            .publishAssets(parsed.increment, Buffer.from(encodedPrefix))
             .accounts({
                 datum: pdaDatum,
                 increment: pdaIncrement,

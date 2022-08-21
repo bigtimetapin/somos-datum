@@ -15,7 +15,6 @@ describe("somos-datum", () => {
         // instantiate mint
         const mint = await createUser();
         // create assets
-        const key = Buffer.from("k".repeat(184));
         const url = Buffer.from("u".repeat(78));
         // derive increment
         let pdaIncrement, _;
@@ -47,7 +46,7 @@ describe("somos-datum", () => {
             }).rpc();
         // invoke rpc
         await program.methods
-            .publishAssets(1, key, url)
+            .publishAssets(1, url)
             .accounts({
                 datum: pdaOne,
                 increment: pdaIncrement,
@@ -70,7 +69,7 @@ describe("somos-datum", () => {
         try {
             // invoke rpc
             await program.methods
-                .publishAssets(1, key, url)
+                .publishAssets(1, url)
                 .accounts({
                     datum: pdaOne,
                     increment: pdaIncrement,
@@ -98,7 +97,7 @@ describe("somos-datum", () => {
         try {
             // invoke rpc
             await program.methods
-                .publishAssets(3, key, url)
+                .publishAssets(3, url)
                 .accounts({
                     datum: pdaThree,
                     increment: pdaIncrement,
@@ -124,7 +123,7 @@ describe("somos-datum", () => {
         );
         // invoke rpc
         await program.methods
-            .publishAssets(2, key, url)
+            .publishAssets(2, url)
             .accounts({
                 datum: pdaTwo,
                 increment: pdaIncrement,

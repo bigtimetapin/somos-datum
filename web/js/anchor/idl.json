@@ -63,15 +63,6 @@
           "type": "u8"
         },
         {
-          "name": "key",
-          "type": {
-            "array": [
-              "u8",
-              184
-            ]
-          }
-        },
-        {
           "name": "url",
           "type": {
             "array": [
@@ -94,9 +85,12 @@
             "type": "publicKey"
           },
           {
-            "name": "assets",
+            "name": "url",
             "type": {
-              "defined": "EncryptedAssets"
+              "array": [
+                "u8",
+                78
+              ]
             }
           },
           {
@@ -127,39 +121,14 @@
       }
     }
   ],
-  "types": [
-    {
-      "name": "EncryptedAssets",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "key",
-            "type": {
-              "array": [
-                "u8",
-                184
-              ]
-            }
-          },
-          {
-            "name": "url",
-            "type": {
-              "array": [
-                "u8",
-                78
-              ]
-            }
-          }
-        ]
-      }
-    }
-  ],
   "errors": [
     {
       "code": 6000,
       "name": "ImmutableAssets",
       "msg": "decentralized assets should be immutable."
     }
-  ]
+  ],
+  "metadata": {
+    "address": "2tvgaNY3tuBP552wsLWUsYRVUjSNFPQac1FQPxfaDZgc"
+  }
 }

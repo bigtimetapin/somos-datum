@@ -8,7 +8,7 @@ import {saveAs} from "file-saver";
 export async function decrypt(datum) {
     // fetch meta data
     console.log("fetching meta-data");
-    const url = textDecoder.decode(new Uint8Array(datum.assets.url));
+    const url = textDecoder.decode(new Uint8Array(datum.url));
     const metaData = await fetch(url + "meta.json")
         .then(response => response.json());
     // build client
