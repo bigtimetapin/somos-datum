@@ -264,44 +264,50 @@ body uploader =
                                         [ View.Generic.Wallet.view wallet
                                         , header
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Encrypting Files
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Creating Shdw Storage Account
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Marking Shdw Storage Account as Immutable
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading Encrypted Zip File to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading MetaData to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
-                                                """Publishing URL on-chain
+                                                """Publishing URL On-Chain
                                                 """
                                             , waiting
                                             ]
@@ -314,43 +320,49 @@ body uploader =
                                         [ View.Generic.Wallet.view wallet
                                         , header
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Creating Shdw Storage Account
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Marking Shdw Storage Account as Immutable
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading Encrypted Zip File to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading MetaData to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
-                                                """Publishing URL on-chain
+                                                """Publishing URL On-Chain
                                                 """
                                             , waiting
                                             ]
@@ -363,42 +375,48 @@ body uploader =
                                         [ View.Generic.Wallet.view wallet
                                         , header
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Shdw Storage Account Created ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Marking Shdw Storage Account as Immutable
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading Encrypted Zip File to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading MetaData to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
-                                                """Publishing URL on-chain
+                                                """Publishing URL On-Chain
                                                 """
                                             , waiting
                                             ]
@@ -411,41 +429,47 @@ body uploader =
                                         [ View.Generic.Wallet.view wallet
                                         , header
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Shdw Storage Account Created ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Shdw Storage Account Marked as Immutable ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading Encrypted Zip File to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading MetaData to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
-                                                """Publishing URL on-chain
+                                                """Publishing URL On-Chain
                                                 """
                                             , waiting
                                             ]
@@ -458,40 +482,46 @@ body uploader =
                                         [ View.Generic.Wallet.view wallet
                                         , header
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Shdw Storage Account Created ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Shdw Storage Account Marked as Immutable ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Encrypted Zip File Uploaded to Shdw Drive ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Uploading MetaData to Shdw Drive
                                                 """
                                             , waiting
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
-                                                """Publishing URL on-chain
+                                                """Publishing URL On-Chain
                                                 """
                                             , waiting
                                             ]
@@ -504,39 +534,45 @@ body uploader =
                                         [ View.Generic.Wallet.view wallet
                                         , header
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Files Encrypted ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Shdw Storage Account Created ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Shdw Storage Account Marked as Immutable ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """Encrypted Zip File Uploaded to Shdw Drive ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
                                                 """MetaData Uploaded to Shdw Drive ☑️
                                                 """
                                             ]
                                         , Html.div
-                                            []
+                                            [ class "has-border-2 px-2 py-2"
+                                            ]
                                             [ Html.text
-                                                """Publishing URL on-chain
+                                                """Publishing URL On-Chain
                                                 """
                                             , waiting
                                             ]

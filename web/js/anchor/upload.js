@@ -1,6 +1,6 @@
 import {encrypt} from "../lit/encrypt";
 import {provision, uploadFile} from "../shdw";
-import {textEncoder} from "./util";
+import {textDecoder, textEncoder} from "./util";
 import {web3} from "@project-serum/anchor";
 
 export async function upload(program, provider, json) {
@@ -31,14 +31,10 @@ export async function upload(program, provider, json) {
         // upload blob to shdw drive
         app.ports.uploadingFile.send(provider.wallet.publicKey.toString());
         const url = await uploadFile(provider.wallet, file, provisioned.drive, provisioned.account);
-        console.log(provisioned);
-        console.log(url);
         // upload meta data to shdw drive
         app.ports.uploadingMetaData.send(provider.wallet.publicKey.toString());
-        const metaData = buildMetaData(parsed.lit);
-        console.log(metaData);
-        const url2 = await uploadFile(provider.wallet, metaData, provisioned.drive, provisioned.account);
-        console.log(url2);
+        const metaData = buildMetaData(encrypted.encryptedSymmetricKey, parsed.lit);
+        await uploadFile(provider.wallet, metaData, provisioned.drive, provisioned.account);
         // derive pda increment
         app.ports.publishingUrl.send(provider.wallet.publicKey.toString());
         let pdaIncrement, _;
@@ -59,13 +55,10 @@ export async function upload(program, provider, json) {
             ],
             program.programId
         );
-        // build upload url
+        // parse upload url prefix
         const prefix = url.replace(fileName, "");
+        // encode upload url
         const encodedPrefix = textEncoder.encode(prefix);
-        console.log(prefix);
-        console.log(prefix.length);
-        console.log(encodedPrefix);
-        console.log(encodedPrefix.length);
         // invoke rpc
         await program.methods
             .publishAssets(parsed.increment, Buffer.from(encrypted.encryptedSymmetricKey), Buffer.from(encodedPrefix))
@@ -77,8 +70,14 @@ export async function upload(program, provider, json) {
                 systemProgram: web3.SystemProgram.programId
             })
             .rpc();
+        // package response
+        const response = {
+            mint: parsed.lit.mint,
+            uploader: parsed.uploader,
+            increment: parsed.increment
+        }
         // report to elm
-        app.ports.uploadSuccess.send(json);
+        app.ports.uploadSuccess.send(JSON.stringify(response));
         console.log("publish assets success");
         // or catch error
     } catch (error) {
@@ -87,10 +86,11 @@ export async function upload(program, provider, json) {
     }
 }
 
-function buildMetaData(lit) {
+function buildMetaData(key, lit) {
     // build meta data
     const meta = {
-        "lit": lit
+        key: key,
+        lit: lit
     }
     const json = JSON.stringify(meta);
     const bytes = textEncoder.encode(json);
