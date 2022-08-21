@@ -1,6 +1,6 @@
 import {encrypt} from "../lit/encrypt";
 import {provision, uploadFile} from "../shdw";
-import {textDecoder, textEncoder} from "./util";
+import {textEncoder} from "./util";
 import {web3} from "@project-serum/anchor";
 
 export async function upload(program, provider, json) {
@@ -22,7 +22,6 @@ export async function upload(program, provider, json) {
         // // select files
         const files = document.getElementById("gg-sd-zip").files;
         // invoke encryption
-        console.log(parsed.lit);
         const encrypted = await encrypt(files, parsed.lit);
         // provision shdw drive
         const fileName = "encrypted.zip"
