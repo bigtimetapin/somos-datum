@@ -443,6 +443,14 @@ body downloader =
                                     ]
                                     [ Html.text "token-gated"
                                     ]
+                                , Html.text "-"
+                                , Html.a
+                                    [ class "has-sky-blue-text"
+                                    , href "https://shdw.genesysgo.com/shadow-infrastructure-overview/shadow-drive-overview"
+                                    , target "_blank"
+                                    ]
+                                    [ Html.text "decentralized"
+                                    ]
                                 , Html.text
                                     """ data associated with ⬇️
                                         """
@@ -507,6 +515,14 @@ body downloader =
                                     , target "_blank"
                                     ]
                                     [ Html.text "token-gated"
+                                    ]
+                                , Html.text "-"
+                                , Html.a
+                                    [ class "has-sky-blue-text"
+                                    , href "https://shdw.genesysgo.com/shadow-infrastructure-overview/shadow-drive-overview"
+                                    , target "_blank"
+                                    ]
+                                    [ Html.text "decentralized"
                                     ]
                                 , Html.text
                                     """ data associated with ⬇️
