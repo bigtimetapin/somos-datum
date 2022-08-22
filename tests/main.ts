@@ -138,7 +138,6 @@ describe("somos-datum", () => {
             requiredError = true;
         }
         assert(requiredError);
-        // invoke next seed
         // derive datum two
         let pdaTwo;
         [pdaTwo, _] = await anchor.web3.PublicKey.findProgramAddress(
@@ -149,6 +148,28 @@ describe("somos-datum", () => {
             ],
             program.programId
         );
+        // invoke with wrong authority & fail
+        requiredError = false;
+        const user02 = await createUser();
+        try {
+            // invoke publish assets
+            await program.methods
+                .publishAssets(2, url)
+                .accounts({
+                    datum: pdaTwo,
+                    increment: pdaIncrement,
+                    mint: mint.key.publicKey,
+                    tariff: pdaTariff,
+                    tariffAuthority: user02.key.publicKey,
+                    payer: provider.wallet.publicKey,
+                    systemProgram: anchor.web3.SystemProgram.programId,
+
+                }).rpc();
+        } catch (error) {
+            requiredError = true;
+        }
+        assert(requiredError);
+        // next seed
         // invoke publish assets
         await program.methods
             .publishAssets(2, url)
@@ -173,7 +194,6 @@ describe("somos-datum", () => {
         assert.ok(actualIncrement.increment === 2);
         assert.ok(actualTwo.seed === 2);
         // transfer tariff authority
-        const user02 = await createUser();
         await program.methods
             .transferTariffAuthority()
             .accounts({
@@ -189,6 +209,21 @@ describe("somos-datum", () => {
         // assertions
         assert.ok(actualTariff2.authority.toString() === user02.key.publicKey.toString());
         assert.ok(actualTariff2.tariff.toNumber() === 0);
+        // invoke with wrong authority & fail
+        requiredError = false;
+        try {
+            await program.methods
+                .transferTariffAuthority()
+                .accounts({
+                    tariff: pdaTariff,
+                    from: provider.wallet.publicKey,
+                    to: user02.key.publicKey
+                })
+                .rpc()
+        } catch (error) {
+            requiredError = true;
+        }
+        assert(requiredError);
         // invoke set new tariff
         const program02 = programForUser(user02);
         await program02.methods
@@ -205,5 +240,26 @@ describe("somos-datum", () => {
         );
         // assertions
         assert.ok(actualTariff3.tariff.toNumber() === 10000);
+        // invoke with wrong authority & fail
+        requiredError = false;
+        try {
+            await program.methods
+                .setNewTariff(new anchor.BN(20000))
+                .accounts({
+                    tariff: pdaTariff,
+                    tariffAuthority: provider.wallet.publicKey,
+                    systemProgram: anchor.web3.SystemProgram.programId,
+                })
+                .rpc()
+        } catch (error) {
+            requiredError = true;
+        }
+        assert(requiredError);
+        // fetch account
+        const actualTariff4 = await program.account.tariff.fetch(
+            pdaTariff
+        );
+        // assertions
+        assert.ok(actualTariff4.tariff.toNumber() === 10000);
     });
 });
