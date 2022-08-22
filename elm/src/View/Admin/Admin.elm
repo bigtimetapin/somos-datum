@@ -4,6 +4,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (class, style)
 import Html.Events exposing (onClick)
 import Model.Administrator exposing (Administrator(..))
+import Model.Wallet exposing (Wallet)
 import Msg.Admin as AdminMsg
 import Msg.Msg exposing (Msg(..))
 import View.Generic.Wallet
@@ -38,17 +39,33 @@ body admin =
                         ]
 
                 HasWallet wallet ->
-                    Html.div
-                        [ class "has-border-2 px-2 pt-2 pb-6 pb-6"
-                        ]
-                        [ View.Generic.Wallet.view wallet
-                        ]
+                    case wallet == boss of
+                        True ->
+                            Html.div
+                                [ class "has-border-2 px-2 pt-2 pb-6 pb-6"
+                                ]
+                                [ View.Generic.Wallet.view wallet
+                                , Html.button
+                                    [ class "is-button-1"
+                                    , onClick <| FromAdmin <| AdminMsg.InitializeTariff wallet
+                                    ]
+                                    [ Html.text "Initialize Tariff"
+                                    ]
+                                ]
+
+                        False ->
+                            Html.div
+                                [ class "has-border-2 px-2 pt-2 pb-6 pb-6"
+                                ]
+                                [ Html.text "unauthorized;"
+                                ]
 
                 WaitingForInitializeTariff wallet ->
                     Html.div
                         [ class "has-border-2 px-2 pt-2 pb-6"
                         ]
-                        [ Html.div
+                        [ View.Generic.Wallet.view wallet
+                        , Html.div
                             [ class "my-2 is-loading"
                             ]
                             []
@@ -70,3 +87,8 @@ body admin =
         ]
         [ html
         ]
+
+
+boss : Wallet
+boss =
+    "DEuG4JnzvMVxMFPoBVvf2GH38mn3ybunMxtfmVU3ms86"
