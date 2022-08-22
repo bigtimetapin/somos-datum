@@ -52,7 +52,7 @@ describe("somos-datum", () => {
                 systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
         // fetch account
-        const actualTariff = await program.account.tariff.fetch(
+        let actualTariff = await program.account.tariff.fetch(
             pdaTariff
         );
         // assertions
@@ -82,7 +82,7 @@ describe("somos-datum", () => {
         let actualIncrement = await program.account.increment.fetch(
             pdaIncrement
         );
-        const actualOne = await program.account.datum.fetch(
+        let actualOne = await program.account.datum.fetch(
             pdaOne
         );
         // assertions
@@ -203,12 +203,12 @@ describe("somos-datum", () => {
             })
             .rpc()
         // fetch account
-        const actualTariff2 = await program.account.tariff.fetch(
+        actualTariff = await program.account.tariff.fetch(
             pdaTariff
         );
         // assertions
-        assert.ok(actualTariff2.authority.toString() === user02.key.publicKey.toString());
-        assert.ok(actualTariff2.tariff.toNumber() === 0);
+        assert.ok(actualTariff.authority.toString() === user02.key.publicKey.toString());
+        assert.ok(actualTariff.tariff.toNumber() === 0);
         // invoke with wrong authority & fail
         requiredError = false;
         try {
@@ -235,11 +235,11 @@ describe("somos-datum", () => {
             })
             .rpc()
         // fetch account
-        const actualTariff3 = await program.account.tariff.fetch(
+        actualTariff = await program.account.tariff.fetch(
             pdaTariff
         );
         // assertions
-        assert.ok(actualTariff3.tariff.toNumber() === 10000);
+        assert.ok(actualTariff.tariff.toNumber() === 10000);
         // invoke with wrong authority & fail
         requiredError = false;
         try {
@@ -256,11 +256,11 @@ describe("somos-datum", () => {
         }
         assert(requiredError);
         // fetch account
-        const actualTariff4 = await program.account.tariff.fetch(
+        actualTariff = await program.account.tariff.fetch(
             pdaTariff
         );
         // assertions
-        assert.ok(actualTariff4.tariff.toNumber() === 10000);
+        assert.ok(actualTariff.tariff.toNumber() === 10000);
         // invoke publish assets
         const balance = await provider.connection.getBalance(user02.key.publicKey);
         await program.methods
@@ -275,7 +275,7 @@ describe("somos-datum", () => {
                 systemProgram: anchor.web3.SystemProgram.programId,
             }).rpc();
         // fetch accounts
-        const actualIncrement2 = await program.account.increment.fetch(
+        actualIncrement = await program.account.increment.fetch(
             pdaIncrement
         );
         const actualThree = await program.account.datum.fetch(
@@ -284,7 +284,7 @@ describe("somos-datum", () => {
         const newBalance = await provider.connection.getBalance(user02.key.publicKey);
         const diff = newBalance - balance;
         // assertions
-        assert.ok(actualIncrement2.increment === 3);
+        assert.ok(actualIncrement.increment === 3);
         assert.ok(actualThree.seed === 3);
         assert.ok(diff === 10000);
     });
