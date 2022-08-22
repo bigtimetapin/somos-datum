@@ -19,6 +19,9 @@ pub mod somos_datum {
     ) -> Result<()> {
         let datum = &mut ctx.accounts.datum;
         let increment_pda = &mut ctx.accounts.increment;
+        let tariff = &ctx.accounts.tariff;
+        let tariff_authority = &ctx.accounts.tariff_authority;
+        let payer = &ctx.accounts.payer;
         // increment
         let increment = increment_pda.increment + 1;
         // assert that datum is produced in sequence
@@ -29,10 +32,11 @@ pub mod somos_datum {
         // url
         datum.url = url;
         // authority
-        datum.authority = ctx.accounts.payer.key();
+        datum.authority = payer.key();
         // datum pda
         datum.seed = seed;
-        Ok(())
+        // tariff
+        Tariff::pay_tariff(tariff, tariff_authority, payer)
     }
 
     pub fn initialize_tariff(
@@ -97,8 +101,12 @@ pub struct PublishAssets<'info> {
     pub mint: UncheckedAccount<'info>,
     #[account(mut)]
     pub payer: Signer<'info>,
-    #[account(seeds = [b"tarifftariff"], bump)]
+    #[account(seeds = [b"tarifftariff"], bump,
+    constraint = tariff.authority == tariff_authority.key()
+    )]
     pub tariff: Account<'info, Tariff>,
+    #[account()]
+    pub tariff_authority: SystemAccount<'info>,
     // system program
     pub system_program: Program<'info, System>,
 }
@@ -121,7 +129,7 @@ pub struct InitializeTariff<'info> {
 pub struct TransferTariff<'info> {
     #[account(mut,
     seeds = [b"tarifftariff"], bump,
-    constraint = tariff.authority.key() == from.key()
+    constraint = tariff.authority == from.key()
     )]
     pub tariff: Account<'info, Tariff>,
     #[account()]
@@ -163,6 +171,23 @@ pub struct Tariff {
 
 impl Tariff {
     const SPACE: usize = 8 + 32 + 8;
+
+    pub fn pay_tariff<'a>(
+        tariff: &Tariff, tariff_authority: &SystemAccount<'a>, payer: &Signer<'a>,
+    ) -> Result<()> {
+        let ix = anchor_lang::solana_program::system_instruction::transfer(
+            &payer.key(),
+            &tariff_authority.key(),
+            tariff.tariff,
+        );
+        anchor_lang::solana_program::program::invoke(
+            &ix,
+            &[
+                payer.to_account_info(),
+                tariff_authority.to_account_info()
+            ],
+        ).map_err(Into::into)
+    }
 }
 
 #[error_code]

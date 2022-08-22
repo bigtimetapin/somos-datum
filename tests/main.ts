@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 import {
     provider,
     program,
-    createUser, programForUser
+    createUser
 } from "./util.ts";
 
 describe("somos-datum", () => {
@@ -74,6 +74,7 @@ describe("somos-datum", () => {
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
                 tariff: pdaTariff,
+                tariffAuthority: provider.wallet.publicKey,
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
@@ -98,6 +99,7 @@ describe("somos-datum", () => {
                     increment: pdaIncrement,
                     mint: mint.key.publicKey,
                     tariff: pdaTariff,
+                    tariffAuthority: provider.wallet.publicKey,
                     payer: provider.wallet.publicKey,
                     systemProgram: anchor.web3.SystemProgram.programId,
 
@@ -127,6 +129,7 @@ describe("somos-datum", () => {
                     increment: pdaIncrement,
                     mint: mint.key.publicKey,
                     tariff: pdaTariff,
+                    tariffAuthority: provider.wallet.publicKey,
                     payer: provider.wallet.publicKey,
                     systemProgram: anchor.web3.SystemProgram.programId,
 
@@ -154,6 +157,7 @@ describe("somos-datum", () => {
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
                 tariff: pdaTariff,
+                tariffAuthority: provider.wallet.publicKey,
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
 
