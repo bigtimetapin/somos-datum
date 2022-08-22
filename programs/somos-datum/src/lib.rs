@@ -32,7 +32,6 @@ pub mod somos_datum {
         datum.authority = ctx.accounts.payer.key();
         // datum pda
         datum.seed = seed;
-        datum.bump = *ctx.bumps.get("datum").unwrap();
         Ok(())
     }
 
@@ -44,6 +43,16 @@ pub mod somos_datum {
         // init
         authority.authority = payer.key();
         authority.fee = 0;
+        Ok(())
+    }
+
+    pub fn transfer_authority(
+        ctx: Context<TransferAuthority>,
+    ) -> Result<()> {
+        let authority = &mut ctx.accounts.authority;
+        let to = &ctx.accounts.to;
+        // transfer
+        authority.authority = to.key();
         Ok(())
     }
 }
@@ -108,6 +117,19 @@ pub struct InitializeAuthority<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct TransferAuthority<'info> {
+    #[account(mut,
+    seeds = [b"authority"], bump,
+    constraint = authority.authority.key() == from.key()
+    )]
+    pub authority: Account<'info, Authority>,
+    #[account()]
+    pub from: Signer<'info>,
+    #[account()]
+    pub to: SystemAccount<'info>,
+}
+
 #[account]
 pub struct Datum {
     // target mint
@@ -118,7 +140,6 @@ pub struct Datum {
     pub authority: Pubkey,
     // pda
     pub seed: u8,
-    pub bump: u8,
 }
 
 impl Datum {
@@ -131,7 +152,7 @@ pub struct Increment {
 }
 
 impl Increment {
-    const SPACE: usize = 8 + 8; // TODO;
+    const SPACE: usize = 8 + 1;
 }
 
 #[account]

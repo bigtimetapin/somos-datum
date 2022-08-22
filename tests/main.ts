@@ -3,9 +3,8 @@ import * as anchor from "@project-serum/anchor";
 import {
     provider,
     program,
-    createUser
+    createUser, programForUser
 } from "./util.ts";
-import {web3} from "@project-serum/anchor";
 
 describe("somos-datum", () => {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,5 +168,22 @@ describe("somos-datum", () => {
         // assertions
         assert.ok(actualIncrement.increment === 2);
         assert.ok(actualTwo.seed === 2);
+        // transfer authority
+        const user02 = await createUser();
+        await program.methods
+            .transferAuthority()
+            .accounts({
+                authority: pdaAuthority,
+                from: provider.wallet.publicKey,
+                to: user02.key.publicKey
+            })
+            .rpc()
+        // fetch account
+        const actualAuthority2 = await program.account.authority.fetch(
+            pdaAuthority
+        );
+        // assertions
+        assert.ok(actualAuthority2.authority.toString() === user02.key.publicKey.toString());
+        assert.ok(actualAuthority2.fee.toNumber() === 0);
     });
 });
