@@ -5,6 +5,7 @@ import {
     program,
     createUser
 } from "./util.ts";
+import {web3} from "@project-serum/anchor";
 
 describe("somos-datum", () => {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,8 +17,16 @@ describe("somos-datum", () => {
         const mint = await createUser();
         // create assets
         const url = Buffer.from("u".repeat(78));
+        // derive authority
+        let pdaAuthority, _;
+        [pdaAuthority, _] = await anchor.web3.PublicKey.findProgramAddress(
+            [
+                Buffer.from("authority")
+            ],
+            program.programId
+        )
         // derive increment
-        let pdaIncrement, _;
+        let pdaIncrement;
         [pdaIncrement, _] = await anchor.web3.PublicKey.findProgramAddress(
             [
                 mint.key.publicKey.toBuffer(),
@@ -35,7 +44,21 @@ describe("somos-datum", () => {
             ],
             program.programId
         );
-        // invoke rpc
+        // invoke init authority
+        await program.methods
+            .initializeAuthority()
+            .accounts({
+                authority: pdaAuthority,
+                payer: provider.wallet.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId
+            }).rpc();
+        // fetch account
+        const actualAuthority = await program.account.authority.fetch(
+            pdaAuthority
+        );
+        // assertions
+        assert.ok(actualAuthority.fee.toNumber() === 0);
+        // invoke init increment
         await program.methods
             .initializeIncrement()
             .accounts({
@@ -44,13 +67,14 @@ describe("somos-datum", () => {
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
-        // invoke rpc
+        // invoke publish assets
         await program.methods
             .publishAssets(1, url)
             .accounts({
                 datum: pdaOne,
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
+                authority: pdaAuthority,
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
@@ -67,13 +91,14 @@ describe("somos-datum", () => {
         // invoke again & fail
         let requiredError;
         try {
-            // invoke rpc
+            // invoke publish assets
             await program.methods
                 .publishAssets(1, url)
                 .accounts({
                     datum: pdaOne,
                     increment: pdaIncrement,
                     mint: mint.key.publicKey,
+                    authority: pdaAuthority,
                     payer: provider.wallet.publicKey,
                     systemProgram: anchor.web3.SystemProgram.programId,
 
@@ -95,13 +120,14 @@ describe("somos-datum", () => {
         );
         requiredError = false;
         try {
-            // invoke rpc
+            // invoke publish assets
             await program.methods
                 .publishAssets(3, url)
                 .accounts({
                     datum: pdaThree,
                     increment: pdaIncrement,
                     mint: mint.key.publicKey,
+                    authority: pdaAuthority,
                     payer: provider.wallet.publicKey,
                     systemProgram: anchor.web3.SystemProgram.programId,
 
@@ -121,13 +147,14 @@ describe("somos-datum", () => {
             ],
             program.programId
         );
-        // invoke rpc
+        // invoke publish assets
         await program.methods
             .publishAssets(2, url)
             .accounts({
                 datum: pdaTwo,
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
+                authority: pdaAuthority,
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
 

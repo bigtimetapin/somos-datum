@@ -35,6 +35,17 @@ pub mod somos_datum {
         datum.bump = *ctx.bumps.get("datum").unwrap();
         Ok(())
     }
+
+    pub fn initialize_authority(
+        ctx: Context<InitializeAuthority>,
+    ) -> Result<()> {
+        let authority = &mut ctx.accounts.authority;
+        let payer = &mut ctx.accounts.payer;
+        // init
+        authority.authority = payer.key();
+        authority.fee = 0;
+        Ok(())
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +88,22 @@ pub struct PublishAssets<'info> {
     pub mint: UncheckedAccount<'info>,
     #[account(mut)]
     pub payer: Signer<'info>,
+    #[account(seeds = [b"authority"], bump)]
+    pub authority: Account<'info, Authority>,
+    // system program
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct InitializeAuthority<'info> {
+    #[account(init,
+    seeds = [b"authority"], bump,
+    payer = payer,
+    space = Authority::SPACE
+    )]
+    pub authority: Account<'info, Authority>,
+    #[account(mut)]
+    pub payer: Signer<'info>,
     // system program
     pub system_program: Program<'info, System>,
 }
@@ -104,7 +131,17 @@ pub struct Increment {
 }
 
 impl Increment {
-    const SPACE: usize = 8 + 8;
+    const SPACE: usize = 8 + 8; // TODO;
+}
+
+#[account]
+pub struct Authority {
+    pub authority: Pubkey,
+    pub fee: u64,
+}
+
+impl Authority {
+    const SPACE: usize = 8 + 32 + 8;
 }
 
 #[error_code]
