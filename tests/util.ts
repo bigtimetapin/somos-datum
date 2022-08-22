@@ -29,7 +29,7 @@ export async function createUser() {
 
 // create program from secondary user
 export function programForUser(user) {
-    return new anchor.Program(SomosDatum, program.programId, user.provider);
+    return new anchor.Program(IDL, program.programId, user.provider);
 }
 
 export function encodeBase64(u8) {

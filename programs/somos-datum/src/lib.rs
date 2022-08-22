@@ -51,12 +51,22 @@ pub mod somos_datum {
     }
 
     pub fn transfer_tariff_authority(
-        ctx: Context<TransferTariff>,
+        ctx: Context<TransferTariffAuthority>,
     ) -> Result<()> {
         let tariff = &mut ctx.accounts.tariff;
         let to = &ctx.accounts.to;
         // transfer authority
         tariff.authority = to.key();
+        Ok(())
+    }
+
+    pub fn set_new_tariff(
+        ctx: Context<SetNewTariff>,
+        new_tariff: u64,
+    ) -> Result<()> {
+        let tariff = &mut ctx.accounts.tariff;
+        // set new tariff
+        tariff.tariff = new_tariff;
         Ok(())
     }
 }
@@ -126,7 +136,7 @@ pub struct InitializeTariff<'info> {
 }
 
 #[derive(Accounts)]
-pub struct TransferTariff<'info> {
+pub struct TransferTariffAuthority<'info> {
     #[account(mut,
     seeds = [b"tarifftariff"], bump,
     constraint = tariff.authority == from.key()
@@ -136,6 +146,17 @@ pub struct TransferTariff<'info> {
     pub from: Signer<'info>,
     #[account()]
     pub to: SystemAccount<'info>,
+}
+
+#[derive(Accounts)]
+pub struct SetNewTariff<'info> {
+    #[account(mut,
+    seeds = [b"tarifftariff"], bump,
+    constraint = tariff.authority == tariff_authority.key()
+    )]
+    pub tariff: Account<'info, Tariff>,
+    #[account()]
+    pub tariff_authority: Signer<'info>,
 }
 
 #[account]

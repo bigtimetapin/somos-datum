@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 import {
     provider,
     program,
-    createUser
+    createUser, programForUser
 } from "./util.ts";
 
 describe("somos-datum", () => {
@@ -189,5 +189,21 @@ describe("somos-datum", () => {
         // assertions
         assert.ok(actualTariff2.authority.toString() === user02.key.publicKey.toString());
         assert.ok(actualTariff2.tariff.toNumber() === 0);
+        // invoke set new tariff
+        const program02 = programForUser(user02);
+        await program02.methods
+            .setNewTariff(new anchor.BN(10000))
+            .accounts({
+                tariff: pdaTariff,
+                tariffAuthority: user02.key.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId,
+            })
+            .rpc()
+        // fetch account
+        const actualTariff3 = await program.account.tariff.fetch(
+            pdaTariff
+        );
+        // assertions
+        assert.ok(actualTariff3.tariff.toNumber() === 10000);
     });
 });
