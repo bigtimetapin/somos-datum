@@ -261,5 +261,31 @@ describe("somos-datum", () => {
         );
         // assertions
         assert.ok(actualTariff4.tariff.toNumber() === 10000);
+        // invoke publish assets
+        const balance = await provider.connection.getBalance(user02.key.publicKey);
+        await program.methods
+            .publishAssets(3, url)
+            .accounts({
+                datum: pdaThree,
+                increment: pdaIncrement,
+                mint: mint.key.publicKey,
+                tariff: pdaTariff,
+                tariffAuthority: user02.key.publicKey,
+                payer: provider.wallet.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId,
+            }).rpc();
+        // fetch accounts
+        const actualIncrement2 = await program.account.increment.fetch(
+            pdaIncrement
+        );
+        const actualThree = await program.account.datum.fetch(
+            pdaThree
+        );
+        const newBalance = await provider.connection.getBalance(user02.key.publicKey);
+        const diff = newBalance - balance;
+        // assertions
+        assert.ok(actualIncrement2.increment === 3);
+        assert.ok(actualThree.seed === 3);
+        assert.ok(diff === 10000);
     });
 });

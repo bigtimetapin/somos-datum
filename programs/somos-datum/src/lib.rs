@@ -115,7 +115,7 @@ pub struct PublishAssets<'info> {
     constraint = tariff.authority == tariff_authority.key()
     )]
     pub tariff: Account<'info, Tariff>,
-    #[account()]
+    #[account(mut)]
     pub tariff_authority: SystemAccount<'info>,
     // system program
     pub system_program: Program<'info, System>,
