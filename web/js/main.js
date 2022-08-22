@@ -5,6 +5,7 @@ import {init} from "./anchor/init"
 import {upload} from "./anchor/upload";
 import {getDatum} from "./anchor/state/datum";
 import {download} from "./anchor/download";
+import {initTariff} from "./anchor/admin/init";
 
 // init phantom
 let phantom = null;
@@ -27,6 +28,17 @@ app.ports.connectAsDownloader.subscribe(async function () {
     const publicKey = phantom.connection.publicKey.toString();
     // send to elm
     app.ports.connectAsDownloaderSuccess.send(
+        publicKey
+    );
+});
+
+// connect as admin
+app.ports.connectAsAdmin.subscribe(async function () {
+    // get phantom
+    phantom = await getPhantom();
+    const publicKey = phantom.connection.publicKey.toString();
+    // send to elm
+    app.ports.connectAsAdminSuccess.send(
         publicKey
     );
 });
@@ -136,6 +148,20 @@ app.ports.initializeCatalog.subscribe(async function (json) {
         const catalog = await init(pp.provider, pp.program, json);
         // send catalog to elm
         app.ports.initializeCatalogSuccess.send(JSON.stringify(catalog));
+        // or report error to elm
+    } catch (error) {
+        console.log(error);
+        app.ports.genericError.send(error.toString());
+    }
+});
+
+// initialize tariff
+app.ports.initializeTariff.subscribe(async function () {
+    try {
+        // get provider & program
+        const pp = getPP(phantom);
+        // invoke init
+        await initTariff(pp.provider, pp.program);
         // or report error to elm
     } catch (error) {
         console.log(error);

@@ -2,6 +2,7 @@ module Model.State exposing (State(..), href, parse)
 
 import Html
 import Html.Attributes
+import Model.Administrator as Administrator exposing (Administrator)
 import Model.AlmostCatalog as AlmostCatalog
 import Model.Datum as Datum
 import Model.Downloader as Downloader exposing (Downloader)
@@ -13,6 +14,7 @@ import Url.Parser as UrlParser exposing ((</>))
 type State
     = Upload Uploader
     | Download Downloader
+    | Admin Administrator
     | Error String
 
 
@@ -31,6 +33,7 @@ urlParser =
         , UrlParser.map
             (\d -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasDatum d)))
             Datum.parser
+        , UrlParser.map (Admin Administrator.Top) (UrlParser.s "admin")
         ]
 
 
@@ -103,6 +106,9 @@ path state =
 
                 Downloader.HasWallet _ ->
                     path (Upload Uploader.Top)
+
+        Admin _ ->
+            "#/admin"
 
         Error _ ->
             "#/invalid"

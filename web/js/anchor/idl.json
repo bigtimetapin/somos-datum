@@ -52,6 +52,16 @@
           "isSigner": true
         },
         {
+          "name": "tariff",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tariffAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -70,6 +80,69 @@
               78
             ]
           }
+        }
+      ]
+    },
+    {
+      "name": "initializeTariff",
+      "accounts": [
+        {
+          "name": "tariff",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transferTariffAuthority",
+      "accounts": [
+        {
+          "name": "tariff",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "from",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "to",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "setNewTariff",
+      "accounts": [
+        {
+          "name": "tariff",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tariffAuthority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "newTariff",
+          "type": "u64"
         }
       ]
     }
@@ -100,10 +173,6 @@
           {
             "name": "seed",
             "type": "u8"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
           }
         ]
       }
@@ -119,6 +188,22 @@
           }
         ]
       }
+    },
+    {
+      "name": "Tariff",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "tariff",
+            "type": "u64"
+          }
+        ]
+      }
     }
   ],
   "errors": [
@@ -127,8 +212,5 @@
       "name": "ImmutableAssets",
       "msg": "decentralized assets should be immutable."
     }
-  ],
-  "metadata": {
-    "address": "2tvgaNY3tuBP552wsLWUsYRVUjSNFPQac1FQPxfaDZgc"
-  }
+  ]
 }

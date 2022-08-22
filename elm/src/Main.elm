@@ -5,6 +5,7 @@ module Main exposing (main)
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (Html)
+import Model.Administrator as Administrator
 import Model.AlmostCatalog as AlmostCatalog
 import Model.Catalog as Catalog
 import Model.Datum as Datum
@@ -13,14 +14,17 @@ import Model.Lit as Lit
 import Model.Model as Model exposing (Model)
 import Model.State as State exposing (State(..))
 import Model.Uploader as Uploader
+import Msg.Admin as AdminMsg
 import Msg.Downloader as DownloaderMsg
 import Msg.Generic as GenericMsg
 import Msg.Msg exposing (Msg(..), resetViewport)
 import Msg.Uploader as UploaderMsg
+import Sub.Admin as AdminCmd
 import Sub.Downloader as DownloaderCmd
 import Sub.Sub as Sub
 import Sub.Uploader as UploaderCmd
 import Url
+import View.Admin.Admin
 import View.Download.Download
 import View.Error.Error
 import View.Hero
@@ -349,6 +353,30 @@ update msg model =
                             , Cmd.none
                             )
 
+        FromAdmin from ->
+            case from of
+                AdminMsg.Connect ->
+                    ( { model | state = Admin <| Administrator.WaitingForWallet }
+                    , AdminCmd.connectAsAdmin ()
+                    )
+
+                AdminMsg.InitializeTariff wallet ->
+                    ( { model | state = Admin <| Administrator.WaitingForInitializeTariff wallet }
+                    , AdminCmd.initializeTariff ()
+                    )
+
+        ToAdmin to ->
+            case to of
+                AdminMsg.ConnectSuccess wallet ->
+                    ( { model | state = Admin <| Administrator.HasWallet wallet }
+                    , Cmd.none
+                    )
+
+                AdminMsg.InitializeTariffSuccess wallet ->
+                    ( { model | state = Admin <| Administrator.InitializedTariff wallet }
+                    , Cmd.none
+                    )
+
         FromJs fromJsMsg ->
             case fromJsMsg of
                 GenericMsg.Error string ->
@@ -375,6 +403,9 @@ view model =
 
                 Download downloader ->
                     hero <| View.Download.Download.body downloader
+
+                Admin administrator ->
+                    hero <| View.Admin.Admin.body administrator
 
                 Error error ->
                     hero (View.Error.Error.body error)

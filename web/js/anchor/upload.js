@@ -2,6 +2,7 @@ import {encrypt} from "../lit/encrypt";
 import {provision, uploadFile} from "../shdw";
 import {textEncoder} from "./util";
 import {web3} from "@project-serum/anchor";
+import {boss} from "./config";
 
 export async function upload(program, provider, json) {
     try {
@@ -54,6 +55,14 @@ export async function upload(program, provider, json) {
             ],
             program.programId
         );
+        // derive tariff
+        let pdaTariff;
+        [pdaTariff, _] = await web3.PublicKey.findProgramAddress(
+            [
+                Buffer.from("tarifftariff")
+            ],
+            program.programId
+        )
         // parse upload url prefix
         const prefix = url.replace(fileName, "");
         // encode upload url
@@ -65,8 +74,9 @@ export async function upload(program, provider, json) {
                 datum: pdaDatum,
                 increment: pdaIncrement,
                 mint: mint,
+                tariff: pdaTariff,
+                tariffAuthority: boss,
                 payer: provider.wallet.publicKey,
-                systemProgram: web3.SystemProgram.programId
             })
             .rpc();
         // package response

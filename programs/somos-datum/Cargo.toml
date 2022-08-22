@@ -16,5 +16,5 @@ cpi = ["no-entrypoint"]
 default = []
 
 [dependencies]
-anchor-lang = { version = "0.24.2", features = ["init-if-needed"] }
+anchor-lang = "0.24.2"
 borsh = { version = "0.9.3", features = ["const-generics"] }

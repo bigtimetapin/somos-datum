@@ -96,5 +96,8 @@ isActive model state =
                 _ ->
                     ""
 
+        Admin administrator ->
+            ""
+
         Error _ ->
             ""

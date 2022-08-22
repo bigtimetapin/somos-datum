@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("2tvgaNY3tuBP552wsLWUsYRVUjSNFPQac1FQPxfaDZgc");
+declare_id!("3sDHnRG7GMJCjeNkxcTQMySbn1UF26CuW211NrWCRdVW");
 
 #[program]
 pub mod somos_datum {

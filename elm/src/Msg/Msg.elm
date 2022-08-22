@@ -2,6 +2,7 @@ module Msg.Msg exposing (Msg(..), resetViewport)
 
 import Browser
 import Browser.Dom as Dom
+import Msg.Admin as Admin
 import Msg.Downloader as Downloader
 import Msg.Generic exposing (FromJsMsg)
 import Msg.Uploader as Uploader
@@ -21,6 +22,9 @@ type
       -- downloader sub
     | FromDownloader Downloader.From
     | ToDownloader Downloader.To
+      -- admin sub
+    | FromAdmin Admin.From
+    | ToAdmin Admin.To
       -- generic js sub
     | FromJs FromJsMsg
 
