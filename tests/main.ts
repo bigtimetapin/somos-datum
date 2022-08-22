@@ -49,7 +49,6 @@ describe("somos-datum", () => {
             .accounts({
                 tariff: pdaTariff,
                 payer: provider.wallet.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
         // fetch account
         let actualTariff = await program.account.tariff.fetch(
@@ -64,7 +63,6 @@ describe("somos-datum", () => {
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
                 payer: provider.wallet.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
         // invoke publish assets
         await program.methods
@@ -76,7 +74,6 @@ describe("somos-datum", () => {
                 tariff: pdaTariff,
                 tariffAuthority: provider.wallet.publicKey,
                 payer: provider.wallet.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
         // fetch accounts
         let actualIncrement = await program.account.increment.fetch(
@@ -101,7 +98,6 @@ describe("somos-datum", () => {
                     tariff: pdaTariff,
                     tariffAuthority: provider.wallet.publicKey,
                     payer: provider.wallet.publicKey,
-                    systemProgram: anchor.web3.SystemProgram.programId,
 
                 }).rpc();
         } catch (error) {
@@ -131,7 +127,6 @@ describe("somos-datum", () => {
                     tariff: pdaTariff,
                     tariffAuthority: provider.wallet.publicKey,
                     payer: provider.wallet.publicKey,
-                    systemProgram: anchor.web3.SystemProgram.programId,
 
                 }).rpc();
         } catch (error) {
@@ -162,7 +157,6 @@ describe("somos-datum", () => {
                     tariff: pdaTariff,
                     tariffAuthority: user02.key.publicKey,
                     payer: provider.wallet.publicKey,
-                    systemProgram: anchor.web3.SystemProgram.programId,
 
                 }).rpc();
         } catch (error) {
@@ -180,7 +174,6 @@ describe("somos-datum", () => {
                 tariff: pdaTariff,
                 tariffAuthority: provider.wallet.publicKey,
                 payer: provider.wallet.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId,
 
             }).rpc();
         // fetch accounts
@@ -231,7 +224,6 @@ describe("somos-datum", () => {
             .accounts({
                 tariff: pdaTariff,
                 tariffAuthority: user02.key.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId,
             })
             .rpc()
         // fetch account
@@ -248,7 +240,6 @@ describe("somos-datum", () => {
                 .accounts({
                     tariff: pdaTariff,
                     tariffAuthority: provider.wallet.publicKey,
-                    systemProgram: anchor.web3.SystemProgram.programId,
                 })
                 .rpc()
         } catch (error) {
@@ -272,7 +263,6 @@ describe("somos-datum", () => {
                 tariff: pdaTariff,
                 tariffAuthority: user02.key.publicKey,
                 payer: provider.wallet.publicKey,
-                systemProgram: anchor.web3.SystemProgram.programId,
             }).rpc();
         // fetch accounts
         actualIncrement = await program.account.increment.fetch(
