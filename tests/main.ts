@@ -16,11 +16,11 @@ describe("somos-datum", () => {
         const mint = await createUser();
         // create assets
         const url = Buffer.from("u".repeat(78));
-        // derive authority
-        let pdaAuthority, _;
-        [pdaAuthority, _] = await anchor.web3.PublicKey.findProgramAddress(
+        // derive tariff
+        let pdaTariff, _;
+        [pdaTariff, _] = await anchor.web3.PublicKey.findProgramAddress(
             [
-                Buffer.from("authority")
+                Buffer.from("tarifftariff")
             ],
             program.programId
         )
@@ -43,20 +43,20 @@ describe("somos-datum", () => {
             ],
             program.programId
         );
-        // invoke init authority
+        // invoke init tariff
         await program.methods
-            .initializeAuthority()
+            .initializeTariff()
             .accounts({
-                authority: pdaAuthority,
+                tariff: pdaTariff,
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
         // fetch account
-        const actualAuthority = await program.account.authority.fetch(
-            pdaAuthority
+        const actualTariff = await program.account.tariff.fetch(
+            pdaTariff
         );
         // assertions
-        assert.ok(actualAuthority.fee.toNumber() === 0);
+        assert.ok(actualTariff.tariff.toNumber() === 0);
         // invoke init increment
         await program.methods
             .initializeIncrement()
@@ -73,7 +73,7 @@ describe("somos-datum", () => {
                 datum: pdaOne,
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
-                authority: pdaAuthority,
+                tariff: pdaTariff,
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId
             }).rpc();
@@ -97,7 +97,7 @@ describe("somos-datum", () => {
                     datum: pdaOne,
                     increment: pdaIncrement,
                     mint: mint.key.publicKey,
-                    authority: pdaAuthority,
+                    tariff: pdaTariff,
                     payer: provider.wallet.publicKey,
                     systemProgram: anchor.web3.SystemProgram.programId,
 
@@ -126,7 +126,7 @@ describe("somos-datum", () => {
                     datum: pdaThree,
                     increment: pdaIncrement,
                     mint: mint.key.publicKey,
-                    authority: pdaAuthority,
+                    tariff: pdaTariff,
                     payer: provider.wallet.publicKey,
                     systemProgram: anchor.web3.SystemProgram.programId,
 
@@ -153,7 +153,7 @@ describe("somos-datum", () => {
                 datum: pdaTwo,
                 increment: pdaIncrement,
                 mint: mint.key.publicKey,
-                authority: pdaAuthority,
+                tariff: pdaTariff,
                 payer: provider.wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
 
@@ -168,22 +168,22 @@ describe("somos-datum", () => {
         // assertions
         assert.ok(actualIncrement.increment === 2);
         assert.ok(actualTwo.seed === 2);
-        // transfer authority
+        // transfer tariff authority
         const user02 = await createUser();
         await program.methods
-            .transferAuthority()
+            .transferTariffAuthority()
             .accounts({
-                authority: pdaAuthority,
+                tariff: pdaTariff,
                 from: provider.wallet.publicKey,
                 to: user02.key.publicKey
             })
             .rpc()
         // fetch account
-        const actualAuthority2 = await program.account.authority.fetch(
-            pdaAuthority
+        const actualTariff2 = await program.account.tariff.fetch(
+            pdaTariff
         );
         // assertions
-        assert.ok(actualAuthority2.authority.toString() === user02.key.publicKey.toString());
-        assert.ok(actualAuthority2.fee.toNumber() === 0);
+        assert.ok(actualTariff2.authority.toString() === user02.key.publicKey.toString());
+        assert.ok(actualTariff2.tariff.toNumber() === 0);
     });
 });

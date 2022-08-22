@@ -35,24 +35,24 @@ pub mod somos_datum {
         Ok(())
     }
 
-    pub fn initialize_authority(
-        ctx: Context<InitializeAuthority>,
+    pub fn initialize_tariff(
+        ctx: Context<InitializeTariff>,
     ) -> Result<()> {
-        let authority = &mut ctx.accounts.authority;
+        let tariff = &mut ctx.accounts.tariff;
         let payer = &mut ctx.accounts.payer;
         // init
-        authority.authority = payer.key();
-        authority.fee = 0;
+        tariff.authority = payer.key();
+        tariff.tariff = 0;
         Ok(())
     }
 
-    pub fn transfer_authority(
-        ctx: Context<TransferAuthority>,
+    pub fn transfer_tariff_authority(
+        ctx: Context<TransferTariff>,
     ) -> Result<()> {
-        let authority = &mut ctx.accounts.authority;
+        let tariff = &mut ctx.accounts.tariff;
         let to = &ctx.accounts.to;
-        // transfer
-        authority.authority = to.key();
+        // transfer authority
+        tariff.authority = to.key();
         Ok(())
     }
 }
@@ -97,20 +97,20 @@ pub struct PublishAssets<'info> {
     pub mint: UncheckedAccount<'info>,
     #[account(mut)]
     pub payer: Signer<'info>,
-    #[account(seeds = [b"authority"], bump)]
-    pub authority: Account<'info, Authority>,
+    #[account(seeds = [b"tarifftariff"], bump)]
+    pub tariff: Account<'info, Tariff>,
     // system program
     pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
-pub struct InitializeAuthority<'info> {
+pub struct InitializeTariff<'info> {
     #[account(init,
-    seeds = [b"authority"], bump,
+    seeds = [b"tarifftariff"], bump,
     payer = payer,
-    space = Authority::SPACE
+    space = Tariff::SPACE
     )]
-    pub authority: Account<'info, Authority>,
+    pub tariff: Account<'info, Tariff>,
     #[account(mut)]
     pub payer: Signer<'info>,
     // system program
@@ -118,12 +118,12 @@ pub struct InitializeAuthority<'info> {
 }
 
 #[derive(Accounts)]
-pub struct TransferAuthority<'info> {
+pub struct TransferTariff<'info> {
     #[account(mut,
-    seeds = [b"authority"], bump,
-    constraint = authority.authority.key() == from.key()
+    seeds = [b"tarifftariff"], bump,
+    constraint = tariff.authority.key() == from.key()
     )]
-    pub authority: Account<'info, Authority>,
+    pub tariff: Account<'info, Tariff>,
     #[account()]
     pub from: Signer<'info>,
     #[account()]
@@ -156,12 +156,12 @@ impl Increment {
 }
 
 #[account]
-pub struct Authority {
+pub struct Tariff {
     pub authority: Pubkey,
-    pub fee: u64,
+    pub tariff: u64,
 }
 
-impl Authority {
+impl Tariff {
     const SPACE: usize = 8 + 32 + 8;
 }
 
