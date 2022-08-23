@@ -55,7 +55,7 @@ body uploader =
                             [ Html.text "decentralized"
                             ]
                         , Html.text
-                            """ data for your
+                            """ files for your
                             """
                         , Html.a
                             [ class "has-sky-blue-text"
@@ -642,7 +642,7 @@ body uploader =
                                     [ Html.text "decentralized"
                                     ]
                                 , Html.text
-                                    """ data associated with ⬇️
+                                    """ files associated with ⬇️
                                         """
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 my-2"

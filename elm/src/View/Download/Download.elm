@@ -53,7 +53,7 @@ body downloader =
                             [ Html.text "decentralized"
                             ]
                         , Html.text
-                            """ data from your
+                            """ files from your
                             """
                         , Html.a
                             [ class "has-sky-blue-text"
@@ -452,7 +452,7 @@ body downloader =
                                     [ Html.text "decentralized"
                                     ]
                                 , Html.text
-                                    """ data associated with ⬇️
+                                    """ files associated with ⬇️
                                         """
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2 mt-2"
@@ -525,7 +525,7 @@ body downloader =
                                     [ Html.text "decentralized"
                                     ]
                                 , Html.text
-                                    """ data associated with ⬇️
+                                    """ files associated with ⬇️
                                         """
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2 mt-2"
