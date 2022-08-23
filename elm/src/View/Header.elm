@@ -7,9 +7,7 @@ import Model.Downloader as Downloader
 import Model.Model exposing (Model)
 import Model.State as State exposing (State(..))
 import Model.Uploader as Uploader
-import Msg.Downloader as DownloaderMsg
 import Msg.Msg exposing (Msg(..))
-import Msg.Uploader as UploaderMsg
 
 
 view : Model -> Html Msg
@@ -25,12 +23,12 @@ view model =
         [ tab_
             { state = Download Downloader.Top
             , title = "Download"
-            , msg = FromDownloader DownloaderMsg.Connect
+            , msg = NoOp
             }
         , tab_
             { state = Upload Uploader.Top
             , title = "Upload"
-            , msg = FromUploader UploaderMsg.Connect
+            , msg = NoOp
             }
         , Html.div
             [ style "float" "right"
