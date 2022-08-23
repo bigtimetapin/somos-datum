@@ -1,9 +1,9 @@
 import {network} from "../anchor/config";
 
 export let chain = null;
-if (network === "https://ssc-dao.genesysgo.net/") {
+if (network === "https://api.mainnet-beta.solana.com/") {
     chain = "solana";
-} else if (network === "https://devnet.genesysgo.net/") {
+} else if (network === "https://api.devnet.solana.com") {
     chain = "solanaDevnet";
 } else if (network === "http://127.0.0.1:8899") {
     console.log("configuring lit network with solana-devnet");

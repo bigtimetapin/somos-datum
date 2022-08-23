@@ -14,10 +14,12 @@ export async function provision(wallet, file) {
     const size = (((file.size / 1000000) + 2).toString()).split(".")[0] + "MB";
     console.log(size);
     app.ports.creatingAccount.send(wallet.publicKey.toString());
-    const createStorageResponse = await drive.createStorageAccount("somos-datum", size, version);
+    const createStorageResponse = await drive.createStorageAccount("somos-datum", size, version)
     const account = new web3.PublicKey(createStorageResponse.shdw_bucket);
     // mark account as immutable
     console.log("mark account as immutable");
+    // time out for 1 second to give RPC time to resolve account
+    await new Promise(r => setTimeout(r, 1000));
     app.ports.markingAccountAsImmutable.send(wallet.publicKey.toString());
     await drive.makeStorageImmutable(account, version);
     return {drive, account}
