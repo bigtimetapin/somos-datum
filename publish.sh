@@ -2,6 +2,9 @@
 
 BUCKET=s3://datum.somos.world
 
+echo "Building Elm Assets..."
+./build.sh
+
 echo "Building Sass Assets"
 cd web/sass && (npm run build)
 cd ..
@@ -9,9 +12,6 @@ cd ..
 echo "Building JS Assets"
 cd js && (npm run build)
 cd ../..
-
-echo "Building Elm Assets..."
-./build.sh
 
 echo "Publishing New Assets..."
 aws s3 sync web/images/ $BUCKET/images/ --profile tap-in
