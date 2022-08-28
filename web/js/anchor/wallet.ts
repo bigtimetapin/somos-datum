@@ -28,3 +28,27 @@ export class PhantomWallet implements Wallet {
     }
 
 }
+
+export class GlowWallet implements Wallet {
+
+    constructor(readonly glow: any) {
+    }
+
+    async signTransaction(tx: Transaction): Promise<Transaction> {
+        return this.glow.signTransaction(tx);
+    }
+
+    async signAllTransactions(txs: Transaction[]): Promise<Transaction[]> {
+        return txs.map((t) => {
+            this.glow.signTransaction(t);
+            return t
+        });
+    }
+
+    readonly payer: Keypair;
+
+    get publicKey(): PublicKey {
+        return this.glow.publicKey;
+    }
+
+}
