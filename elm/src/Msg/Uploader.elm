@@ -28,6 +28,7 @@ type
     | FoundCatalogAsUninitialized Json
     | InitializeCatalogSuccess Json
       -- upload
+    | FoundEmptyWallet Wallet
     | Uploading UploadingCheckpoint
     | UploadSuccess Json
 

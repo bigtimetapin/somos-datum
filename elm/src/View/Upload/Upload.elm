@@ -247,6 +247,58 @@ body uploader =
                                 , View.Generic.Catalog.view catalog.uploader catalog
                                 ]
 
+                        Uploader.HasEmptyWallet wallet ->
+                            Html.div
+                                [ class "has-border-2 px-2 pt-2 pb-6"
+                                ]
+                                [ View.Generic.Wallet.view wallet
+                                , header
+                                , Html.div
+                                    [ class "mb-2"
+                                    ]
+                                    [ Html.text
+                                        """Caught exception creating storage on
+                                        """
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href "https://shdw.genesysgo.com/shadow-infrastructure-overview/shadow-drive-overview"
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text "ShdwDrive"
+                                        ]
+                                    , Html.text
+                                        """. It's likely that your wallet does not have
+                                        """
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href "https://solscan.io/token/SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y"
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text "$SHDW"
+                                        ]
+                                    , Html.text
+                                        """, the native spl-token that powers decentralized storage.
+                                        """
+                                    ]
+                                , Html.div
+                                    []
+                                    [ Html.text
+                                        """You can quickly swap $SOL --> $SHDW on
+                                        """
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href "https://jup.ag/swap/SOL-SHDW"
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text "Jupiter Exchange"
+                                        ]
+                                    , Html.text
+                                        """
+                                        .😁
+                                        """
+                                    ]
+                                ]
+
                         Uploader.WaitingForUpload uploading ->
                             let
                                 waiting =

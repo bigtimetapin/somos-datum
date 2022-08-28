@@ -34,6 +34,9 @@ port foundCatalogAsUninitialized : (Json -> msg) -> Sub msg
 port initializeCatalogSuccess : (Json -> msg) -> Sub msg
 
 
+port foundEmptyWallet : (Json -> msg) -> Sub msg
+
+
 port creatingAccount : (Json -> msg) -> Sub msg
 
 

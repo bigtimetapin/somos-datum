@@ -21,6 +21,8 @@ type
     | WaitingForCatalog Wallet
       -- initializing catalog
     | HasUninitializedCatalog AlmostCatalog
+      -- needs to swap for $shdw
+    | HasEmptyWallet Wallet
       -- uploading
     | HasCatalog Catalog
     | WaitingForUpload Uploading

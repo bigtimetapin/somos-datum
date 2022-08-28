@@ -31,6 +31,10 @@ subs =
             (\json ->
                 ToUploader <| Uploader.InitializeCatalogSuccess json
             )
+        , UploaderSub.foundEmptyWallet
+            (\wallet ->
+                ToUploader <| Uploader.FoundEmptyWallet wallet
+            )
         , UploaderSub.creatingAccount
             (\json ->
                 ToUploader <| Uploader.Uploading <| Uploader.CreatingAccount json

@@ -90,8 +90,15 @@ export async function upload(program, provider, json) {
         console.log("publish assets success");
         // or catch error
     } catch (error) {
-        console.log(error)
-        app.ports.genericError.send(error.toString());
+        console.log(error);
+        const fourHundred = "error: server response status code: 400";
+        if (error.toString().toLowerCase().startsWith(fourHundred)) {
+            app.ports.foundEmptyWallet.send(
+                provider.wallet.publicKey.toString()
+            );
+        } else {
+            app.ports.genericError.send(error.toString());
+        }
     }
 }
 

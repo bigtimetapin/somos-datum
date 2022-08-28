@@ -162,6 +162,11 @@ update msg model =
                             , Cmd.none
                             )
 
+                UploaderMsg.FoundEmptyWallet wallet ->
+                    ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasEmptyWallet wallet }
+                    , Cmd.none
+                    )
+
                 UploaderMsg.Uploading uploadingCheckpoint ->
                     case uploadingCheckpoint of
                         UploaderMsg.EncryptingFiles wallet ->
