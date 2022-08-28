@@ -254,7 +254,7 @@ body uploader =
                                 [ View.Generic.Wallet.view wallet
                                 , header
                                 , Html.div
-                                    [ class "mb-2"
+                                    [ class "has-border-2 px-2 pt-2 pb-2"
                                     ]
                                     [ Html.text
                                         """Caught exception creating storage on
@@ -281,7 +281,8 @@ body uploader =
                                         """
                                     ]
                                 , Html.div
-                                    []
+                                    [ class "has-border-2 px-2 pt-2 pb-2"
+                                    ]
                                     [ Html.text
                                         """You can quickly swap $SOL --> $SHDW on
                                         """
