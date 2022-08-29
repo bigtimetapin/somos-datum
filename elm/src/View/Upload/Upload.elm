@@ -284,6 +284,23 @@ body uploader =
                                     [ class "has-border-2 px-2 pt-2 pb-2"
                                     ]
                                     [ Html.text
+                                        """For reference, 1GB of storage translates to
+                                        """
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href "https://shdw.genesysgo.com/shadow-infrastructure-overview/shadow-drive-overview/the-shadow-drive-storage-stack/the-shadow-drive-overlay/the-shadow-drive-smart-contracts"
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text "0.25"
+                                        ]
+                                    , Html.text
+                                        """ $SHDW. So you don't need much & will find the token to be very affordable.
+                                        """
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-2 pt-2 pb-2"
+                                    ]
+                                    [ Html.text
                                         """You can quickly swap $SOL --> $SHDW on
                                         """
                                     , Html.a
