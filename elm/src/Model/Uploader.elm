@@ -3,6 +3,7 @@ module Model.Uploader exposing (HasWalletUploader(..), Uploader(..), Uploading(.
 import Model.AlmostCatalog exposing (AlmostCatalog)
 import Model.Catalog exposing (Catalog)
 import Model.Datum exposing (Datum)
+import Model.Lit as Lit
 import Model.Wallet exposing (Wallet)
 
 
@@ -24,7 +25,7 @@ type
       -- needs to swap for $shdw
     | HasEmptyWallet Wallet
       -- uploading
-    | HasCatalog Catalog
+    | HasCatalog Catalog Lit.Parameters
     | WaitingForUpload Uploading
     | Uploaded Datum
 

@@ -4,6 +4,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (class, href, id, multiple, placeholder, style, target, type_)
 import Html.Events exposing (onClick, onInput)
 import Model.Datum as Datum
+import Model.Lit as Lit
 import Model.State as State exposing (State(..))
 import Model.Uploader as Uploader exposing (Uploader(..))
 import Msg.Msg exposing (Msg(..))
@@ -222,7 +223,42 @@ body uploader =
                                     []
                                 ]
 
-                        Uploader.HasCatalog catalog ->
+                        Uploader.HasCatalog catalog parameters ->
+                            let
+                                f : UploaderMsg.UploadParameter -> Msg
+                                f msg =
+                                    FromUploader <| UploaderMsg.SelectParameter catalog parameters msg
+
+                                method =
+                                    case parameters.method of
+                                        Lit.Collection ->
+                                            [ Html.button
+                                                [ class "is-button-1"
+                                                , onClick <| f (UploaderMsg.SelectMethod Lit.Token)
+                                                ]
+                                                [ Html.text "Token"
+                                                ]
+                                            , Html.button
+                                                [ class "is-button-1 is-active-button"
+                                                ]
+                                                [ Html.text "Metaplex Collection"
+                                                ]
+                                            ]
+
+                                        Lit.Token ->
+                                            [ Html.button
+                                                [ class "is-button-1 is-active-button"
+                                                ]
+                                                [ Html.text "Token"
+                                                ]
+                                            , Html.button
+                                                [ class "is-button-1"
+                                                , onClick <| f (UploaderMsg.SelectMethod Lit.Collection)
+                                                ]
+                                                [ Html.text "Metaplex Collection"
+                                                ]
+                                            ]
+                            in
                             Html.div
                                 [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
@@ -236,6 +272,32 @@ body uploader =
                                         , multiple True
                                         ]
                                         []
+                                    ]
+                                , Html.div
+                                    [ class "my-2"
+                                    ]
+                                    [ Html.nav
+                                        [ class "level"
+                                        ]
+                                        [ Html.div
+                                            [ class "level-left"
+                                            ]
+                                            [ Html.div
+                                                [ class "level-item"
+                                                ]
+                                                [ Html.div
+                                                    []
+                                                    method
+                                                ]
+                                            , Html.div
+                                                [ class "level-item"
+                                                ]
+                                                [ Html.div
+                                                    []
+                                                    method
+                                                ]
+                                            ]
+                                        ]
                                     ]
                                 , Html.button
                                     [ class "is-button-2 mb-2"

@@ -1,7 +1,9 @@
-module Msg.Uploader exposing (From(..), To(..), UploadingCheckpoint(..))
+module Msg.Uploader exposing (From(..), To(..), UploadParameter(..), UploadingCheckpoint(..))
 
 import Model.AlmostCatalog exposing (AlmostCatalog)
+import Model.Catalog exposing (Catalog)
 import Model.Datum exposing (Datum)
+import Model.Lit as Lit
 import Model.Wallet exposing (Wallet)
 
 
@@ -16,7 +18,14 @@ type
       -- init
     | InitializeCatalog AlmostCatalog
       -- upload
+    | SelectParameter Catalog Lit.Parameters UploadParameter
     | Upload Datum
+
+
+type UploadParameter
+    = SelectMethod Lit.Method
+    | SelectComparator Lit.Comparator
+    | SelectValue Lit.Value
 
 
 type

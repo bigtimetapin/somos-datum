@@ -1,4 +1,4 @@
-module Model.Lit exposing (Lit, encode)
+module Model.Lit exposing (Comparator(..), Lit, Method(..), Parameters, Value, defaultParameters, encode)
 
 import Json.Encode as Encode
 import Model.Datum exposing (Datum)
@@ -19,9 +19,33 @@ type alias ReturnValueTest =
     }
 
 
+type alias Parameters =
+    { method : Method
+    , comparator : Comparator
+    , value : Value
+    }
+
+
 type Method
     = Collection
     | Token
+
+
+type Comparator
+    = GreaterThan
+    | GreaterThanOrEqualTo
+
+
+type alias Value =
+    Int
+
+
+defaultParameters : Parameters
+defaultParameters =
+    { method = Token
+    , comparator = GreaterThan
+    , value = 0
+    }
 
 
 encode : Datum -> String
@@ -30,8 +54,8 @@ encode datum =
         returnValueTestEncoder =
             Encode.object
                 [ ( "key", Encode.string <| methodToKey Token )
-                , ( "comparator", Encode.string ">" )
-                , ( "value", Encode.string "0" )
+                , ( "comparator", Encode.string <| comparatorToString GreaterThan )
+                , ( "value", Encode.string <| String.fromInt 0 )
                 ]
 
         litEncoder =
@@ -49,6 +73,16 @@ encode datum =
                 ]
     in
     Encode.encode 0 encoder
+
+
+comparatorToString : Comparator -> String
+comparatorToString comparator =
+    case comparator of
+        GreaterThan ->
+            ">"
+
+        GreaterThanOrEqualTo ->
+            ">="
 
 
 methodToName : Method -> String

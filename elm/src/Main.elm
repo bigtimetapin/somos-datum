@@ -116,6 +116,35 @@ update msg model =
                     , UploaderCmd.upload <| Lit.encode datum
                     )
 
+                UploaderMsg.SelectParameter catalog parameters uploadParameter ->
+                    case uploadParameter of
+                        UploaderMsg.SelectMethod method ->
+                            let
+                                new =
+                                    { parameters | method = method }
+                            in
+                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog new }
+                            , Cmd.none
+                            )
+
+                        UploaderMsg.SelectComparator comparator ->
+                            let
+                                new =
+                                    { parameters | comparator = comparator }
+                            in
+                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog new }
+                            , Cmd.none
+                            )
+
+                        UploaderMsg.SelectValue value ->
+                            let
+                                new =
+                                    { parameters | value = value }
+                            in
+                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog new }
+                            , Cmd.none
+                            )
+
         ToUploader to ->
             case to of
                 UploaderMsg.ConnectSuccess wallet ->
@@ -126,7 +155,12 @@ update msg model =
                 UploaderMsg.ConnectAndGetCatalogSuccess json ->
                     case Catalog.decode json of
                         Ok catalog ->
-                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog }
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.HasCatalog catalog Lit.defaultParameters
+                              }
                             , Cmd.none
                             )
 
@@ -153,7 +187,12 @@ update msg model =
                 UploaderMsg.InitializeCatalogSuccess json ->
                     case Catalog.decode json of
                         Ok catalog ->
-                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog }
+                            ( { model
+                                | state =
+                                    Upload <|
+                                        Uploader.HasWallet <|
+                                            Uploader.HasCatalog catalog Lit.defaultParameters
+                              }
                             , Cmd.none
                             )
 
