@@ -262,9 +262,17 @@ body uploader =
                                 value_ =
                                     case parameters.value of
                                         Lit.Deciding string ->
+                                            let
+                                                onClickMsg =
+                                                    case String.toInt string of
+                                                        Just int ->
+                                                            UploaderMsg.SelectValue <| Lit.Decided int
+
+                                                        Nothing ->
+                                                            UploaderMsg.SelectValue <| Lit.InvalidInt string
+                                            in
                                             Html.div
-                                                [
-                                                ]
+                                                []
                                                 [ Html.div
                                                     [ class "icon-text"
                                                     ]
@@ -281,9 +289,11 @@ body uploader =
                                                         [ Html.input
                                                             [ type_ "text"
                                                             , placeholder "Minimum Token Value Required"
-                                                            , onInput <| \s -> FromUploader
-                                                                <| UploaderMsg.SelectParameter
-                                                                    <| UploaderMsg.SelectValue Lit.Deciding s
+                                                            , onInput <|
+                                                                \s ->
+                                                                    f <|
+                                                                        UploaderMsg.SelectValue <|
+                                                                            Lit.Deciding s
                                                             ]
                                                             []
                                                         ]
@@ -291,9 +301,7 @@ body uploader =
                                                         []
                                                         [ Html.button
                                                             [ class "is-button-1"
-                                                            , onClick <| UploaderMsg.SelectParameter
-                                                                    <| UploaderMsg.SelectValue
-                                                                        <| Lit.Deciding string
+                                                            , onClick <| f <| onClickMsg
                                                             ]
                                                             [ Html.text "Select"
                                                             ]
@@ -301,18 +309,39 @@ body uploader =
                                                     ]
                                                 ]
 
-
                                         Lit.InvalidInt string ->
                                             Html.div
                                                 []
-                                                []
-
+                                                [ Html.text <|
+                                                    String.join
+                                                        " "
+                                                        [ "Invalid integer value:"
+                                                        , string
+                                                        ]
+                                                , Html.button
+                                                    [ class "is-button-1"
+                                                    , onClick <| f <| UploaderMsg.SelectValue <| Lit.Deciding string
+                                                    ]
+                                                    [ Html.text "Refresh"
+                                                    ]
+                                                ]
 
                                         Lit.Decided int ->
                                             Html.div
                                                 []
-                                                []
-
+                                                [ Html.text <|
+                                                    String.join
+                                                        " "
+                                                        [ "Minimum token value required:"
+                                                        , String.fromInt int
+                                                        ]
+                                                , Html.button
+                                                    [ class "is-button-1"
+                                                    , onClick <| f <| UploaderMsg.SelectValue <| Lit.Deciding ""
+                                                    ]
+                                                    [ Html.text "New"
+                                                    ]
+                                                ]
                             in
                             Html.div
                                 [ class "has-border-2 px-2 pt-2 pb-6"
@@ -349,7 +378,8 @@ body uploader =
                                                 ]
                                                 [ Html.div
                                                     []
-                                                    method
+                                                    [ value_
+                                                    ]
                                                 ]
                                             ]
                                         ]

@@ -4,14 +4,22 @@ import Json.Encode as Encode
 import Model.Datum exposing (Datum)
 import Model.Mint exposing (Mint)
 
+
+
 -- todo
+
+
 type alias Lit =
     { mint : Mint
     , method : String
     , returnValueTest : ReturnValueTest
     }
 
+
+
 -- todo
+
+
 type alias ReturnValueTest =
     { key : String
     , comparator : String
