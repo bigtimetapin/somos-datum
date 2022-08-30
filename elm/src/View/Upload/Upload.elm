@@ -258,6 +258,61 @@ body uploader =
                                                 [ Html.text "Metaplex Collection"
                                                 ]
                                             ]
+
+                                value_ =
+                                    case parameters.value of
+                                        Lit.Deciding string ->
+                                            Html.div
+                                                [
+                                                ]
+                                                [ Html.div
+                                                    [ class "icon-text"
+                                                    ]
+                                                    [ Html.span
+                                                        [ class "icon has-text-info"
+                                                        ]
+                                                        [ Html.i
+                                                            [ class "fas fa-coins"
+                                                            ]
+                                                            []
+                                                        ]
+                                                    , Html.span
+                                                        []
+                                                        [ Html.input
+                                                            [ type_ "text"
+                                                            , placeholder "Minimum Token Value Required"
+                                                            , onInput <| \s -> FromUploader
+                                                                <| UploaderMsg.SelectParameter
+                                                                    <| UploaderMsg.SelectValue Lit.Deciding s
+                                                            ]
+                                                            []
+                                                        ]
+                                                    , Html.span
+                                                        []
+                                                        [ Html.button
+                                                            [ class "is-button-1"
+                                                            , onClick <| UploaderMsg.SelectParameter
+                                                                    <| UploaderMsg.SelectValue
+                                                                        <| Lit.Deciding string
+                                                            ]
+                                                            [ Html.text "Select"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+
+
+                                        Lit.InvalidInt string ->
+                                            Html.div
+                                                []
+                                                []
+
+
+                                        Lit.Decided int ->
+                                            Html.div
+                                                []
+                                                []
+
                             in
                             Html.div
                                 [ class "has-border-2 px-2 pt-2 pb-6"

@@ -1,17 +1,17 @@
-module Model.Lit exposing (Comparator(..), Lit, Method(..), Parameters, Value, defaultParameters, encode)
+module Model.Lit exposing (Comparator(..), Method(..), Parameters, Value(..), defaultParameters, encode)
 
 import Json.Encode as Encode
 import Model.Datum exposing (Datum)
 import Model.Mint exposing (Mint)
 
-
+-- todo
 type alias Lit =
     { mint : Mint
-    , method : Method
+    , method : String
     , returnValueTest : ReturnValueTest
     }
 
-
+-- todo
 type alias ReturnValueTest =
     { key : String
     , comparator : String
@@ -36,15 +36,17 @@ type Comparator
     | GreaterThanOrEqualTo
 
 
-type alias Value =
-    Int
+type Value
+    = Deciding String
+    | InvalidInt String
+    | Decided Int
 
 
 defaultParameters : Parameters
 defaultParameters =
     { method = Token
     , comparator = GreaterThan
-    , value = 0
+    , value = Decided 0
     }
 
 
