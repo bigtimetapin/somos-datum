@@ -1,4 +1,4 @@
-module Model.Lit exposing (Comparator(..), Method(..), Parameters, Value(..), defaultParameters, encode)
+module Model.Lit exposing (Comparator(..), Method(..), Parameters, Value(..), comparatorToString, defaultParameters, encode)
 
 import Json.Encode as Encode
 import Model.Datum exposing (Datum)

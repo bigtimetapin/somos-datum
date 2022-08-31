@@ -259,6 +259,36 @@ body uploader =
                                                 ]
                                             ]
 
+                                comparator =
+                                    case parameters.comparator of
+                                        Lit.GreaterThan ->
+                                            [ Html.button
+                                                [ class "is-button-1"
+                                                , onClick <| f (UploaderMsg.SelectComparator Lit.GreaterThanOrEqualTo)
+                                                ]
+                                                [ Html.text <| Lit.comparatorToString Lit.GreaterThanOrEqualTo
+                                                ]
+                                            , Html.button
+                                                [ class "is-button-1 is-active-button"
+                                                ]
+                                                [ Html.text <| Lit.comparatorToString Lit.GreaterThan
+                                                ]
+                                            ]
+
+                                        Lit.GreaterThanOrEqualTo ->
+                                            [ Html.button
+                                                [ class "is-button-1 is-active-button"
+                                                ]
+                                                [ Html.text <| Lit.comparatorToString Lit.GreaterThanOrEqualTo
+                                                ]
+                                            , Html.button
+                                                [ class "is-button-1"
+                                                , onClick <| f (UploaderMsg.SelectComparator Lit.GreaterThan)
+                                                ]
+                                                [ Html.text <| Lit.comparatorToString Lit.GreaterThan
+                                                ]
+                                            ]
+
                                 value_ =
                                     case parameters.value of
                                         Lit.Deciding string ->
@@ -272,34 +302,39 @@ body uploader =
                                                             UploaderMsg.SelectValue <| Lit.InvalidInt string
                                             in
                                             Html.div
-                                                []
+                                                [ class "has-border-2"
+                                                ]
                                                 [ Html.div
-                                                    [ class "icon-text"
-                                                    ]
-                                                    [ Html.span
-                                                        [ class "icon has-text-info"
+                                                    []
+                                                    [ Html.div
+                                                        [ class "icon-text"
                                                         ]
-                                                        [ Html.i
-                                                            [ class "fas fa-coins"
+                                                        [ Html.span
+                                                            [ class "icon has-text-info"
+                                                            , style "margin-top" "2px"
+                                                            , style "margin-left" "2px"
                                                             ]
-                                                            []
-                                                        ]
-                                                    , Html.span
-                                                        []
-                                                        [ Html.input
-                                                            [ type_ "text"
-                                                            , placeholder "Minimum Token Value Required"
-                                                            , onInput <|
-                                                                \s ->
-                                                                    f <|
-                                                                        UploaderMsg.SelectValue <|
-                                                                            Lit.Deciding s
+                                                            [ Html.i
+                                                                [ class "fas fa-coins"
+                                                                ]
+                                                                []
                                                             ]
+                                                        , Html.span
                                                             []
-                                                        ]
-                                                    , Html.span
-                                                        []
-                                                        [ Html.button
+                                                            [ Html.input
+                                                                [ style "height" "30px"
+                                                                , style "width" "13rem"
+                                                                , type_ "text"
+                                                                , placeholder "Minimum Token Value Required"
+                                                                , onInput <|
+                                                                    \s ->
+                                                                        f <|
+                                                                            UploaderMsg.SelectValue <|
+                                                                                Lit.Deciding s
+                                                                ]
+                                                                []
+                                                            ]
+                                                        , Html.button
                                                             [ class "is-button-1"
                                                             , onClick <| f <| onClickMsg
                                                             ]
@@ -311,7 +346,8 @@ body uploader =
 
                                         Lit.InvalidInt string ->
                                             Html.div
-                                                []
+                                                [ class "has-border-2 pl-2"
+                                                ]
                                                 [ Html.text <|
                                                     String.join
                                                         " "
@@ -319,7 +355,7 @@ body uploader =
                                                         , string
                                                         ]
                                                 , Html.button
-                                                    [ class "is-button-1"
+                                                    [ class "is-button-1 ml-2"
                                                     , onClick <| f <| UploaderMsg.SelectValue <| Lit.Deciding string
                                                     ]
                                                     [ Html.text "Refresh"
@@ -328,15 +364,17 @@ body uploader =
 
                                         Lit.Decided int ->
                                             Html.div
-                                                []
+                                                [ class "has-border-2 pl-2"
+                                                ]
                                                 [ Html.text <|
-                                                    String.join
-                                                        " "
-                                                        [ "Minimum token value required:"
+                                                    String.concat
+                                                        [ "Min token-balance required:"
+                                                        , " "
+                                                        , Lit.comparatorToString parameters.comparator
                                                         , String.fromInt int
                                                         ]
                                                 , Html.button
-                                                    [ class "is-button-1"
+                                                    [ class "is-button-1 ml-2"
                                                     , onClick <| f <| UploaderMsg.SelectValue <| Lit.Deciding ""
                                                     ]
                                                     [ Html.text "New"
@@ -372,6 +410,13 @@ body uploader =
                                                 [ Html.div
                                                     []
                                                     method
+                                                ]
+                                            , Html.div
+                                                [ class "level-item"
+                                                ]
+                                                [ Html.div
+                                                    []
+                                                    comparator
                                                 ]
                                             , Html.div
                                                 [ class "level-item"
