@@ -380,6 +380,31 @@ body uploader =
                                                     [ Html.text "New"
                                                     ]
                                                 ]
+
+                                upload_ =
+                                    case parameters.value of
+                                        Lit.Decided int ->
+                                            let
+                                                decided =
+                                                    { method = parameters.method
+                                                    , comparator = parameters.comparator
+                                                    , value = int
+                                                    }
+                                            in
+                                            Html.button
+                                                [ class "is-button-2 mb-2"
+                                                , style "width" "100%"
+                                                , onClick <|
+                                                    FromUploader <|
+                                                        UploaderMsg.Upload (Datum.fromCatalog catalog) decided
+                                                ]
+                                                [ Html.text "Upload"
+                                                ]
+
+                                        _ ->
+                                            Html.div
+                                                []
+                                                []
                             in
                             Html.div
                                 [ class "has-border-2 px-2 pt-2 pb-6"
@@ -429,13 +454,7 @@ body uploader =
                                             ]
                                         ]
                                     ]
-                                , Html.button
-                                    [ class "is-button-2 mb-2"
-                                    , style "width" "100%"
-                                    , onClick <| FromUploader <| UploaderMsg.Upload <| Datum.fromCatalog catalog
-                                    ]
-                                    [ Html.text "Upload"
-                                    ]
+                                , upload_
                                 , View.Generic.Catalog.view catalog.uploader catalog
                                 ]
 

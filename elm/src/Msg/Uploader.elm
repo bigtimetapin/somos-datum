@@ -19,7 +19,7 @@ type
     | InitializeCatalog AlmostCatalog
       -- upload
     | SelectParameter Catalog Lit.Parameters UploadParameter
-    | Upload Datum
+    | Upload Datum Lit.DecidedParameters
 
 
 type UploadParameter

@@ -105,7 +105,7 @@ update msg model =
                     , UploaderCmd.initializeCatalog <| AlmostCatalog.encode almostCatalog
                     )
 
-                UploaderMsg.Upload datum ->
+                UploaderMsg.Upload datum parameters ->
                     ( { model
                         | state =
                             Upload <|
@@ -113,7 +113,7 @@ update msg model =
                                     Uploader.WaitingForUpload <|
                                         Uploader.WaitingForEncryption datum.uploader
                       }
-                    , UploaderCmd.upload <| Lit.encode datum
+                    , UploaderCmd.upload <| Lit.encode datum parameters
                     )
 
                 UploaderMsg.SelectParameter catalog parameters uploadParameter ->

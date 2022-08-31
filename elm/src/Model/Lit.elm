@@ -1,36 +1,20 @@
-module Model.Lit exposing (Comparator(..), Method(..), Parameters, Value(..), comparatorToString, defaultParameters, encode)
+module Model.Lit exposing (Comparator(..), DecidedParameters, Method(..), Parameters, Value(..), comparatorToString, defaultParameters, encode)
 
 import Json.Encode as Encode
 import Model.Datum exposing (Datum)
-import Model.Mint exposing (Mint)
-
-
-
--- todo
-
-
-type alias Lit =
-    { mint : Mint
-    , method : String
-    , returnValueTest : ReturnValueTest
-    }
-
-
-
--- todo
-
-
-type alias ReturnValueTest =
-    { key : String
-    , comparator : String
-    , value : String
-    }
 
 
 type alias Parameters =
     { method : Method
     , comparator : Comparator
     , value : Value
+    }
+
+
+type alias DecidedParameters =
+    { method : Method
+    , comparator : Comparator
+    , value : Int
     }
 
 
@@ -58,20 +42,20 @@ defaultParameters =
     }
 
 
-encode : Datum -> String
-encode datum =
+encode : Datum -> DecidedParameters -> String
+encode datum decided =
     let
         returnValueTestEncoder =
             Encode.object
-                [ ( "key", Encode.string <| methodToKey Token )
-                , ( "comparator", Encode.string <| comparatorToString GreaterThan )
-                , ( "value", Encode.string <| String.fromInt 0 )
+                [ ( "key", Encode.string <| methodToKey decided.method )
+                , ( "comparator", Encode.string <| comparatorToString decided.comparator )
+                , ( "value", Encode.string <| String.fromInt decided.value )
                 ]
 
         litEncoder =
             Encode.object
                 [ ( "mint", Encode.string datum.mint )
-                , ( "method", Encode.string <| methodToName Token )
+                , ( "method", Encode.string <| methodToName decided.method )
                 , ( "returnValueTest", returnValueTestEncoder )
                 ]
 
