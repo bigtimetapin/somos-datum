@@ -325,7 +325,7 @@ body uploader =
                                                                 [ style "height" "30px"
                                                                 , style "width" "13rem"
                                                                 , type_ "text"
-                                                                , placeholder "Minimum Token Value Required"
+                                                                , placeholder "Minimum token-balance required"
                                                                 , onInput <|
                                                                     \s ->
                                                                         f <|
