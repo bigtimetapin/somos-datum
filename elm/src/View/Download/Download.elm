@@ -113,7 +113,7 @@ body downloader =
                                             Html.div
                                                 []
                                                 [ Html.button
-                                                    [ class "is-button-1"
+                                                    [ class "is-button-1 mt-2"
                                                     , style "width" "100%"
                                                     , onClick <|
                                                         FromDownloader <|
@@ -229,7 +229,7 @@ body downloader =
                                                                     { mint = mint, uploader = string }
                                                     ]
                                                     [ Html.div
-                                                        [ class "is-button-1"
+                                                        [ class "is-button-1 mt-4"
                                                         ]
                                                         [ Html.text <|
                                                             String.join " " <|
@@ -246,11 +246,18 @@ body downloader =
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2"
                                     ]
-                                    [ Html.text <|
-                                        String.join " "
-                                            [ "mint selected:"
-                                            , mint
-                                            ]
+                                    [ Html.text "mint selected: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text mint
+                                        ]
                                     ]
                                 , Html.div
                                     [ class "field"
