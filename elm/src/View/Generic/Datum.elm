@@ -3,6 +3,7 @@ module View.Generic.Datum exposing (href, view)
 import Html exposing (Html)
 import Html.Attributes exposing (class, target)
 import Html.Events exposing (onClick)
+import Model.AlmostDatum as AlmostDatum exposing (AlmostDatum)
 import Model.Datum exposing (Datum)
 import Model.Downloader as Downloader
 import Model.State as State exposing (State(..))
@@ -55,25 +56,25 @@ view wallet datum =
                 ]
                 [ Html.text "follow link to view in download console ⬇️"
                 ]
-            , href wallet datum
+            , href wallet <| AlmostDatum.fromDatum datum
             ]
         ]
 
 
-href : Wallet -> Datum -> Html Msg
-href wallet datum =
+href : Wallet -> AlmostDatum -> Html Msg
+href wallet almostDatum =
     Html.a
         [ onClick <|
             FromDownloader <|
-                DownloaderMsg.SelectIncrement wallet datum
+                DownloaderMsg.SelectIncrement wallet almostDatum
         , State.href <|
             Download <|
                 Downloader.WaitingForWallet <|
-                    Downloader.AlmostHasDatum datum
+                    Downloader.AlmostHasDatum almostDatum
         ]
         [ Html.div
             [ class "is-button-1"
             ]
-            [ Html.text <| String.fromInt datum.increment
+            [ Html.text <| String.fromInt almostDatum.increment
             ]
         ]

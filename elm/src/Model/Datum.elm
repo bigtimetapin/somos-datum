@@ -1,17 +1,15 @@
-module Model.Datum exposing (Datum, WithWallet, decode, decodeWithWallet, encode, fromCatalog, parser)
+module Model.Datum exposing (Datum, WithWallet, decode, decodeWithWallet, titleToString)
 
 import Json.Decode as Decode
-import Json.Encode as Encode
-import Model.Catalog exposing (Catalog)
 import Model.Mint exposing (Mint)
 import Model.Wallet exposing (Wallet)
-import Url.Parser as UrlParser exposing ((</>))
 
 
 type alias Datum =
     { mint : Mint
     , uploader : Wallet
     , increment : Increment
+    , title : Maybe String
     }
 
 
@@ -25,25 +23,14 @@ type alias Increment =
     Int
 
 
-fromCatalog : Catalog -> Datum
-fromCatalog catalog =
-    { mint = catalog.mint
-    , uploader = catalog.uploader
-    , increment = catalog.increment + 1
-    }
+titleToString : Maybe String -> String
+titleToString maybeTitle =
+    case maybeTitle of
+        Just title ->
+            title
 
-
-encode : Datum -> String
-encode datum =
-    let
-        encoder =
-            Encode.object
-                [ ( "mint", Encode.string datum.mint )
-                , ( "uploader", Encode.string datum.uploader )
-                , ( "increment", Encode.int datum.increment )
-                ]
-    in
-    Encode.encode 0 encoder
+        Nothing ->
+            "untitled"
 
 
 decode : Json -> Result String Datum
@@ -74,20 +61,11 @@ decodeWithWallet json =
 
 decoder_ : Decode.Decoder Datum
 decoder_ =
-    Decode.map3 Datum
+    Decode.map4 Datum
         (Decode.field "mint" Decode.string)
         (Decode.field "uploader" Decode.string)
         (Decode.field "increment" Decode.int)
-
-
-parser : UrlParser.Parser (Datum -> c) c
-parser =
-    UrlParser.map Datum parser_
-
-
-parser_ : UrlParser.Parser (Mint -> Wallet -> Increment -> a) a
-parser_ =
-    UrlParser.s "download" </> UrlParser.string </> UrlParser.string </> UrlParser.int
+        (Decode.field "title" <| Decode.maybe Decode.string)
 
 
 type alias Json =

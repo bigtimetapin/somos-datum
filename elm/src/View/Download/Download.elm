@@ -3,6 +3,8 @@ module View.Download.Download exposing (body)
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, placeholder, style, target, type_)
 import Html.Events exposing (onClick, onInput)
+import Model.AlmostDatum as AlmostDatum
+import Model.Datum as Datum
 import Model.Downloader as Downloader exposing (Downloader)
 import Model.State as State exposing (State(..))
 import Msg.Downloader as DownloaderMsg
@@ -332,13 +334,20 @@ body downloader =
                                     [ Html.button
                                         [ class "is-button-2"
                                         , style "width" "100%"
-                                        , onClick <| FromDownloader <| DownloaderMsg.Download wallet datum
+                                        , onClick <|
+                                            FromDownloader <|
+                                                DownloaderMsg.Download wallet (AlmostDatum.fromDatum datum)
                                         ]
                                         [ Html.text <|
                                             String.join " "
                                                 [ "download"
                                                 ]
                                         ]
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 mb-2 mt-2"
+                                    ]
+                                    [ Html.text <| Datum.titleToString datum.title
                                     ]
                                 , Html.div
                                     [ class "has-border-2 px-1 py-1 mb-2 mt-2"
@@ -495,13 +504,13 @@ body downloader =
                                     ]
                                 ]
 
-                        Downloader.AlmostHasDatum datum ->
+                        Downloader.AlmostHasDatum almostDatum ->
                             Html.div
                                 [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ Html.button
                                     [ class "is-button-1 mr-2 mt-2"
-                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetDatum datum
+                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetDatum almostDatum
                                     , style "float" "right"
                                     ]
                                     [ Html.text "Connect"
@@ -509,7 +518,7 @@ body downloader =
                                 , header
                                 , Html.button
                                     [ class "is-button-1"
-                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetDatum datum
+                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetDatum almostDatum
                                     ]
                                     [ Html.text "Connect"
                                     ]
@@ -543,11 +552,11 @@ body downloader =
                                         , href <|
                                             String.concat
                                                 [ "https://solscan.io/token/"
-                                                , datum.mint
+                                                , almostDatum.mint
                                                 ]
                                         , target "_blank"
                                         ]
-                                        [ Html.text datum.mint
+                                        [ Html.text almostDatum.mint
                                         ]
                                     ]
                                 , Html.div
@@ -559,11 +568,11 @@ body downloader =
                                         , href <|
                                             String.concat
                                                 [ "https://solscan.io/account/"
-                                                , datum.uploader
+                                                , almostDatum.uploader
                                                 ]
                                         , target "_blank"
                                         ]
-                                        [ Html.text datum.uploader
+                                        [ Html.text almostDatum.uploader
                                         ]
                                     ]
                                 , Html.div
@@ -572,7 +581,7 @@ body downloader =
                                     [ Html.text <|
                                         String.join " "
                                             [ "with unique asset id:"
-                                            , String.fromInt datum.increment
+                                            , String.fromInt almostDatum.increment
                                             ]
                                     ]
                                 ]

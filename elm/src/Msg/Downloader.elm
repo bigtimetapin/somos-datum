@@ -1,7 +1,7 @@
 module Msg.Downloader exposing (From(..), To(..))
 
 import Model.AlmostCatalog exposing (AlmostCatalog)
-import Model.Datum exposing (Datum)
+import Model.AlmostDatum exposing (AlmostDatum)
 import Model.Mint exposing (Mint)
 import Model.Wallet exposing (Wallet)
 
@@ -11,15 +11,15 @@ type
     -- connect
     = Connect
     | ConnectAndGetCatalog AlmostCatalog
-    | ConnectAndGetDatum Datum
+    | ConnectAndGetDatum AlmostDatum
       -- select
     | TypingMint Wallet String
     | SelectMint Wallet Mint
     | TypingUploaderAddress Wallet Mint String
     | SelectUploaderAddress Wallet Mint UploaderAddress -- href
-    | SelectIncrement Wallet Datum -- href
+    | SelectIncrement Wallet AlmostDatum -- href
       -- download
-    | Download Wallet Datum
+    | Download Wallet AlmostDatum
 
 
 type

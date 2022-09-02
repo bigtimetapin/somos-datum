@@ -1,6 +1,7 @@
 module Model.Downloader exposing (Downloader(..), HasWalletDownloader(..), WaitingForWalletDownloader(..))
 
 import Model.AlmostCatalog exposing (AlmostCatalog)
+import Model.AlmostDatum exposing (AlmostDatum)
 import Model.Catalog exposing (Catalog)
 import Model.Datum exposing (Datum)
 import Model.Mint exposing (Mint)
@@ -33,7 +34,7 @@ type
 type WaitingForWalletDownloader
     = AlmostLoggedIn
     | AlmostHasCatalog AlmostCatalog
-    | AlmostHasDatum Datum
+    | AlmostHasDatum AlmostDatum
 
 
 type alias UploaderAddress =

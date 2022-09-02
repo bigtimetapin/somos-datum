@@ -1,16 +1,16 @@
 import {solRpcConditions} from "./util";
-import {textDecoder} from "../anchor/util";
 import {chain} from "./config";
 import LitJsSdk from "lit-js-sdk";
 import JSZip from "jszip";
 import {saveAs} from "file-saver";
+import {getMetaData} from "../anchor/state/meta";
+import {getUrl} from "../anchor/state/datum";
 
 export async function decrypt(datum) {
+    // get url
+    const url = getUrl(datum);
     // fetch meta data
-    console.log("fetching meta-data");
-    const url = textDecoder.decode(new Uint8Array(datum.url));
-    const metaData = await fetch(url + "meta.json")
-        .then(response => response.json());
+    const metaData = await getMetaData(url);
     // build client
     const client = new LitJsSdk.LitNodeClient();
     // await for connection

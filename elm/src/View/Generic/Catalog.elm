@@ -2,8 +2,8 @@ module View.Generic.Catalog exposing (view)
 
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, target)
+import Model.AlmostDatum exposing (AlmostDatum)
 import Model.Catalog exposing (Catalog)
-import Model.Datum exposing (Datum)
 import Model.Wallet exposing (Wallet)
 import Msg.Msg exposing (Msg(..))
 import View.Generic.Datum
@@ -74,15 +74,15 @@ view wallet catalog =
                     Html.div
                         [ class "column is-2"
                         ]
-                        [ View.Generic.Datum.href wallet (toDatum i catalog)
+                        [ View.Generic.Datum.href wallet (toAlmostDatum i catalog)
                         ]
                 )
                 uploads
         ]
 
 
-toDatum : Int -> Catalog -> Datum
-toDatum increment catalog =
+toAlmostDatum : Int -> Catalog -> AlmostDatum
+toAlmostDatum increment catalog =
     { mint = catalog.mint
     , uploader = catalog.uploader
     , increment = increment

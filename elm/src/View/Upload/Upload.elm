@@ -3,6 +3,7 @@ module View.Upload.Upload exposing (body)
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, id, multiple, placeholder, style, target, type_)
 import Html.Events exposing (onClick, onInput)
+import Model.AlmostDatum as AlmostDatum
 import Model.Datum as Datum
 import Model.Lit as Lit
 import Model.State as State exposing (State(..))
@@ -392,7 +393,7 @@ body uploader =
                                                 , style "width" "100%"
                                                 , onClick <|
                                                     FromUploader <|
-                                                        UploaderMsg.Upload (Datum.fromCatalog catalog) decided
+                                                        UploaderMsg.Upload (AlmostDatum.fromCatalog catalog) decided
                                                 ]
                                                 [ Html.text "Upload"
                                                 ]

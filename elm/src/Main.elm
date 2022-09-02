@@ -7,6 +7,7 @@ import Browser.Navigation as Nav
 import Html exposing (Html)
 import Model.Administrator as Administrator
 import Model.AlmostCatalog as AlmostCatalog
+import Model.AlmostDatum as AlmostDatum
 import Model.Catalog as Catalog
 import Model.Datum as Datum
 import Model.Downloader as Downloader
@@ -105,15 +106,15 @@ update msg model =
                     , UploaderCmd.initializeCatalog <| AlmostCatalog.encode almostCatalog
                     )
 
-                UploaderMsg.Upload datum parameters ->
+                UploaderMsg.Upload almostDatum parameters ->
                     ( { model
                         | state =
                             Upload <|
                                 Uploader.HasWallet <|
                                     Uploader.WaitingForUpload <|
-                                        Uploader.WaitingForEncryption datum.uploader
+                                        Uploader.WaitingForEncryption almostDatum.uploader
                       }
-                    , UploaderCmd.upload <| Lit.encode datum parameters
+                    , UploaderCmd.upload <| Lit.encode almostDatum parameters
                     )
 
                 UploaderMsg.SelectParameter catalog parameters uploadParameter ->
@@ -299,9 +300,9 @@ update msg model =
                     , DownloaderCmd.connectAndGetCatalogAsDownloader <| AlmostCatalog.encode almostCatalog
                     )
 
-                DownloaderMsg.ConnectAndGetDatum datum ->
+                DownloaderMsg.ConnectAndGetDatum almostDatum ->
                     ( { model | state = Download <| Downloader.WaitingForWallet <| Downloader.AlmostLoggedIn }
-                    , DownloaderCmd.connectAndGetDatumAsDownloader <| Datum.encode datum
+                    , DownloaderCmd.connectAndGetDatumAsDownloader <| AlmostDatum.encode almostDatum
                     )
 
                 -- Has wallet
@@ -329,14 +330,14 @@ update msg model =
                         AlmostCatalog.encode { mint = mint, uploader = uploaderAddress }
                     )
 
-                DownloaderMsg.SelectIncrement wallet datum ->
+                DownloaderMsg.SelectIncrement wallet almostDatum ->
                     ( { model | state = Download <| Downloader.HasWallet <| Downloader.WaitingForDatum wallet }
-                    , DownloaderCmd.getDatumAsDownloader <| Datum.encode datum
+                    , DownloaderCmd.getDatumAsDownloader <| AlmostDatum.encode almostDatum
                     )
 
-                DownloaderMsg.Download wallet datum ->
+                DownloaderMsg.Download wallet almostDatum ->
                     ( { model | state = Download <| Downloader.HasWallet <| Downloader.WaitingForDownload wallet }
-                    , DownloaderCmd.download <| Datum.encode datum
+                    , DownloaderCmd.download <| AlmostDatum.encode almostDatum
                     )
 
         ToDownloader to ->

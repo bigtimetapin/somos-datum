@@ -86,7 +86,11 @@ app.ports.connectAndGetDatumAsDownloader.subscribe(async function (json) {
         // get provider & program
         const pp = getPP(phantom);
         // invoke get datum
-        await getDatum(pp.provider, pp.program, json)
+        const response = await getDatum(pp.provider, pp.program, json);
+        // send to elm
+        app.ports.connectAndGetDatumAsDownloaderSuccess.send(
+            response
+        )
         // or report error to elm
     } catch (error) {
         console.log(error);
@@ -131,7 +135,11 @@ app.ports.getDatumAsDownloader.subscribe(async function (json) {
         // get provider & program
         const pp = getPP(phantom);
         // invoke get datum
-        await getDatum(pp.provider, pp.program, json)
+        const response = await getDatum(pp.provider, pp.program, json);
+        // send to elm
+        app.ports.connectAndGetDatumAsDownloaderSuccess.send(
+            response
+        )
         // or report error to elm
     } catch (error) {
         console.log(error);
