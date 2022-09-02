@@ -433,21 +433,6 @@ body uploader =
                                                     []
                                                     method
                                                 ]
-                                            , Html.div
-                                                [ class "level-item"
-                                                ]
-                                                [ Html.div
-                                                    []
-                                                    comparator
-                                                ]
-                                            , Html.div
-                                                [ class "level-item"
-                                                ]
-                                                [ Html.div
-                                                    []
-                                                    [ value_
-                                                    ]
-                                                ]
                                             ]
                                         ]
                                     ]
