@@ -146,6 +146,15 @@ update msg model =
                             , Cmd.none
                             )
 
+                        UploaderMsg.SelectTitle title ->
+                            let
+                                new =
+                                    { parameters | title = title }
+                            in
+                            ( { model | state = Upload <| Uploader.HasWallet <| Uploader.HasCatalog catalog new }
+                            , Cmd.none
+                            )
+
         ToUploader to ->
             case to of
                 UploaderMsg.ConnectSuccess wallet ->

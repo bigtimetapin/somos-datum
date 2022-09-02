@@ -33,7 +33,7 @@ export async function upload(program, provider, json) {
         const url = await uploadFile(provider.wallet, file, provisioned.drive, provisioned.account);
         // upload meta data to shdw drive
         app.ports.uploadingMetaData.send(provider.wallet.publicKey.toString());
-        const metaData = buildMetaData(encrypted.encryptedSymmetricKey, parsed.lit);
+        const metaData = buildMetaData(encrypted.encryptedSymmetricKey, parsed.lit, parsed.title);
         await uploadFile(provider.wallet, metaData, provisioned.drive, provisioned.account);
         // derive pda increment
         app.ports.publishingUrl.send(provider.wallet.publicKey.toString());
@@ -83,7 +83,8 @@ export async function upload(program, provider, json) {
         const response = {
             mint: parsed.lit.mint,
             uploader: parsed.uploader,
-            increment: parsed.increment
+            increment: parsed.increment,
+            title: parsed.title
         }
         // report to elm
         app.ports.uploadSuccess.send(JSON.stringify(response));
@@ -102,11 +103,12 @@ export async function upload(program, provider, json) {
     }
 }
 
-function buildMetaData(key, lit) {
+function buildMetaData(key, lit, title) {
     // build meta data
     const meta = {
         key: key,
-        lit: lit
+        lit: lit,
+        title: title
     }
     const json = JSON.stringify(meta);
     const bytes = textEncoder.encode(json);

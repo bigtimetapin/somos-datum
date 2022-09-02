@@ -26,6 +26,7 @@ type UploadParameter
     = SelectMethod Lit.Method
     | SelectComparator Lit.Comparator
     | SelectValue Lit.Value
+    | SelectTitle Lit.Title
 
 
 type

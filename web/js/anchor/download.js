@@ -3,8 +3,6 @@ import {derivePda, fetchPda, getDatum} from "./state/datum";
 
 export async function download(provider, program, json) {
     try {
-        // get user wallet
-        const publicKey = provider.wallet.publicKey.toString();
         // derive pda datum
         const pdaDatum = await derivePda(json, program);
         // fetch pda datum

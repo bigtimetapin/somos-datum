@@ -1,4 +1,4 @@
-module Model.Lit exposing (Comparator(..), DecidedParameters, Method(..), Parameters, Value(..), comparatorToString, defaultParameters, encode)
+module Model.Lit exposing (Comparator(..), DecidedParameters, Method(..), Parameters, Title(..), Value(..), comparatorToString, defaultParameters, encode)
 
 import Json.Encode as Encode
 import Model.AlmostDatum exposing (AlmostDatum)
@@ -8,6 +8,7 @@ type alias Parameters =
     { method : Method
     , comparator : Comparator
     , value : Value
+    , title : Title
     }
 
 
@@ -15,6 +16,7 @@ type alias DecidedParameters =
     { method : Method
     , comparator : Comparator
     , value : Int
+    , title : String
     }
 
 
@@ -29,16 +31,22 @@ type Comparator
 
 
 type Value
-    = Deciding String
+    = DecidingValue String
     | InvalidInt String
-    | Decided Int
+    | DecidedValue Int
+
+
+type Title
+    = DecidingTitle String
+    | DecidedTitle String
 
 
 defaultParameters : Parameters
 defaultParameters =
     { method = Token
     , comparator = GreaterThan
-    , value = Decided 0
+    , value = DecidedValue 0
+    , title = DecidedTitle "untitled"
     }
 
 
@@ -64,6 +72,7 @@ encode almostDatum decided =
                 [ ( "uploader", Encode.string almostDatum.uploader )
                 , ( "increment", Encode.int almostDatum.increment )
                 , ( "lit", litEncoder )
+                , ( "title", Encode.string decided.title )
                 ]
     in
     Encode.encode 0 encoder

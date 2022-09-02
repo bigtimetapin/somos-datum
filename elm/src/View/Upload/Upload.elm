@@ -288,12 +288,12 @@ body uploader =
 
                                 value_ =
                                     case parameters.value of
-                                        Lit.Deciding string ->
+                                        Lit.DecidingValue string ->
                                             let
                                                 onClickMsg =
                                                     case String.toInt string of
                                                         Just int ->
-                                                            UploaderMsg.SelectValue <| Lit.Decided int
+                                                            UploaderMsg.SelectValue <| Lit.DecidedValue int
 
                                                         Nothing ->
                                                             UploaderMsg.SelectValue <| Lit.InvalidInt string
@@ -327,7 +327,7 @@ body uploader =
                                                                     \s ->
                                                                         f <|
                                                                             UploaderMsg.SelectValue <|
-                                                                                Lit.Deciding s
+                                                                                Lit.DecidingValue s
                                                                 ]
                                                                 []
                                                             ]
@@ -353,13 +353,13 @@ body uploader =
                                                         ]
                                                 , Html.button
                                                     [ class "is-button-1 ml-2"
-                                                    , onClick <| f <| UploaderMsg.SelectValue <| Lit.Deciding string
+                                                    , onClick <| f <| UploaderMsg.SelectValue <| Lit.DecidingValue string
                                                     ]
                                                     [ Html.text "Refresh"
                                                     ]
                                                 ]
 
-                                        Lit.Decided int ->
+                                        Lit.DecidedValue int ->
                                             Html.div
                                                 [ class "has-border-2 pl-2"
                                                 ]
@@ -372,20 +372,113 @@ body uploader =
                                                         ]
                                                 , Html.button
                                                     [ class "is-button-1 ml-2"
-                                                    , onClick <| f <| UploaderMsg.SelectValue <| Lit.Deciding ""
+                                                    , onClick <| f <| UploaderMsg.SelectValue <| Lit.DecidingValue ""
                                                     ]
                                                     [ Html.text "New"
                                                     ]
                                                 ]
 
+                                title =
+                                    case parameters.title of
+                                        Lit.DecidingTitle string ->
+                                            let
+                                                decided =
+                                                    case string of
+                                                        "" ->
+                                                            "untitled"
+
+                                                        nes ->
+                                                            nes
+                                            in
+                                            Html.div
+                                                [ class "has-border-2"
+                                                ]
+                                                [ Html.div
+                                                    []
+                                                    [ Html.div
+                                                        [ class "icon-text"
+                                                        ]
+                                                        [ Html.span
+                                                            [ class "icon has-text-info"
+                                                            , style "margin-top" "3px"
+                                                            , style "margin-left" "7px"
+                                                            ]
+                                                            [ Html.i
+                                                                [ class "fas fa-file-signature"
+                                                                ]
+                                                                []
+                                                            ]
+                                                        , Html.span
+                                                            []
+                                                            [ Html.input
+                                                                [ style "height" "30px"
+                                                                , style "width" "13rem"
+                                                                , type_ "text"
+                                                                , placeholder "Title of upload"
+                                                                , onInput <|
+                                                                    \s ->
+                                                                        f <|
+                                                                            UploaderMsg.SelectTitle <|
+                                                                                Lit.DecidingTitle s
+                                                                ]
+                                                                []
+                                                            ]
+                                                        , Html.button
+                                                            [ class "is-button-1"
+                                                            , onClick <|
+                                                                f <|
+                                                                    UploaderMsg.SelectTitle <|
+                                                                        Lit.DecidedTitle decided
+                                                            ]
+                                                            [ Html.text "Select"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+
+                                        Lit.DecidedTitle string ->
+                                            Html.div
+                                                [ class "has-border-2 pl-2"
+                                                ]
+                                                [ Html.div
+                                                    [ class "icon-text"
+                                                    ]
+                                                    [ Html.span
+                                                        [ class "icon has-text-info"
+                                                        , style "margin-top" "3px"
+                                                        ]
+                                                        [ Html.i
+                                                            [ class "fas fa-file-signature"
+                                                            ]
+                                                            []
+                                                        ]
+                                                    , Html.span
+                                                        [ class "mr-2"
+                                                        , style "margin-top" "3px"
+                                                        ]
+                                                        [ Html.text string
+                                                        ]
+                                                    , Html.button
+                                                        [ class "is-button-1 ml-2"
+                                                        , onClick <|
+                                                            f <|
+                                                                UploaderMsg.SelectTitle <|
+                                                                    Lit.DecidingTitle ""
+                                                        ]
+                                                        [ Html.text "New"
+                                                        ]
+                                                    ]
+                                                ]
+
                                 upload_ =
-                                    case parameters.value of
-                                        Lit.Decided int ->
+                                    case ( parameters.value, parameters.title ) of
+                                        ( Lit.DecidedValue int, Lit.DecidedTitle string ) ->
                                             let
                                                 decided =
                                                     { method = parameters.method
                                                     , comparator = parameters.comparator
                                                     , value = int
+                                                    , title = string
                                                     }
                                             in
                                             Html.button
@@ -432,6 +525,14 @@ body uploader =
                                                 [ Html.div
                                                     []
                                                     method
+                                                ]
+                                            , Html.div
+                                                [ class "level-item"
+                                                ]
+                                                [ Html.div
+                                                    []
+                                                    [ title
+                                                    ]
                                                 ]
                                             ]
                                         ]

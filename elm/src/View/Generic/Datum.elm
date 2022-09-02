@@ -4,7 +4,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (class, target)
 import Html.Events exposing (onClick)
 import Model.AlmostDatum as AlmostDatum exposing (AlmostDatum)
-import Model.Datum exposing (Datum)
+import Model.Datum as Datum exposing (Datum)
 import Model.Downloader as Downloader
 import Model.State as State exposing (State(..))
 import Model.Wallet exposing (Wallet)
@@ -17,6 +17,11 @@ view wallet datum =
     Html.div
         []
         [ Html.div
+            [ class "has-border-2 px-1 py-1 my-2"
+            ]
+            [ Html.text <| Datum.titleToString datum.title
+            ]
+        , Html.div
             [ class "has-border-2 px-1 py-1 my-2"
             ]
             [ Html.text "mint: "
