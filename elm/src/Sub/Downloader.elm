@@ -34,6 +34,9 @@ port connectAndGetCatalogAsDownloaderSuccess : (String -> msg) -> Sub msg
 port connectAndGetDatumAsDownloaderSuccess : (String -> msg) -> Sub msg
 
 
+port unauthorized : (String -> msg) -> Sub msg
+
+
 port downloadSuccess : (String -> msg) -> Sub msg
 
 

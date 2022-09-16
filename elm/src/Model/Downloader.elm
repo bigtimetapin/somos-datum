@@ -28,6 +28,7 @@ type
       -- downloading
     | HasDatum Wallet Datum
     | WaitingForDownload Wallet
+    | Unauthorized Wallet Datum
     | Downloaded Wallet Datum
 
 

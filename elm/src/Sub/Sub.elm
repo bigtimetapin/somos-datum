@@ -73,6 +73,10 @@ subs =
             (\json ->
                 ToDownloader <| Downloader.ConnectAndGetDatumSuccess json
             )
+        , DownloaderSub.unauthorized
+            (\json ->
+                ToDownloader <| Downloader.Unauthorized json
+            )
         , DownloaderSub.downloadSuccess
             (\json ->
                 ToDownloader <| Downloader.DownloadSuccess json

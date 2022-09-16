@@ -8,7 +8,16 @@ export async function download(provider, program, json) {
         // fetch pda datum
         const datum = await fetchPda(pdaDatum, program);
         // decrypt
-        const zip = await decrypt(datum)
+        let zip;
+        try {
+            zip = await decrypt(datum)
+        } catch (error) {
+            const response = await getDatum(provider, program, json);
+            app.ports.unauthorized.send(
+                response
+            )
+            return null;
+        }
         // download
         downloadZip(zip);
         // build response

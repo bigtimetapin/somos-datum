@@ -29,6 +29,7 @@ type
     | ConnectAndGetCatalogSuccess Json
     | ConnectAndGetDatumSuccess Json
       -- download
+    | Unauthorized Json
     | DownloadSuccess Json
 
 

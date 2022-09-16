@@ -10,6 +10,7 @@ import Model.State as State exposing (State(..))
 import Msg.Downloader as DownloaderMsg
 import Msg.Msg exposing (Msg(..))
 import View.Generic.Catalog
+import View.Generic.Datum
 import View.Generic.Wallet
 
 
@@ -404,17 +405,114 @@ body downloader =
                                     []
                                 ]
 
-                        Downloader.Downloaded wallet _ ->
+                        Downloader.Unauthorized wallet datum ->
                             Html.div
                                 [ class "has-border-2 px-2 pt-2 pb-6"
                                 ]
                                 [ View.Generic.Wallet.view wallet
                                 , header
                                 , Html.div
-                                    []
+                                    [ class "pb-2"
+                                    ]
+                                    [ Html.text
+                                        """Unauthorized 😭
+                                        """
+                                    ]
+                                , Html.div
+                                    [ class "pb-2"
+                                    ]
+                                    [ Html.text
+                                        """Consider buying if you want to access these files ⬇️
+                                        """
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
+                                    [ Html.text <| Datum.titleToString datum.title
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
+                                    [ Html.text "mint: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , Html.Attributes.href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , datum.mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.mint
+                                        ]
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
+                                    [ Html.text "uploader: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , Html.Attributes.href <|
+                                            String.concat
+                                                [ "https://solscan.io/account/"
+                                                , datum.uploader
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.uploader
+                                        ]
+                                    ]
+                                ]
+
+                        Downloader.Downloaded wallet datum ->
+                            Html.div
+                                [ class "has-border-2 px-2 pt-2 pb-6"
+                                ]
+                                [ View.Generic.Wallet.view wallet
+                                , header
+                                , Html.div
+                                    [ class "pb-2"
+                                    ]
                                     [ Html.text
                                         """Download Successful 😎
                                         """
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
+                                    [ Html.text <| Datum.titleToString datum.title
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
+                                    [ Html.text "mint: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , Html.Attributes.href <|
+                                            String.concat
+                                                [ "https://solscan.io/token/"
+                                                , datum.mint
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.mint
+                                        ]
+                                    ]
+                                , Html.div
+                                    [ class "has-border-2 px-1 py-1 my-2"
+                                    ]
+                                    [ Html.text "uploader: "
+                                    , Html.a
+                                        [ class "has-sky-blue-text"
+                                        , Html.Attributes.href <|
+                                            String.concat
+                                                [ "https://solscan.io/account/"
+                                                , datum.uploader
+                                                ]
+                                        , target "_blank"
+                                        ]
+                                        [ Html.text datum.uploader
+                                        ]
                                     ]
                                 ]
 

@@ -390,6 +390,23 @@ update msg model =
                             , Cmd.none
                             )
 
+                DownloaderMsg.Unauthorized json ->
+                    case Datum.decodeWithWallet json of
+                        Ok withWallet ->
+                            ( { model
+                                | state =
+                                    Download <|
+                                        Downloader.HasWallet <|
+                                            Downloader.Unauthorized withWallet.wallet withWallet.datum
+                              }
+                            , Cmd.none
+                            )
+
+                        Err error ->
+                            ( { model | state = Error error }
+                            , Cmd.none
+                            )
+
                 DownloaderMsg.DownloadSuccess json ->
                     case Datum.decodeWithWallet json of
                         Ok withWallet ->
