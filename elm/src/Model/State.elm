@@ -1,6 +1,5 @@
 module Model.State exposing (State(..), href, parse)
 
-import Debug
 import Html
 import Html.Attributes
 import Model.Administrator as Administrator exposing (Administrator)
