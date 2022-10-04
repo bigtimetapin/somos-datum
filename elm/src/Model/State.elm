@@ -1,5 +1,6 @@
 module Model.State exposing (State(..), href, parse)
 
+import Debug
 import Html
 import Html.Attributes
 import Model.Administrator as Administrator exposing (Administrator)
@@ -29,14 +30,14 @@ urlParser =
             (\c -> Upload (Uploader.WaitingForWallet (Uploader.AlmostHasCatalog c)))
             (AlmostCatalog.parser "upload")
         , UrlParser.map
+            (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalogQuery c)))
+            AlmostCatalogQuery.parser
+        , UrlParser.map
             (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalog c)))
             (AlmostCatalog.parser "download")
         , UrlParser.map
             (\d -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasDatum d)))
             AlmostDatum.parser
-        , UrlParser.map
-            (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalogQuery c)))
-            AlmostCatalogQuery.parser
         , UrlParser.map (Admin Administrator.Top) (UrlParser.s "admin")
         ]
 
@@ -44,11 +45,31 @@ urlParser =
 parse : Url.Url -> State
 parse url =
     let
+        parts : Maybe ( String, Maybe String )
+        parts =
+            Maybe.andThen
+                (\pathAndQuery ->
+                    case String.split "?" pathAndQuery of
+                        path_ :: query :: [] ->
+                            Just ( path_, Just query )
+
+                        path_ :: [] ->
+                            Just ( path_, Nothing )
+
+                        _ ->
+                            Nothing
+                )
+                url.fragment
+
         target =
             -- The RealWorld spec treats the fragment like a path.
             -- This makes it *literally* the path, so we can proceed
             -- with parsing as if it had been a normal path all along.
-            { url | path = Maybe.withDefault "" url.fragment, fragment = Nothing }
+            { url
+                | path = Maybe.withDefault "" (Maybe.map (\tup -> Tuple.first tup) parts)
+                , query = Maybe.andThen (\tup -> Tuple.second tup) parts
+                , fragment = Nothing
+            }
     in
     case UrlParser.parse urlParser target of
         Just state ->

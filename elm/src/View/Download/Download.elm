@@ -816,6 +816,10 @@ body downloader =
                                                 ]
                                             ]
                                         , href_
+                                        , Html.div
+                                            []
+                                            [ Html.text <| AlmostCatalogQuery.toString almostCatalogQuery.query
+                                            ]
                                         ]
     in
     Html.div
