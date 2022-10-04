@@ -9,6 +9,9 @@ port connectAsDownloader : () -> Cmd msg
 port connectAndGetCatalogAsDownloader : Json -> Cmd msg
 
 
+port connectAndGetManyCatalogsAsDownloader : Json -> Cmd msg
+
+
 port connectAndGetDatumAsDownloader : Json -> Cmd msg
 
 
@@ -28,10 +31,13 @@ port download : Json -> Cmd msg
 port connectAsDownloaderSuccess : (String -> msg) -> Sub msg
 
 
-port connectAndGetCatalogAsDownloaderSuccess : (String -> msg) -> Sub msg
+port connectAndGetCatalogAsDownloaderSuccess : (Json -> msg) -> Sub msg
 
 
-port connectAndGetDatumAsDownloaderSuccess : (String -> msg) -> Sub msg
+port connectAndGetManyCatalogsAsDownloaderSuccess : (Json -> msg) -> Sub msg
+
+
+port connectAndGetDatumAsDownloaderSuccess : (Json -> msg) -> Sub msg
 
 
 port unauthorized : (String -> msg) -> Sub msg

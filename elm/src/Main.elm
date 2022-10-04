@@ -309,6 +309,11 @@ update msg model =
                     , DownloaderCmd.connectAndGetCatalogAsDownloader <| AlmostCatalog.encode almostCatalog
                     )
 
+                DownloaderMsg.ConnectAndGetManyCatalogs almostCatalogs ->
+                    ( { model | state = Download <| Downloader.WaitingForWallet <| Downloader.AlmostLoggedIn }
+                    , DownloaderCmd.connectAndGetManyCatalogsAsDownloader <| AlmostCatalog.encodeMany almostCatalogs
+                    )
+
                 DownloaderMsg.ConnectAndGetDatum almostDatum ->
                     ( { model | state = Download <| Downloader.WaitingForWallet <| Downloader.AlmostLoggedIn }
                     , DownloaderCmd.connectAndGetDatumAsDownloader <| AlmostDatum.encode almostDatum
@@ -364,6 +369,23 @@ update msg model =
                                     Download <|
                                         Downloader.HasWallet <|
                                             Downloader.HasCatalog withWallet.wallet withWallet.catalog
+                              }
+                            , Cmd.none
+                            )
+
+                        Err error ->
+                            ( { model | state = Error error }
+                            , Cmd.none
+                            )
+
+                DownloaderMsg.ConnectAndGetManyCatalogsSuccess json ->
+                    case Catalog.decodeManyWithWallet json of
+                        Ok manyWithWallet ->
+                            ( { model
+                                | state =
+                                    Download <|
+                                        Downloader.HasWallet <|
+                                            Downloader.HasManyCatalogs manyWithWallet.wallet manyWithWallet.many
                               }
                             , Cmd.none
                             )

@@ -3,20 +3,6 @@ import {connection} from "../util";
 import {preflightCommitment} from "../config";
 import {getMint} from "@solana/spl-token";
 
-export async function getIncrement(program, mint, uploader) {
-    // derive pda
-    let pda, _;
-    [pda, _] = await web3.PublicKey.findProgramAddress(
-        [
-            mint.toBuffer(),
-            uploader.toBuffer(),
-        ],
-        program.programId
-    );
-    // get pda
-    return await program.account.increment.fetch(pda)
-}
-
 export async function catalogAsUploader(provider, program, json) {
     // get user wallet
     const publicKey = provider.wallet.publicKey.toString();
@@ -107,4 +93,18 @@ export async function catalogAsDownloader(provider, program, json) {
     app.ports.connectAndGetCatalogAsDownloaderSuccess.send(
         JSON.stringify(withWallet)
     );
+}
+
+async function getIncrement(program, mint, uploader) {
+    // derive pda
+    let pda, _;
+    [pda, _] = await web3.PublicKey.findProgramAddress(
+        [
+            mint.toBuffer(),
+            uploader.toBuffer(),
+        ],
+        program.programId
+    );
+    // get pda
+    return await program.account.increment.fetch(pda)
 }

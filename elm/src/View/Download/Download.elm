@@ -3,10 +3,12 @@ module View.Download.Download exposing (body)
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, placeholder, style, target, type_)
 import Html.Events exposing (onClick, onInput)
+import Model.AlmostCatalogQuery as AlmostCatalogQuery
 import Model.AlmostDatum as AlmostDatum
 import Model.Datum as Datum
 import Model.Downloader as Downloader exposing (Downloader)
 import Model.State as State exposing (State(..))
+import Model.Wallet as Wallet
 import Msg.Downloader as DownloaderMsg
 import Msg.Msg exposing (Msg(..))
 import View.Generic.Catalog
@@ -310,6 +312,22 @@ body downloader =
                                 [ View.Generic.Wallet.view wallet
                                 , header
                                 , View.Generic.Catalog.view wallet catalog
+                                ]
+
+                        Downloader.HasManyCatalogs wallet catalogs ->
+                            Html.div
+                                [ class "has-border-2 px-2 pt-2 pb-6"
+                                ]
+                                [ View.Generic.Wallet.view wallet
+                                , header
+                                , Html.div
+                                    []
+                                  <|
+                                    List.map
+                                        (\catalog ->
+                                            View.Generic.Catalog.view wallet catalog
+                                        )
+                                        catalogs
                                 ]
 
                         Downloader.WaitingForDatum wallet ->
@@ -683,6 +701,122 @@ body downloader =
                                             ]
                                     ]
                                 ]
+
+                        Downloader.AlmostHasCatalogQuery almostCatalogQuery ->
+                            case AlmostCatalogQuery.decode almostCatalogQuery.encodedUploaderList of
+                                [] ->
+                                    Html.div
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
+                                        ]
+                                        [ header
+                                        , Html.div
+                                            []
+                                            [ Html.text
+                                                """We were unable to decode the list of uploader public-keys
+                                                from your URL query
+                                                """
+                                            ]
+                                        ]
+
+                                nel ->
+                                    let
+                                        many =
+                                            List.map
+                                                (\uploader ->
+                                                    { mint = almostCatalogQuery.mint, uploader = uploader }
+                                                )
+                                                nel
+
+                                        f uploader =
+                                            Html.a
+                                                [ class "has-sky-blue-text"
+                                                , href <|
+                                                    String.concat
+                                                        [ "https://solscan.io/account/"
+                                                        , uploader
+                                                        ]
+                                                , target "_blank"
+                                                ]
+                                                [ Html.text uploader
+                                                ]
+
+                                        href_ =
+                                            case nel of
+                                                head :: [] ->
+                                                    Html.div
+                                                        [ class "has-border-2 px-1 py-1 mb-2"
+                                                        ]
+                                                        [ Html.text "uploader: "
+                                                        , f head
+                                                        ]
+
+                                                _ ->
+                                                    Html.div
+                                                        [ class "has-border-2 px-1 py-1 mb-2"
+                                                        ]
+                                                        [ Html.text "uploaders: "
+                                                        , Html.p
+                                                            []
+                                                          <|
+                                                            List.map (\wallet -> f (Wallet.slice wallet)) nel
+                                                        ]
+                                    in
+                                    Html.div
+                                        [ class "has-border-2 px-2 pt-2 pb-6"
+                                        ]
+                                        [ Html.button
+                                            [ class "is-button-1 mr-2 mt-2"
+                                            , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetManyCatalogs many
+                                            , style "float" "right"
+                                            ]
+                                            [ Html.text "Connect"
+                                            ]
+                                        , header
+                                        , Html.button
+                                            [ class "is-button-1"
+                                            , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetManyCatalogs many
+                                            ]
+                                            [ Html.text "Connect"
+                                            ]
+                                        , Html.text
+                                            """ to download
+                                            """
+                                        , Html.a
+                                            [ class "has-sky-blue-text"
+                                            , href "https://litprotocol.com/"
+                                            , target "_blank"
+                                            ]
+                                            [ Html.text "token-gated"
+                                            ]
+                                        , Html.text "-"
+                                        , Html.a
+                                            [ class "has-sky-blue-text"
+                                            , href "https://shdw.genesysgo.com/shadow-infrastructure-overview/shadow-drive-overview"
+                                            , target "_blank"
+                                            ]
+                                            [ Html.text "decentralized"
+                                            ]
+                                        , Html.text
+                                            """ files associated with ⬇️
+                                                """
+                                        , Html.div
+                                            [ class "has-border-2 px-1 py-1 mb-2 mt-2"
+                                            ]
+                                            [ Html.text "mint: "
+                                            , Html.a
+                                                [ class "has-sky-blue-text"
+                                                , href <|
+                                                    String.concat
+                                                        [ "https://solscan.io/token/"
+                                                        , almostCatalogQuery.mint
+                                                        ]
+                                                , target "_blank"
+                                                ]
+                                                [ Html.text almostCatalogQuery.mint
+                                                ]
+                                            ]
+                                        , href_
+                                        ]
     in
     Html.div
         [ class "container"

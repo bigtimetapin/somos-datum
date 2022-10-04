@@ -1,4 +1,4 @@
-module Model.AlmostCatalog exposing (AlmostCatalog, decode, encode, parser)
+module Model.AlmostCatalog exposing (AlmostCatalog, decode, encode, encodeMany, parser)
 
 import Json.Decode as Decode
 import Json.Encode as Encode
@@ -16,6 +16,11 @@ type alias AlmostCatalog =
 encode : AlmostCatalog -> String
 encode almostCatalog =
     Encode.encode 0 <| encoder_ almostCatalog
+
+
+encodeMany : List AlmostCatalog -> String
+encodeMany many =
+    Encode.encode 0 <| Encode.list encoder_ many
 
 
 encoder_ : AlmostCatalog -> Encode.Value

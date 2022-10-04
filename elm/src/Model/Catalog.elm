@@ -1,4 +1,4 @@
-module Model.Catalog exposing (Catalog, WithWallet, decode, decodeWithWallet)
+module Model.Catalog exposing (Catalog, ManyWithWallet, WithWallet, decode, decodeManyWithWallet, decodeWithWallet)
 
 import Json.Decode as Decode
 import Model.Mint exposing (Mint)
@@ -15,6 +15,12 @@ type alias Catalog =
 type alias WithWallet =
     { wallet : Wallet
     , catalog : Catalog
+    }
+
+
+type alias ManyWithWallet =
+    { wallet : Wallet
+    , many : List Catalog
     }
 
 
@@ -39,6 +45,22 @@ decodeWithWallet json =
             Decode.map2 WithWallet
                 (Decode.field "wallet" Decode.string)
                 (Decode.field "catalog" decoder_)
+    in
+    case Decode.decodeString decoder json of
+        Ok catalog ->
+            Ok catalog
+
+        Err error ->
+            Err (Decode.errorToString error)
+
+
+decodeManyWithWallet : Json -> Result String ManyWithWallet
+decodeManyWithWallet json =
+    let
+        decoder =
+            Decode.map2 ManyWithWallet
+                (Decode.field "wallet" Decode.string)
+                (Decode.field "many" <| Decode.list decoder_)
     in
     case Decode.decodeString decoder json of
         Ok catalog ->

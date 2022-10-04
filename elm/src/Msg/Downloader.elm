@@ -11,6 +11,7 @@ type
     -- connect
     = Connect
     | ConnectAndGetCatalog AlmostCatalog
+    | ConnectAndGetManyCatalogs (List AlmostCatalog)
     | ConnectAndGetDatum AlmostDatum
       -- select
     | TypingMint Wallet String
@@ -27,6 +28,7 @@ type
     -- connect
     = ConnectSuccess Wallet
     | ConnectAndGetCatalogSuccess Json
+    | ConnectAndGetManyCatalogsSuccess Json
     | ConnectAndGetDatumSuccess Json
       -- download
     | Unauthorized Json

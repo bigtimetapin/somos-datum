@@ -69,6 +69,10 @@ subs =
             (\json ->
                 ToDownloader <| Downloader.ConnectAndGetCatalogSuccess json
             )
+        , DownloaderSub.connectAndGetManyCatalogsAsDownloaderSuccess
+            (\json ->
+                ToDownloader <| Downloader.ConnectAndGetManyCatalogsSuccess json
+            )
         , DownloaderSub.connectAndGetDatumAsDownloaderSuccess
             (\json ->
                 ToDownloader <| Downloader.ConnectAndGetDatumSuccess json

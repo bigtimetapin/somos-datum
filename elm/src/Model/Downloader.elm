@@ -1,6 +1,7 @@
 module Model.Downloader exposing (Downloader(..), HasWalletDownloader(..), WaitingForWalletDownloader(..))
 
 import Model.AlmostCatalog exposing (AlmostCatalog)
+import Model.AlmostCatalogQuery exposing (AlmostCatalogQuery)
 import Model.AlmostDatum exposing (AlmostDatum)
 import Model.Catalog exposing (Catalog)
 import Model.Datum exposing (Datum)
@@ -24,6 +25,7 @@ type
     | TypingUploaderAddress Wallet Mint String
     | WaitingForCatalog Wallet
     | HasCatalog Wallet Catalog
+    | HasManyCatalogs Wallet (List Catalog)
     | WaitingForDatum Wallet
       -- downloading
     | HasDatum Wallet Datum
@@ -35,6 +37,7 @@ type
 type WaitingForWalletDownloader
     = AlmostLoggedIn
     | AlmostHasCatalog AlmostCatalog
+    | AlmostHasCatalogQuery AlmostCatalogQuery
     | AlmostHasDatum AlmostDatum
 
 

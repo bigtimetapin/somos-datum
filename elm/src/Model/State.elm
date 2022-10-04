@@ -4,6 +4,7 @@ import Html
 import Html.Attributes
 import Model.Administrator as Administrator exposing (Administrator)
 import Model.AlmostCatalog as AlmostCatalog
+import Model.AlmostCatalogQuery as AlmostCatalogQuery
 import Model.AlmostDatum as AlmostDatum
 import Model.Downloader as Downloader exposing (Downloader)
 import Model.Uploader as Uploader exposing (Uploader)
@@ -33,6 +34,9 @@ urlParser =
         , UrlParser.map
             (\d -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasDatum d)))
             AlmostDatum.parser
+        , UrlParser.map
+            (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalogQuery c)))
+            AlmostCatalogQuery.parser
         , UrlParser.map (Admin Administrator.Top) (UrlParser.s "admin")
         ]
 
@@ -102,6 +106,17 @@ path state =
                                 , almostDatum.uploader
                                 , "/"
                                 , String.fromInt almostDatum.increment
+                                ]
+
+                        Downloader.AlmostHasCatalogQuery almostCatalogQuery ->
+                            String.concat
+                                [ path (Download Downloader.Top)
+                                , "/"
+                                , almostCatalogQuery.mint
+                                , "/"
+                                , almostCatalogQuery.encodedUploaderList
+                                , "?"
+                                , AlmostCatalogQuery.toString almostCatalogQuery.query
                                 ]
 
                 Downloader.HasWallet _ ->
