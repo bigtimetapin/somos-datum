@@ -304,11 +304,6 @@ update msg model =
                     , DownloaderCmd.connectAsDownloader ()
                     )
 
-                DownloaderMsg.ConnectAndGetCatalog almostCatalog ->
-                    ( { model | state = Download <| Downloader.WaitingForWallet <| Downloader.AlmostLoggedIn }
-                    , DownloaderCmd.connectAndGetCatalogAsDownloader <| AlmostCatalog.encode almostCatalog
-                    )
-
                 DownloaderMsg.ConnectAndGetManyCatalogs almostCatalogs ->
                     ( { model | state = Download <| Downloader.WaitingForWallet <| Downloader.AlmostLoggedIn }
                     , DownloaderCmd.connectAndGetManyCatalogsAsDownloader <| AlmostCatalog.encodeMany almostCatalogs

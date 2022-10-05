@@ -230,8 +230,11 @@ body downloader =
                                                     , State.href <|
                                                         Download <|
                                                             Downloader.WaitingForWallet <|
-                                                                Downloader.AlmostHasCatalog
-                                                                    { mint = mint, uploader = string }
+                                                                Downloader.AlmostHasCatalogQuery
+                                                                    { mint = mint
+                                                                    , encodedUploaderList = string
+                                                                    , query = { many = Just False }
+                                                                    }
                                                     ]
                                                     [ Html.div
                                                         [ class "is-button-1 mt-4"
@@ -545,79 +548,6 @@ body downloader =
                                     [ class "my-2 is-loading"
                                     ]
                                     []
-                                ]
-
-                        Downloader.AlmostHasCatalog almostCatalog ->
-                            Html.div
-                                [ class "has-border-2 px-2 pt-2 pb-6"
-                                ]
-                                [ Html.button
-                                    [ class "is-button-1 mr-2 mt-2"
-                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetCatalog almostCatalog
-                                    , style "float" "right"
-                                    ]
-                                    [ Html.text "Connect"
-                                    ]
-                                , header
-                                , Html.button
-                                    [ class "is-button-1"
-                                    , onClick <| FromDownloader <| DownloaderMsg.ConnectAndGetCatalog almostCatalog
-                                    ]
-                                    [ Html.text "Connect"
-                                    ]
-                                , Html.text
-                                    """ to download
-                                    """
-                                , Html.a
-                                    [ class "has-sky-blue-text"
-                                    , href "https://litprotocol.com/"
-                                    , target "_blank"
-                                    ]
-                                    [ Html.text "token-gated"
-                                    ]
-                                , Html.text "-"
-                                , Html.a
-                                    [ class "has-sky-blue-text"
-                                    , href "https://shdw.genesysgo.com/shadow-infrastructure-overview/shadow-drive-overview"
-                                    , target "_blank"
-                                    ]
-                                    [ Html.text "decentralized"
-                                    ]
-                                , Html.text
-                                    """ files associated with ⬇️
-                                        """
-                                , Html.div
-                                    [ class "has-border-2 px-1 py-1 mb-2 mt-2"
-                                    ]
-                                    [ Html.text "mint: "
-                                    , Html.a
-                                        [ class "has-sky-blue-text"
-                                        , href <|
-                                            String.concat
-                                                [ "https://solscan.io/token/"
-                                                , almostCatalog.mint
-                                                ]
-                                        , target "_blank"
-                                        ]
-                                        [ Html.text almostCatalog.mint
-                                        ]
-                                    ]
-                                , Html.div
-                                    [ class "has-border-2 px-1 py-1 mb-2"
-                                    ]
-                                    [ Html.text "uploader: "
-                                    , Html.a
-                                        [ class "has-sky-blue-text"
-                                        , href <|
-                                            String.concat
-                                                [ "https://solscan.io/account/"
-                                                , almostCatalog.uploader
-                                                ]
-                                        , target "_blank"
-                                        ]
-                                        [ Html.text almostCatalog.uploader
-                                        ]
-                                    ]
                                 ]
 
                         Downloader.AlmostHasDatum almostDatum ->

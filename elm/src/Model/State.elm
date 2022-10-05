@@ -32,9 +32,6 @@ urlParser =
             (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalogQuery c)))
             AlmostCatalogQuery.parser
         , UrlParser.map
-            (\c -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasCatalog c)))
-            (AlmostCatalog.parser "download")
-        , UrlParser.map
             (\d -> Download (Downloader.WaitingForWallet (Downloader.AlmostHasDatum d)))
             AlmostDatum.parser
         , UrlParser.map (Admin Administrator.Top) (UrlParser.s "admin")
@@ -107,15 +104,6 @@ path state =
                     case waitingForWalletDownloader of
                         Downloader.AlmostLoggedIn ->
                             path (Download Downloader.Top)
-
-                        Downloader.AlmostHasCatalog almostCatalog ->
-                            String.concat
-                                [ path (Download Downloader.Top)
-                                , "/"
-                                , almostCatalog.mint
-                                , "/"
-                                , almostCatalog.uploader
-                                ]
 
                         Downloader.AlmostHasDatum almostDatum ->
                             String.concat

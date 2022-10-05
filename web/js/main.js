@@ -60,23 +60,6 @@ app.ports.connectAndGetCatalogAsUploader.subscribe(async function (json) {
     }
 });
 
-// connect as downloader and get catalog
-app.ports.connectAndGetCatalogAsDownloader.subscribe(async function (json) {
-    // get phantom
-    phantom = await getPhantom();
-    // get catalog
-    try {
-        // get provider & program
-        const pp = getPP(phantom);
-        // invoke get catalog as downloader
-        await catalogAsDownloader(pp.provider, pp.program, json);
-        // or report error to elm
-    } catch (error) {
-        console.log(error);
-        app.ports.genericError.send(error.toString());
-    }
-});
-
 // connect as downloader and get many catalogs
 app.ports.connectAndGetManyCatalogsAsDownloader.subscribe(async function (json) {
     // get phantom

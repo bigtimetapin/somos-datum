@@ -6,9 +6,6 @@ port module Sub.Downloader exposing (..)
 port connectAsDownloader : () -> Cmd msg
 
 
-port connectAndGetCatalogAsDownloader : Json -> Cmd msg
-
-
 port connectAndGetManyCatalogsAsDownloader : Json -> Cmd msg
 
 

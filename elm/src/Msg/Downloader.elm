@@ -10,7 +10,6 @@ type
     From
     -- connect
     = Connect
-    | ConnectAndGetCatalog AlmostCatalog
     | ConnectAndGetManyCatalogs (List AlmostCatalog)
     | ConnectAndGetDatum AlmostDatum
       -- select

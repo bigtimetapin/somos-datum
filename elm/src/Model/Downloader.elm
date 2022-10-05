@@ -1,6 +1,5 @@
 module Model.Downloader exposing (Downloader(..), HasWalletDownloader(..), WaitingForWalletDownloader(..))
 
-import Model.AlmostCatalog exposing (AlmostCatalog)
 import Model.AlmostCatalogQuery exposing (AlmostCatalogQuery)
 import Model.AlmostDatum exposing (AlmostDatum)
 import Model.Catalog exposing (Catalog)
@@ -36,7 +35,6 @@ type
 
 type WaitingForWalletDownloader
     = AlmostLoggedIn
-    | AlmostHasCatalog AlmostCatalog
     | AlmostHasCatalogQuery AlmostCatalogQuery
     | AlmostHasDatum AlmostDatum
 
